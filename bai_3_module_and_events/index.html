@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index</title>
+
+    <!-- Latest compiled and minified CSS & JS -->
+    <link rel="stylesheet" media="screen" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <h1 align="center">In bảng cửu chương</h1>
+    <form class="form-horizontal" style="width: 90%">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">From</label>
+            <div class="col-sm-10">
+                <input type="number" class="form-control" id="from" placeholder="From">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">To</label>
+            <div class="col-sm-10">
+                <input type="number" class="form-control" id="to" placeholder="To">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <button id="gui_di" type="button" class="btn btn-success">Ajax</button>
+            </div>
+        </div>
+    </form>
+    <div id="result"></div>
+<script>
+gui_di.onclick = () => {
+    var data_post = {
+        from: from.value,
+        to: to.value,
+    };
+    $.post('http://localhost:8080/ajax', data_post)
+        .success((data) => {
+            result.innerHTML = data;
+        })
+        .error((error) => {})
+    ;
+};
+</script>
+</body>
+</html>
