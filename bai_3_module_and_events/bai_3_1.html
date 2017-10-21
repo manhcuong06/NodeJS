@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bai 2.3</title>
+    <title>Bai 3.1</title>
 
     <!-- Latest compiled and minified CSS & JS -->
     <link rel="stylesheet" media="screen" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
@@ -12,34 +12,44 @@
 </head>
 <body>
     <div class="container">
-        <h1 align="center">In bảng cửu chương</h1>
-        <form action="" method="post" class="form-horizontal">
+        <h1 align="center">Module xử lý chuỗi</h1>
+        <form id="form_3_1" class="form-horizontal">
             <div class="form-group">
-                <label class="col-sm-2 control-label">From</label>
+                <label class="col-sm-2 control-label">Chuỗi:</label>
                 <div class="col-sm-10">
-                    <input type="number" class="form-control" id="from" name="from" placeholder="From">
+                    <input class="form-control" id="input_string" placeholder="Nhập chuỗi">
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-2 control-label">To</label>
+                <label class="col-sm-2 control-label">Loại xử lý:</label>
                 <div class="col-sm-10">
-                    <input type="number" class="form-control" id="to" name="to" placeholder="To">
+                    <select class="form-control" id="output_type">
+                        <option value="0">Chọn loại xử lý</option>
+                        <option value="1">Camel Case</option>
+                        <option value="2">Bỏ dấu tiếng Việt</option>
+                        <option value="3">Friendly URL</option>
+                    </select>
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                    <button id="gui_di" type="button" class="btn btn-success">Ajax</button>
+                    <button type="button" id="send_btn" class="btn btn-primary">Gửi</button>
                 </div>
             </div>
         </form>
         <div id="result"></div>
     </div>
 <script>
-gui_di.onclick = () => {
+form_3_1.onsubmit = (e) => {
+    e.preventDefault();
+    submit();
+}
+send_btn.onclick = () => submit();
+
+var submit = () => {
     var data_post = {
-        from: from.value,
-        to: to.value,
+        input_string: input_string.value,
+        output_type: output_type.value,
     };
     $.post('http://localhost:8000/ajax', data_post)
         .success((data) => {
@@ -47,7 +57,7 @@ gui_di.onclick = () => {
         })
         .error((error) => {})
     ;
-};
+}
 </script>
 </body>
 </html>
