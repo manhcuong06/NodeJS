@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bai 3.2</title>
+
+    <!-- Latest compiled and minified CSS & JS -->
+    <link rel="stylesheet" media="screen" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1 align="center">Module xử lý ngày tháng</h1>
+        <form id="form_3_1" class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Chuỗi:</label>
+                <div class="col-sm-10">
+                    <input class="form-control" id="input_string" placeholder="Nhập chuỗi">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Loại xử lý:</label>
+                <div class="col-sm-10">
+                    <select class="form-control" id="output_type">
+                        <option value="0">Chọn loại xử lý</option>
+                        <option value="1">Camel Case</option>
+                        <option value="2">Bỏ dấu tiếng Việt</option>
+                        <option value="3">Friendly URL</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="button" id="send_btn" class="btn btn-primary">Gửi</button>
+                </div>
+            </div>
+        </form>
+        <div id="result"></div>
+    </div>
+<script>
+form_3_1.onsubmit = (e) => {
+    e.preventDefault();
+    submit();
+}
+send_btn.onclick = () => submit();
+
+var submit = () => {
+    var data_post = {
+        input_string: input_string.value,
+        output_type: output_type.value,
+    };
+    $.post('http://localhost:8000/ajax', data_post)
+        .success((data) => {
+            result.innerHTML = data;
+        })
+        .error((error) => {})
+    ;
+}
+</script>
+</body>
+</html>
