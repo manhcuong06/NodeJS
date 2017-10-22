@@ -25,7 +25,7 @@ var server = http.createServer((request, response) => {
         var data_post = querystring.parse(body);
         var input_string = data_post.input_string;
         var output_type  = data_post.output_type;
-        switch (data_post.output_type) {
+        switch (output_type) {
             case CAMEL_CASE:
                 var camel_case = module_xu_ly_chuoi.camelCase(input_string);
                 response.write(camel_case);

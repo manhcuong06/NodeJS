@@ -12,23 +12,26 @@
 </head>
 <body>
     <div class="container">
-        <h1 align="center">Module xử lý ngày tháng</h1>
-        <form id="form_3_1" class="form-horizontal">
+        <h1>Module xử lý ngày tháng</h1>
+        <form id="form_3_2" class="form-horizontal">
             <div class="form-group">
-                <label class="col-sm-2 control-label">Chuỗi:</label>
-                <div class="col-sm-10">
-                    <input class="form-control" id="input_string" placeholder="Nhập chuỗi">
+                <label class="col-sm-2 control-label">Ngày:</label>
+                <div class="col-sm-4">
+                    <input type="date" class="form-control" id="input_date">
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-2 control-label">Loại xử lý:</label>
+                <label class="col-sm-2 control-label">Ngôn ngữ:</label>
                 <div class="col-sm-10">
-                    <select class="form-control" id="output_type">
-                        <option value="0">Chọn loại xử lý</option>
-                        <option value="1">Camel Case</option>
-                        <option value="2">Bỏ dấu tiếng Việt</option>
-                        <option value="3">Friendly URL</option>
-                    </select>
+                    <label class="radio-inline"><input type="radio" class="language" name="language" value="0" checked>EN</label>
+                    <label class="radio-inline"><input type="radio" class="language" name="language" value="1">VI</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Định dạng:</label>
+                <div class="col-sm-10">
+                    <label class="radio-inline"><input type="radio" id="format" name="format" value="0" checked>Đầy đủ</label>
+                    <label class="radio-inline"><input type="radio" id="format1" name="format" value="1">Rút gọn</label>
                 </div>
             </div>
             <div class="form-group">
@@ -40,7 +43,7 @@
         <div id="result"></div>
     </div>
 <script>
-form_3_1.onsubmit = (e) => {
+form_3_2.onsubmit = (e) => {
     e.preventDefault();
     submit();
 }
@@ -48,8 +51,11 @@ send_btn.onclick = () => submit();
 
 var submit = () => {
     var data_post = {
-        input_string: input_string.value,
-        output_type: output_type.value,
+        input_date: input_date.value,
+        // language: $('input[name="language"]:checked').val(),
+        // format: $('input[name="format"]:checked').val(),
+        language: document.querySelector('input[name="language"]:checked').value,
+        format: document.querySelector('input[name="format"]:checked').value,
     };
     $.post('http://localhost:8000/ajax', data_post)
         .success((data) => {
