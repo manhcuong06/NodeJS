@@ -1,0 +1,4 @@
+Chào các bạn
+Đã đến với
+NodeJS
+Đây là file 2
