@@ -12,15 +12,19 @@
 </head>
 <body>
     <div class="container">
-        <h1 align="center">Copy files</h1>
+        <h1 align="center">Stream Read and Write</h1>
         <form id="form_app_stream" class="form-horizontal">
             <div class="form-group">
                 <label class="col-sm-2 control-label">Chọn file:</label>
                 <div class="col-sm-10">
-                    <select class="form-control" id="file_name">
-                        <option value="file_1.txt">File 1</option>
-                        <option value="file_2.txt">File 2</option>
-                    </select>
+                    <select class="form-control" id="file_name"></select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Thao tác:</label>
+                <div class="col-sm-10">
+                    <label class="radio-inline"><input type="radio" class="action" name="action" value="0" checked>Copy</label>
+                    <label class="radio-inline"><input type="radio" class="action" name="action" value="1">Nén</label>
                 </div>
             </div>
             <div class="form-group">
@@ -32,6 +36,18 @@
         <div id="result"></div>
     </div>
 <script>
+$(document).ready(() => {
+    $.get('http://localhost:8000/get-files')
+        .success((files) => {
+            var options = '<option value="">Chọn file</option>';
+            JSON.parse(files).forEach(file => {
+                options += `<option value="${file}">${file}</option>`;
+            });
+            file_name.innerHTML = options;
+        })
+        .error((error) => {})
+    ;
+});
 form_app_stream.onsubmit = (e) => {
     e.preventDefault();
     submit();
@@ -41,10 +57,11 @@ send_btn.onclick = () => submit();
 var submit = () => {
     var data_post = {
         file_name: file_name.value,
+        action: document.querySelector('input[name="action"]:checked').value,
     };
-    $.post('http://localhost:8000/ajax', data_post)
-        .success((data) => {
-            result.innerHTML = 'End';
+    $.post('http://localhost:8000/create-file', data_post)
+        .success((res) => {
+            result.innerHTML = res;
         })
         .error((error) => {})
     ;
