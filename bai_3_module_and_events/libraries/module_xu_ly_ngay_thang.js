@@ -7,7 +7,7 @@ const SHORT = 1;
 const months_en = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'Septemper', 'October', 'November', 'December'];
 const days_en = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
-exports.MyDate = class MyDate {
+module.exports = class MyDate {
     constructor(date) {
         this.date = new Date(date);
     }

@@ -1,7 +1,7 @@
 var http = require('http');
 var fs = require('fs');
 var querystring = require('querystring');
-MyDate = require('./libraries/module_xu_ly_ngay_thang').MyDate;
+MyDate = require('./libraries/module_xu_ly_ngay_thang');
 
 var server = http.createServer((req, res) => {
     var body;
