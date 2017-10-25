@@ -1,37 +1,24 @@
-var fs = require('fs');
 var url = require('url');
+var stream_module = require('./stream-module');
 
-const HEADER = fs.readFileSync('./views/widgets/header.html').toString();
-const FOOTER = fs.readFileSync('./views/widgets/footer.html').toString();
-const STYLE  = fs.readFileSync('./assets/css/site.css').toString();
-
-const VIEW_FOLDER = './views/pages';
 const VALID_ROUTES = ['/ban-ra', '/cap-nhat-ty-gia', '/mua-vao', '/thong-ke-giao-dich'];
-const HTML_EXT = '.html';
+const VALID_APIS = ['/danh-sach-giao-dich'];
 
 module.exports = {
     handleRequest: (req, res) => {
         res.setHeader('Access-Control-Allow-Origin', '*');
         var path = url.parse(req.url).pathname;
+        var api_index = VALID_APIS.indexOf(path);
 
         if (path == '/') {
-            renderHTML('/index', res);
+            stream_module.createMockupData();
+            stream_module.renderHTML(res, '/home');
         } else if (VALID_ROUTES.indexOf(path) !== -1) {
-            renderHTML(path, res);
+            stream_module.renderHTML(res, path);
+        } else if (VALID_APIS.indexOf(path) !== -1) {
+            stream_module.readFile(res, path);
         } else {
-            renderHTML('/not-found', res);
+            stream_module.renderHTML(res, '/not-found');
         }
     },
-}
-
-function renderHTML(file_name, res) {
-    var body = fs.readFileSync(VIEW_FOLDER + file_name + HTML_EXT).toString();
-    var my_header = HEADER.replace('MY_STYLE', `<style>${STYLE}</style>`);
-    res.write(my_header + body + FOOTER);
-    res.end();
-}
-
-function responeJson(data, res) {
-    res.write('Test json');
-    res.end();
 }

@@ -1,8 +1,5 @@
 var http = require('http');
-var fs = require('fs');
-var url = require('url');
-var querystring = require('querystring');
-var routing = require('./libraries/routing-module');
+var routing_module = require('./libraries/routing-module');
 
 var server = http.createServer((req, res) => {
     var body;
@@ -10,7 +7,7 @@ var server = http.createServer((req, res) => {
         body = data.toString();
     });
     req.on('end', () => {
-        routing.handleRequest(req, res);
+        routing_module.handleRequest(req, res);
     });
 });
 

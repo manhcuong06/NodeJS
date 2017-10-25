@@ -1,6 +1,43 @@
 
 <div class="main-content">
-    <div class="jumbotron">
-        <h1>Thống kê giao dịch</h1>
-    </div>
+    <h2>Danh sách giao dịch</h2>
+    <p>Có tổng cộng <span id="total"></span> giao dịch.</p>
+    <table class="table table-bordered table-striped table-hover">
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>Loại tiền</th>
+                <th>Số tiền bán</th>
+                <th>Đơn giá</th>
+                <th>Số tiền thu vào</th>
+                <th>Thời gian giao dịch</th>
+            </tr>
+        </thead>
+        <tbody id="table_body"></tbody>
+    </table>
 </div>
+<script>
+$(document).ready(() => {
+    $.get('http://localhost:8000/danh-sach-giao-dich')
+        .success((data) => {
+            var html = '';
+            var ds_giao_dich = JSON.parse(data);
+            ds_giao_dich.forEach(gd => {
+                html +=
+                    `<tr>
+                        <td>${gd.stt}</td>
+                        <td>${gd.loai_tien}</td>
+                        <td>${gd.so_tien_ban}</td>
+                        <td>${gd.don_gia}</td>
+                        <td>${gd.so_tien_thu_vao}</td>
+                        <td>${gd.thoi_gian_giao_dich}</td>
+                    </tr>`
+                ;
+            });
+            total.innerHTML = ds_giao_dich.length;
+            table_body.innerHTML = html;
+        })
+        .error((error) => {})
+    ;
+});
+</script>
