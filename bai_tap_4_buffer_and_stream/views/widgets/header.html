@@ -6,20 +6,27 @@
     <title>Currency Demo</title>
 
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="assets/css/style.css" rel="stylesheet">
+
     <script src="http://code.jquery.com/jquery.js"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-    MY_STYLE
 <body>
 
 <div class="wrap">
-    <nav id="w0" class="navbar-inverse navbar-fixed-top navbar" role="navigation">
+    <nav class="navbar-inverse navbar-fixed-top navbar" role="navigation">
         <div class="container">
             <div class="navbar-header"><a class="navbar-brand" href="/">Home</a></div>
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav navbar-right nav">
                     <li><a href="/ban-ra">Bán ra</a></li>
                     <li><a href="/mua-vao">Mua vào</a></li>
-                    <li><a href="/cap-nhat-ty-gia">Cập nhật tỷ giá</a></li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" href="#" data-toggle="dropdown">Tỷ giá<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/them-ty-gia" tabindex="-1">Thêm tỷ giá</a></li>
+                            <li><a href="/cap-nhat-ty-gia" tabindex="-1">Cập nhật tỷ giá</a></li>
+                        </ul>
+                    </li>
                     <li><a href="/thong-ke-giao-dich">Thống kê giao dịch</a></li>
                 </ul>
             </div>

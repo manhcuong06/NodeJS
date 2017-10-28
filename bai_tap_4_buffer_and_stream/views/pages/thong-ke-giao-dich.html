@@ -8,36 +8,120 @@
                 <th>STT</th>
                 <th>Loại tiền</th>
                 <th>Số tiền bán</th>
-                <th>Đơn giá</th>
                 <th>Số tiền thu vào</th>
+                <th>Đơn giá</th>
+                <th>Thành tiền</th>
                 <th>Thời gian giao dịch</th>
             </tr>
         </thead>
         <tbody id="table_body"></tbody>
     </table>
+    <div id="column_chart" class="chart"></div>
+    <div id="pie_chart" class="chart"></div>
 </div>
+
 <script>
+var exchanges = [];
 $(document).ready(() => {
     $.get('http://localhost:8000/danh-sach-giao-dich')
         .success((data) => {
             var html = '';
-            var ds_giao_dich = JSON.parse(data);
-            ds_giao_dich.forEach(gd => {
+            exchanges = JSON.parse(data);
+            exchanges.forEach(ex => {
+                var exchange_date = new Date(ex.thoi_gian_giao_dich);
                 html +=
                     `<tr>
-                        <td>${gd.stt}</td>
-                        <td>${gd.loai_tien}</td>
-                        <td>${gd.so_tien_ban}</td>
-                        <td>${gd.don_gia}</td>
-                        <td>${gd.so_tien_thu_vao}</td>
-                        <td>${gd.thoi_gian_giao_dich}</td>
+                        <td>${ex.stt}</td>
+                        <td>${ex.loai_tien}</td>
+                        <td>${ex.so_tien_ban}</td>
+                        <td>${ex.so_tien_mua}</td>
+                        <td>${ex.don_gia}</td>
+                        <td>${ex.thanh_tien}</td>
+                        <td>${exchange_date.toLocaleString()}</td>
                     </tr>`
                 ;
             });
-            total.innerHTML = ds_giao_dich.length;
+            total.innerHTML = exchanges.length;
             table_body.innerHTML = html;
+
+            var column_data = getColumnData();
+            renderColumnChart(column_data);
+
+            var pie_data = getPieData();
+            // renderPieChart(pie_data);
         })
-        .error((error) => {})
     ;
 });
+function getColumnData() {
+    var column_data = [];
+    exchanges.forEach((ex, index) => {
+        if (!column_data.find(data => data.name == ex.loai_tien)) {
+            column_data.push({ name: ex.loai_tien, points: [] });
+        }
+    })
+    exchanges.forEach((ex, index) => {
+        column_data.forEach(data => {
+            if (data.name = ex.loai_tien) {
+                console.log(data.name, ex.loai_tien);
+            }
+        });
+        // else {
+        //     column_data.push({ name: ex.loai_tien, points: [] });
+        // }
+    });
+    console.log(column_data);
+    column_data1 = [
+        {
+            name: 'USD',
+            points: [
+                { label: '26/10', y: 400 },
+                { label: '27/10', y: 500 },
+                { label: '28/10', y: 600 },
+            ]
+        },
+        {
+            name: 'AUD',
+            points: [
+                { label: '26/10', y: 500 },
+                { label: '27/10', y: 600 },
+                { label: '28/10', y: 700 },
+            ]
+        },
+        {
+            name: 'USD',
+            points: [
+                { label: '26/10', y: 600 },
+                { label: '27/10', y: 700 },
+                { label: '28/10', y: 800 },
+            ]
+        }
+    ];
+    return column_data1;
+}
+function getPieData() {
+    var pie_data = [];
+    exchanges.forEach(ex => {
+        if (pie_data.find(data => data.name == ex.loai_tien)) {
+            pie_data.map((data, index) => {
+                if (data.name == ex.loai_tien) {
+                    data.y += Number(ex.so_tien_ban) + Number(ex.so_tien_mua);
+                }
+            });
+        } else {
+            pie_data.push({ name: ex.loai_tien, y: 0 });
+        }
+    });
+    return pie_data;
+}
+function getDateFormat(timestamp) {
+    var full_date = new Date(timestamp);
+    var date = ('0' + (full_date.getDate())).slice(-2);
+    var month = ('0' + (full_date.getMonth() + 1)).slice(-2);
+
+    return date;
+    // return `${date}/${month}`;
+}
 </script>
+<script src="assets/js/canvasjs.min.js"></script>
+<script src="assets/js/column-chart.js"></script>
+<script src="assets/js/pie-chart.js"></script>

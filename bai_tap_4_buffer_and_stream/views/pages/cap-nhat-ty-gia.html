@@ -1,6 +1,70 @@
 
 <div class="main-content">
-    <div class="jumbotron">
-        <h1>Cập nhật tỷ giá</h1>
-    </div>
+    <form class="form-horizontal">
+        <div class="form-group">
+            <legend>Cập nhật tỷ giá</legend>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-4">Chọn loại tiền:</div>
+            <div class="col-sm-8">
+                <select class="form-control" id="currency_select"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-4">Tên tiền:</div>
+            <div class="col-sm-8">
+                <input class="form-control" id="ten_tien"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-4">Đơn giá bán:</div>
+            <div class="col-sm-8">
+                <input class="form-control" id="don_gia_ban"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-4">Đơn giá mua:</div>
+            <div class="col-sm-8">
+                <input class="form-control" id="don_gia_mua"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-12">
+                <button type="button" class="btn btn-primary" id="submit_btn">Cập nhật</button>
+            </div>
+        </div>
+    </form>
 </div>
+
+<script>
+var currencies = [];
+var current_currency = {};
+$(() => {
+    $.get('http://localhost:8000/ty-gia')
+        .success((data) => {
+            currencies = JSON.parse(data);
+            var html = '';
+            currencies.forEach(currency => {
+                html += `<option value="${currency.loai_tien}">${currency.loai_tien}</option>`;
+            });
+            currency_select.innerHTML = html;
+            current_currency = currencies[0];
+            ten_tien.value = current_currency.ten_tien;
+            don_gia_ban.value = current_currency.don_gia_ban;
+            don_gia_mua.value = current_currency.don_gia_mua;
+        })
+    ;
+})
+currency_select.onchange = () => {
+    current_currency = currencies.find(currency => currency.loai_tien == currency_select.value);
+    ten_tien.value = current_currency.ten_tien;
+    don_gia_ban.value = current_currency.don_gia_ban;
+    don_gia_mua.value = current_currency.don_gia_mua;
+}
+submit_btn.onclick = () => {
+    $.post('http://localhost:8000/cap-nhat-ty-gia', current_currency);
+}
+$('input').keyup(function() {
+    current_currency[this.id] = this.value;
+});
+</script>

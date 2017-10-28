@@ -1,0 +1,47 @@
+
+<div class="main-content">
+    <form class="form-horizontal">
+        <div class="form-group">
+            <legend>Thêm tỷ giá</legend>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-4">Loại tiền:</div>
+            <div class="col-sm-8">
+                <input class="form-control" id="loai_tien"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-4">Tên tiền:</div>
+            <div class="col-sm-8">
+                <input class="form-control" id="ten_tien"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-4">Đơn giá bán:</div>
+            <div class="col-sm-8">
+                <input class="form-control" id="don_gia_ban"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-4">Đơn giá mua:</div>
+            <div class="col-sm-8">
+                <input class="form-control" id="don_gia_mua"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-12">
+                <button type="button" class="btn btn-success" id="submit_btn">Thêm</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+var currency = {};
+submit_btn.onclick = () => {
+    $.post('http://localhost:8000/them-ty-gia', currency);
+}
+$('input').keyup(function() {
+    currency[this.id] = this.value;
+});
+</script>

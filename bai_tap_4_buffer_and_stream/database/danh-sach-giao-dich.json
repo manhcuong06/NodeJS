@@ -1,0 +1,182 @@
+[
+    {
+        "stt": 1,
+        "loai_tien": "USD",
+        "so_tien_ban": "120",
+        "so_tien_mua": 0,
+        "don_gia": 22000,
+        "thanh_tien": 2640000,
+        "thoi_gian_giao_dich": 1509022687590,
+        "loai_giao_dich": "ban"
+    },
+    {
+        "stt": 2,
+        "loai_tien": "AUD",
+        "so_tien_ban": 0,
+        "so_tien_mua": "200",
+        "don_gia": 16800,
+        "thanh_tien": 3360000,
+        "thoi_gian_giao_dich": 1509022693586,
+        "loai_giao_dich": "mua"
+    },
+    {
+        "stt": 3,
+        "loai_tien": "USD",
+        "so_tien_ban": 0,
+        "so_tien_mua": "100",
+        "don_gia": 21500,
+        "thanh_tien": 2150000,
+        "thoi_gian_giao_dich": 1509022884845,
+        "loai_giao_dich": "mua"
+    },
+    {
+        "stt": 4,
+        "loai_tien": "USD",
+        "so_tien_ban": 0,
+        "so_tien_mua": "140",
+        "don_gia": 21500,
+        "thanh_tien": 3010000,
+        "thoi_gian_giao_dich": 1509059519219,
+        "loai_giao_dich": "mua"
+    },
+    {
+        "stt": 5,
+        "loai_tien": "AUD",
+        "so_tien_ban": "500",
+        "so_tien_mua": 0,
+        "don_gia": 17000,
+        "thanh_tien": 8500000,
+        "thoi_gian_giao_dich": 1509060302330,
+        "loai_giao_dich": "ban"
+    },
+    {
+        "stt": 6,
+        "loai_tien": "USD",
+        "so_tien_ban": 0,
+        "so_tien_mua": "350",
+        "don_gia": 21500,
+        "thanh_tien": 7525000,
+        "thoi_gian_giao_dich": 1509060308282,
+        "loai_giao_dich": "mua"
+    },
+    {
+        "stt": 7,
+        "loai_tien": "AUD",
+        "so_tien_ban": 0,
+        "so_tien_mua": "222",
+        "don_gia": 16800,
+        "thanh_tien": 3729600,
+        "thoi_gian_giao_dich": 1509061585848,
+        "loai_giao_dich": "mua"
+    },
+    {
+        "stt": 8,
+        "loai_tien": "AUD",
+        "so_tien_ban": 0,
+        "so_tien_mua": "123",
+        "don_gia": 16800,
+        "thanh_tien": 2066400,
+        "thoi_gian_giao_dich": 1509061688720,
+        "loai_giao_dich": "mua"
+    },
+    {
+        "stt": 9,
+        "loai_tien": "AUD",
+        "so_tien_ban": 0,
+        "so_tien_mua": "456",
+        "don_gia": 16800,
+        "thanh_tien": 7660800,
+        "thoi_gian_giao_dich": 1509062240012,
+        "loai_giao_dich": "mua"
+    },
+    {
+        "stt": 10,
+        "loai_tien": "EUR",
+        "so_tien_ban": "789",
+        "so_tien_mua": 0,
+        "don_gia": 22000,
+        "thanh_tien": 17358000,
+        "thoi_gian_giao_dich": 1509062245757,
+        "loai_giao_dich": "ban"
+    },
+    {
+        "stt": 11,
+        "loai_tien": "EUR",
+        "so_tien_ban": 0,
+        "so_tien_mua": "123",
+        "don_gia": 21500,
+        "thanh_tien": 2644500,
+        "thoi_gian_giao_dich": 1509062679127,
+        "loai_giao_dich": "mua"
+    },
+    {
+        "stt": 12,
+        "loai_tien": "AUD",
+        "so_tien_ban": "345",
+        "so_tien_mua": 0,
+        "don_gia": 17000,
+        "thanh_tien": 5865000,
+        "thoi_gian_giao_dich": 1509162684443,
+        "loai_giao_dich": "ban"
+    },
+    {
+        "stt": 13,
+        "loai_tien": "USD",
+        "so_tien_ban": "100",
+        "so_tien_mua": 0,
+        "don_gia": "22001",
+        "thanh_tien": 2200100,
+        "thoi_gian_giao_dich": 1509166351866,
+        "loai_giao_dich": "ban"
+    },
+    {
+        "stt": 14,
+        "loai_tien": "USD",
+        "so_tien_ban": 0,
+        "so_tien_mua": "200",
+        "don_gia": "21502",
+        "thanh_tien": 4300400,
+        "thoi_gian_giao_dich": 1509166358404,
+        "loai_giao_dich": "mua"
+    },
+    {
+        "stt": 15,
+        "loai_tien": "EUR",
+        "so_tien_ban": "1000",
+        "so_tien_mua": 0,
+        "don_gia": "26000",
+        "thanh_tien": 26000000,
+        "thoi_gian_giao_dich": 1509171319659,
+        "loai_giao_dich": "ban"
+    },
+    {
+        "stt": 16,
+        "loai_tien": "EUR",
+        "so_tien_ban": 0,
+        "so_tien_mua": "255",
+        "don_gia": "25800",
+        "thanh_tien": 6579000,
+        "thoi_gian_giao_dich": 1509171325641,
+        "loai_giao_dich": "mua"
+    },
+    {
+        "stt": 17,
+        "loai_tien": "EUR",
+        "so_tien_ban": 0,
+        "so_tien_mua": "345",
+        "don_gia": "25800",
+        "thanh_tien": 8901000,
+        "thoi_gian_giao_dich": 1509171328554,
+        "loai_giao_dich": "mua"
+    },
+    {
+        "stt": 18,
+        "loai_tien": "EUR",
+        "so_tien_ban": 0,
+        "so_tien_mua": "1000",
+        "don_gia": "25800",
+        "thanh_tien": 25800000,
+        "thoi_gian_giao_dich": 1509172581639,
+        "loai_giao_dich": "mua"
+    }
+]

@@ -1,6 +1,69 @@
 
 <div class="main-content">
-    <div class="jumbotron">
-        <h1>Bán ra</h1>
-    </div>
+    <form class="form-horizontal">
+        <div class="form-group">
+            <legend>Bán ra</legend>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-4">Chọn loại tiền:</div>
+            <div class="col-sm-8">
+                <select class="form-control" id="currency_select"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-4">Đơn giá bán:</div>
+            <div class="col-sm-8">
+                <input class="form-control" id="don_gia_ban" disabled/>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-4">Số tiền cần bán:</div>
+            <div class="col-sm-8">
+                <input class="form-control" id="so_tien_ban"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-4">Số tiền khách phải trả:</div>
+            <div class="col-sm-8">
+                <input class="form-control" id="total" disabled/>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-12">
+                <button type="button" class="btn btn-primary" id="submit_btn">Bán ra</button>
+            </div>
+        </div>
+    </form>
 </div>
+
+<script>
+var currencies = [];
+var current_currency = {};
+$(() => {
+    $.get('http://localhost:8000/ty-gia')
+        .success((data) => {
+            currencies = JSON.parse(data);
+            var html = '';
+            currencies.forEach(currency => {
+                html += `<option value="${currency.loai_tien}">${currency.ten_tien}</option>`;
+            });
+            currency_select.innerHTML = html;
+            don_gia_ban.value = `${currencies[0].don_gia_ban} VNĐ = 1 ${currencies[0].loai_tien}`;
+            current_currency = currencies[0];
+        })
+    ;
+})
+currency_select.onchange = () => {
+    current_currency = currencies.find(currency => currency.loai_tien == currency_select.value);
+    don_gia_ban.value = `${current_currency.don_gia_ban} VNĐ = 1 ${current_currency.loai_tien}`;
+}
+submit_btn.onclick = () => {
+    total.value = so_tien_ban.value * current_currency.don_gia_ban;
+    data_post = {
+        loai_tien: current_currency.loai_tien,
+        don_gia_ban: current_currency.don_gia_ban,
+        so_tien_ban: so_tien_ban.value
+    }
+    $.post('http://localhost:8000/ban-tien', data_post);
+}
+</script>

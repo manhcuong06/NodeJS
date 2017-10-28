@@ -1,5 +1,6 @@
 var http = require('http');
 var routing_module = require('./libraries/routing-module');
+var qs = require('querystring');
 
 var server = http.createServer((req, res) => {
     var body;
@@ -7,7 +8,14 @@ var server = http.createServer((req, res) => {
         body = data.toString();
     });
     req.on('end', () => {
-        routing_module.handleRequest(req, res);
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        if(req.method == "GET") {
+            routing_module.handleGetRequest(req, res);
+        }
+        else if(req.method == "POST") {
+            var data_post = qs.parse(body);
+            routing_module.handlePostRequest(req, res, data_post);
+        }
     });
 });
 
