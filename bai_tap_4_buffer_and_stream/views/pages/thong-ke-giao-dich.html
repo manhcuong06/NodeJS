@@ -48,61 +48,58 @@ $(document).ready(() => {
             renderColumnChart(column_data);
 
             var pie_data = getPieData();
-            // renderPieChart(pie_data);
+            renderPieChart(pie_data);
         })
     ;
 });
 function getColumnData() {
-    var column_data = [];
-    exchanges.forEach((ex, index) => {
-        if (!column_data.find(data => data.name == ex.loai_tien)) {
-            column_data.push({ name: ex.loai_tien, points: [] });
+    var currencies = [];
+    var exchange_dates = [];
+    exchanges.forEach(ex => {
+        if (!currencies.find(currency => currency == ex.loai_tien)) {
+            currencies.push(ex.loai_tien);
         }
-    })
-    exchanges.forEach((ex, index) => {
-        column_data.forEach(data => {
-            if (data.name = ex.loai_tien) {
-                console.log(data.name, ex.loai_tien);
+
+        var date_format = getDateFormat(ex.thoi_gian_giao_dich);
+        if (!exchange_dates.find(date => date == date_format)) {
+            exchange_dates.push(date_format);
+        }
+    });
+
+    var column_data = [];
+    currencies.forEach(currency => {
+        var points = [];
+        exchange_dates.forEach(date => {
+            if (!column_data.find(data => data.name == currency)) {
+                points.push({ label: date, y: 0 });
             }
         });
-        // else {
-        //     column_data.push({ name: ex.loai_tien, points: [] });
-        // }
+        column_data.push({ name: currency, points: points });
     });
-    console.log(column_data);
-    column_data1 = [
-        {
-            name: 'USD',
-            points: [
-                { label: '26/10', y: 400 },
-                { label: '27/10', y: 500 },
-                { label: '28/10', y: 600 },
-            ]
-        },
-        {
-            name: 'AUD',
-            points: [
-                { label: '26/10', y: 500 },
-                { label: '27/10', y: 600 },
-                { label: '28/10', y: 700 },
-            ]
-        },
-        {
-            name: 'USD',
-            points: [
-                { label: '26/10', y: 600 },
-                { label: '27/10', y: 700 },
-                { label: '28/10', y: 800 },
-            ]
-        }
-    ];
-    return column_data1;
+
+    exchanges.forEach(ex => {
+        var label = getDateFormat(ex.thoi_gian_giao_dich);
+        var amount = Number(ex.so_tien_ban) + Number(ex.so_tien_mua);
+        column_data.forEach(data => {
+            if (data.name == ex.loai_tien) {
+                var label = getDateFormat(ex.thoi_gian_giao_dich);
+                data.points.forEach(point => {
+                    if (point.label == label) {
+                        point.y += amount;
+                        return;
+                    }
+                });
+                return;
+            }
+        });
+    });
+    return column_data;
 }
 function getPieData() {
     var pie_data = [];
     exchanges.forEach(ex => {
         if (pie_data.find(data => data.name == ex.loai_tien)) {
-            pie_data.map((data, index) => {
+            pie_data.map(data => {
                 if (data.name == ex.loai_tien) {
                     data.y += Number(ex.so_tien_ban) + Number(ex.so_tien_mua);
                 }
@@ -114,12 +111,8 @@ function getPieData() {
     return pie_data;
 }
 function getDateFormat(timestamp) {
-    var full_date = new Date(timestamp);
-    var date = ('0' + (full_date.getDate())).slice(-2);
-    var month = ('0' + (full_date.getMonth() + 1)).slice(-2);
-
-    return date;
-    // return `${date}/${month}`;
+    var date = new Date(timestamp);
+    return `${date.getDate()}/${date.getMonth() + 1}`;
 }
 </script>
 <script src="assets/js/canvasjs.min.js"></script>
