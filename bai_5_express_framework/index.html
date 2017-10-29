@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <link rel="stylesheet" media="screen" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <input id="file" type="file" />
+    <button onclick="gui_form()">Gửi form</button>
+    <script>
+        function gui_form() {
+            var reader = new FileReader();
+            var data_hinh = "";
+            reader.onload = function (e) {
+                data_hinh = e.target.result;
+                var data_post = {"hinh": data_hinh};
+                $.post("http://localhost:8000", data_post)
+                    .success((data) => {
+                        console.log(data);
+                    })
+                ;
+            }
+            reader.readAsDataURL($('#file')[0].files[0]);
+        }
+    </script>
+</body>
+</html>
