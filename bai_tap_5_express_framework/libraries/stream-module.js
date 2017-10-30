@@ -13,15 +13,18 @@ const DATA_FOLDER = './database/';
 const JSON_EXT = '.json';
 
 module.exports = {
-    renderHTML: (res, file_name, current_user) => {
+    renderHTML: (res, file_name, current_user, error_message = null) => {
         var link = LOGIN_LINK;
         if (current_user) {
             link = LOGOUT_LINK
-                .replace('USER_ID', current_user.id)
-                .replace('FULLNAME', current_user.fullname)
+                .replace('CURRENT_USER_ID', current_user.id)
+                .replace('CURRENT_USER_FULLNAME', current_user.fullname)
             ;
         }
         var body = fs.readFileSync(VIEW_FOLDER + file_name + HTML_EXT).toString();
+        if (error_message !== null) {
+            body = body.replace('ERROR_MESSAGE', error_message);
+        }
         res.send(HEADER + link + MENU_END + body + FOOTER);
     },
     renderAsset: (res, file_name) => {

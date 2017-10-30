@@ -1,12 +1,6 @@
 <li>
-    <form><input type="hidden" id="user_name" value="USER_ID"></form>
-    <a href="#" id="logout_btn"><i class="fa fa-sign-out"></i> ĐĂNG XUẤT (FULLNAME)</a>
+    <form action="/dang-xuat" method="post">
+        <input type="hidden" name="user_id" value="CURRENT_USER_ID">
+        <button class="btn btn-link"><i class="fa fa-sign-out"></i> ĐĂNG XUẤT (CURRENT_USER_FULLNAME)</button>
+    </form>
 </li>
-<script>
-logout_btn.onclick = (e) => {
-    e.preventDefault();
-    $.post('http://localhost:8000/dang-xuat', user_name.value).done(() => {
-        window.location.replace('/');
-    });
-}
-</script>
