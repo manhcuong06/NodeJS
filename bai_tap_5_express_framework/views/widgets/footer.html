@@ -48,9 +48,8 @@ login_btn.onclick = () => {
         password: password.value,
     }
     $.post('http://localhost:8000/dang-nhap', data_post).done(res => {
-        var result = JSON.parse(res);
-        if (result.success) {
-            window.location.replace('http://localhost:8000');
+        if (res) {
+            window.location.replace('/');
         } else {
             alert('Tên đăng nhập hoặc mật khẩu không đúng.');
         }

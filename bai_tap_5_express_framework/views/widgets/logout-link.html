@@ -1,17 +1,12 @@
 <li>
     <form><input type="hidden" id="user_name" value="USER_ID"></form>
-    <a href="#" id="logout_btn">ĐĂNG XUẤT (FULLNAME)</a>
+    <a href="#" id="logout_btn"><i class="fa fa-sign-out"></i> ĐĂNG XUẤT (FULLNAME)</a>
 </li>
 <script>
 logout_btn.onclick = (e) => {
     e.preventDefault();
-    $.post('http://localhost:8000/dang-xuat', user_name.value).done(res => {
-        var result = JSON.parse(res);
-        if (result.success) {
-            window.location.replace('/');
-        } else {
-            alert('Lỗi đăng xuất.');
-        }
+    $.post('http://localhost:8000/dang-xuat', user_name.value).done(() => {
+        window.location.replace('/');
     });
 }
 </script>

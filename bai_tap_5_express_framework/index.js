@@ -42,12 +42,12 @@ app.post('/dang-nhap', (req, res) => {
         users.map(user => {
             if (user.username == data_post.username && user.password == data_post.password) {
                 user.logged_in = true;
+                stream_module.writeData('users', users);
                 current_user = user;
                 success = true;
             }
         });
-        stream_module.writeData('users', users);
-        res.send(JSON.stringify({success: success}));
+        res.send(success);
     });
 });
 app.post('/dang-xuat', (req, res) => {
@@ -60,11 +60,11 @@ app.post('/dang-xuat', (req, res) => {
         users.map(user => {
             if (user.id == id_post) {
                 user.logged_in = false;
+                stream_module.writeData('users', users);
                 current_user = null;
+                res.send(true);
             }
         });
-        stream_module.writeData('users', users);
-        res.send(JSON.stringify({success: true}));
     });
 });
 
