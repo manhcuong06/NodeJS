@@ -8,8 +8,9 @@ const stream_module = require('./libraries/stream-module');
 const app = express();
 const users = JSON.parse(stream_module.readData('users'));
 
-var current_user = null;
+var current_user;
 app.use(/^((?!\.).)*$/g, (req, res, next) => {
+    current_user = null;
     users.forEach(user => {
         if (user.logged_in) {
             current_user = user;
@@ -38,16 +39,18 @@ app.post('/dang-nhap', (req, res) => {
     });
     req.on('end', () => {
         var data_post = querystring.parse(body);
-        var success = false;
         users.map(user => {
             if (user.username == data_post.username && user.password == data_post.password) {
                 user.logged_in = true;
                 stream_module.writeData('users', users);
                 current_user = user;
-                success = true;
             }
         });
-        res.send(success);
+        if (current_user) {
+            res.redirect('/');
+        } else {
+            stream_module.renderHTML(res, '/error', current_user, 'Wrong username or password.');
+        }
     });
 });
 app.post('/dang-xuat', (req, res) => {
@@ -56,13 +59,13 @@ app.post('/dang-xuat', (req, res) => {
         body = data.toString();
     });
     req.on('end', () => {
-        var id_post = body;
+        var data_post = querystring.parse(body);
         users.map(user => {
-            if (user.id == id_post) {
+            if (user.id == data_post.user_id) {
                 user.logged_in = false;
                 stream_module.writeData('users', users);
                 current_user = null;
-                res.send(true);
+                res.redirect('/');
             }
         });
     });
@@ -73,8 +76,8 @@ app.get('/*.*', (req, res) => {
 });
 
 app.use((req, res) => {
-    res.send('404 NOT FOUND');
-})
+    stream_module.renderHTML(res, '/error', current_user, '404 Page not found.');
+});
 
 const server = http.createServer(app);
 server.listen(8000);
