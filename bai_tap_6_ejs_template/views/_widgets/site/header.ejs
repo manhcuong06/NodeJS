@@ -43,7 +43,17 @@
                     <li><a href="/site/news">News</a></li>
                     <li><a href="/site/gallery">Gallery</a></li>
                     <li><a href="/site/contact">Contact</a></li>
+                    <li>
+                        <% if (typeof current_user != 'undefined') { %>
+                        <a href="/site/logout">Logout(<%= current_user.username %>)</a>
+                        <% } else { %>
+                        <a href="#" data-toggle="modal" data-target="#myModal">Login</a>
+                        <% } %>
+                    </li>
+                    <% if (current_user) { %>
                     <li><a href="/admin">Admin</a></li>
+                    <% } %>
+                    <li><a href="#">Cart <span>(0)</span></a></li>
                 </ul>
             </div>
             <!-- script-for-menu -->
