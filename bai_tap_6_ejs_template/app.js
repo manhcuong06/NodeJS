@@ -27,15 +27,18 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(expressLayouts);
 
+// Set Layout
 app.use('/*', (req, res, next) => {
     app.set('layout', '_templates/admin');
     next();
 });
-app.use('/', index);
 app.use('/site', (req, res, next) => {
     app.set('layout', '_templates/gamebox');
     next();
 });
+
+// Routes
+app.use('/', index);
 app.use('/site', site);
 app.use('/admin', admin);
 
