@@ -1,17 +1,17 @@
 <%- contentFor('main_content') %>
-<% include _widgets/banner %>
+<% include ../_widgets/site/banner %>
 
-<link rel="stylesheet" href="css/lightbox.css">
+<link rel="stylesheet" href="/css/lightbox.css">
 <div class="gallery">
     <div class="container">
         <h2>Gallery</h2>
         <div class="gallery-bottom">
-            <% for (var i=0; i<4; i++) { %>
+            <% for (var i=0; i<3; i++) { %>
             <div class="gallery-1">
                 <% for (var j=1; j<5; j++) { %>
                 <div class="col-md-3 gallery-grid">
-                    <a class="example-image-link" href="images/gl<%= i*4 + j%>.jpg" data-lightbox="example-set" data-title="Click the right half of the image to move forward.">
-                        <img class="example-image" src="images/gl<%= i*4 + j%>.jpg" alt=""/>
+                    <a class="example-image-link" href="/images/gl<%= i*4 + j%>.jpg" data-lightbox="example-set" data-title="Click the right half of the image to move forward.">
+                        <img class="example-image" src="/images/gl<%= i*4 + j%>.jpg" alt=""/>
                     </a>
                 </div>
                 <% } %>
@@ -21,4 +21,4 @@
         </div>
     </div>
 </div>
-<script src="js/lightbox-plus-jquery.min.js"></script>
+<script src="/js/lightbox-plus-jquery.min.js"></script>

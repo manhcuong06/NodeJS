@@ -1,5 +1,5 @@
 <%- contentFor('main_content') %>
-<% include _widgets/banner %>
+<% include ../_widgets/site/banner %>
 
 <div class="blog">
     <div class="container">
@@ -47,7 +47,7 @@
                             </p>
                             <ul>
                                 <li>MARCH 21, 2013</li>
-                                <li><a href="single.html">Reply</a></li>
+                                <li><a href="/site/detail">Reply</a></li>
                             </ul>
                             <div class="media response-info">
                                 <div class="media-left response-text-left">
@@ -63,7 +63,7 @@
                                     </p>
                                     <ul>
                                         <li>MARCH 21, 2014</li>
-                                        <li><a href="single.html">Reply</a></li>
+                                        <li><a href="/site/detail">Reply</a></li>
                                     </ul>
                                 </div>
                                 <div class="clearfix"></div>
@@ -88,7 +88,7 @@
             <div class="category blog-ctgry">
                 <h4>Top Games</h4>
                 <div class="list-group">
-                    <a href="/detail" class="list-group-item">Cras justo odio</a>
+                    <a href="/site/detail" class="list-group-item">Cras justo odio</a>
                 </div>
             </div>
             <div class="recent-posts">
@@ -96,13 +96,13 @@
                 <div class="recent-posts-info">
                     <% for (var i=16; i<=17; i++) { %>
                     <div class="posts-left sngl-img">
-                        <a href="single.html"> <img src="/images/img<%= i %>.jpg" class="img-responsive zoom-img" alt=""/> </a>
+                        <a href="/site/detail"> <img src="/images/img<%= i %>.jpg" class="img-responsive zoom-img" alt=""/> </a>
                     </div>
                     <div class="posts-right">
                         <label>March 5, 2015</label>
-                        <h5><a href="single.html">Finibus Bonorum</a></h5>
+                        <h5><a href="/site/detail">Finibus Bonorum</a></h5>
                         <p>Lorem ipsum dolor sit amet, consectetur adipisicing incididunt.</p>
-                        <a href="single.html" class="btn btn-primary hvr-rectangle-in">Read More</a>
+                        <a href="/site/detail" class="btn btn-primary hvr-rectangle-in">Read More</a>
                     </div>
                     <div class="clearfix"></div>
                     <% } %>
