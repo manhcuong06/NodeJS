@@ -6,34 +6,16 @@
         </div>
         <div class="top-game-grids">
             <ul id="flexiselDemo1">
+                <% data.games.forEach(game => { %>
                 <li>
                     <div class="game-grid">
-                        <h4>Action Games</h4>
-                        <p>Nulla elementum nunc tempus.</p>
-                        <img src="/images/t1.jpg" class="img-responsive" alt=""/>
+                        <h4><%= game.name %></h4>
+                        <p><%= game.description %></p>
+                        <img src="/images/<%= game.image %>" class="img-responsive" alt=""/>
                     </div>
+                    <button class="btn btn-primary btn-block" onclick="updateCart(<%= game.id %>)">Buy (<%= game.price %>$)</button>
                 </li>
-                <li>
-                    <div class="game-grid">
-                        <h4>Racing Games</h4>
-                        <p>Nulla elementum nunc tempus.</p>
-                        <img src="/images/t3.jpg" class="img-responsive" alt=""/>
-                    </div>
-                </li>
-                <li>
-                    <div class="game-grid">
-                        <h4>3D Games</h4>
-                        <p>Nulla elementum nunc tempus.</p>
-                        <img src="/images/t4.jpg" class="img-responsive" alt=""/>
-                    </div>
-                </li>
-                <li>
-                    <div class="game-grid">
-                        <h4>Arcade Games</h4>
-                        <p>Nulla elementum nunc tempus.</p>
-                        <img src="/images/t2.jpg" class="img-responsive" alt=""/>
-                    </div>
-                </li>
+                <% }); %>
             </ul>
         </div>
     </div>
@@ -64,5 +46,41 @@ $(window).load(function() {
         }
     });
 });
+function updateCart(id, quantity = 1) {
+    var data = {
+        id: id,
+        quantity: quantity
+    }
+    $.post('/site/update-cart', data)
+        .success(cart => {
+            var games_in_cart_html = '';
+            var cart_price = 0;
+            cart.forEach((game, i) => {
+                games_in_cart_html +=
+                    `<tr>
+                        <td>${i+1}</td>
+                        <td>${game.name}</td>
+                        <td>${game.description}</td>
+                        <td>${game.price}</td>
+                        <td class="actions">
+                            <button onclick="updateCart(${game.id}, -1)"><span class="glyphicon glyphicon-minus"></span></button>
+                            <input id="quantity_${game.id}" class="quantity-input" value="${game.quantity}" disabled>
+                            <button onclick="updateCart(${game.id}, 1)"><span class="glyphicon glyphicon-plus"></span></button>
+                        </td>
+                    </tr>`
+                ;
+                cart_price += game.price;
+            });
+            games_in_cart_html +=
+                `<tr>
+                    <td colspan="3" class="center">Total</td>
+                    <td colspan="2">${cart_price}</td>
+                </tr>`
+            ;
+            cart_quantity.innerHTML = Number(cart_quantity.innerHTML) + quantity;
+            games_in_cart.innerHTML = games_in_cart_html;
+        });
+    ;
+}
 </script>
 <script src="/js/jquery.flexisel.js"></script>

@@ -34,12 +34,13 @@ app.use(session({
     activeDuration: 5 * 60 * 1000,
 }));
 app.use((req, res, next) => {
+    res.locals.cart = req.session.cart;
     res.locals.current_user = req.session.current_user;
     next();
 })
 
 // Set Layout
-app.use('/*', (req, res, next) => {
+app.use('/admin', (req, res, next) => {
     app.set('layout', '_templates/admin');
     next();
 });
