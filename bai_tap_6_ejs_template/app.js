@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var expressLayouts = require('express-ejs-layouts');
+var session = require('client-sessions');
 
 var index = require('./routes/index');
 var site = require('./routes/site');
@@ -26,6 +27,16 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(expressLayouts);
+app.use(session({
+    cookieName: 'session',
+    secret: 'secret',
+    duration: 30 * 60 * 1000,
+    activeDuration: 5 * 60 * 1000,
+}));
+app.use((req, res, next) => {
+    res.locals.current_user = req.session.current_user;
+    next();
+})
 
 // Set Layout
 app.use('/*', (req, res, next) => {
@@ -43,14 +54,14 @@ app.use('/site', site);
 app.use('/admin', admin);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+/*app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
-});
+});*/
 
 // error handler
-app.use(function(err, req, res, next) {
+/*app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -58,6 +69,6 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
-});
+});*/
 
 module.exports = app;
