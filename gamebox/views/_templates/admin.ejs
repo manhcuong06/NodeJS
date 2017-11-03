@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Head -->
+<% include ../_widgets/admin/head %>
+
+<body class="nav-md">
+    <div class="container body">
+        <div class="main_container">
+        <!-- Left Navigation -->
+        <% include ../_widgets/admin/left_navigation %>
+
+        <!-- Top Navigation -->
+        <% include ../_widgets/admin/top_navigation %>
+
+        <div class="right_col" role="main">
+            <div>
+                <!-- Page Title -->
+                <% include ../_widgets/admin/page_title %>
+
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="x_panel" style="height:600px;">
+                            <div class="x_title">
+                                <h2>Page title</h2>
+                                <div class="clearfix"></div>
+                            </div>
+                            <!-- Main Content -->
+                            <%- defineContent('main_content') %>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Footer -->
+            <% include ../_widgets/admin/footer %>
+
+            </div>
+        </div>
+    </div>
+    <!-- Notification -->
+    <% include ../_widgets/admin/notification %>
+
+</body>
+</html>

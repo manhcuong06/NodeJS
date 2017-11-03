@@ -1,0 +1,47 @@
+<div class="modal fade in" id="cart-modal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h4><span class="glyphicon glyphicon-shopping-cart"></span> Cart</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Price</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="games_in_cart">
+                        <% if (cart) {
+                            cart.forEach((game, i) => { %>
+                        <tr>
+                            <td><%= i+1 %></td>
+                            <td><%= game.name %></td>
+                            <td><%= game.description %></td>
+                            <td><%= game.price %></td>
+                            <td class="actions">
+                                <button onclick="updateCart(<%= game.id %>, -1)"><span class="glyphicon glyphicon-minus"></span></button>
+                                <input id="quantity_<%= game.id %>" class="quantity-input" value="<%= game.quantity %>" disabled>
+                                <button onclick="updateCart(<%= game.id %>, 1)"><span class="glyphicon glyphicon-plus"></span></button>
+                            </td>
+                        </tr>
+                        <% }); } %>
+                        <tr>
+                            <td colspan="3" class="center">Total</td>
+                            <td colspan="2"><%= data.cart_price %></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Close</button>
+                <a href="#" class="btn btn-success">Checkout <span class="glyphicon glyphicon-ok"></span></a>
+            </div>
+        </div>
+    </div>
+</div>
