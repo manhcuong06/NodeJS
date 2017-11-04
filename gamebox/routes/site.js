@@ -1,45 +1,29 @@
 var express = require('express');
 var router = express.Router();
 var google_module = require('../libraries/google-module');
+var mongodb = require('mongodb');
+var MongoClient = mongodb.MongoClient();
+var db;
 
-const games = [
-    {
-        id: 1,
-        name: 'Action game',
-        description: 'This is action game',
-        image: 't1.jpg',
-        price: 200,
-        quantity: 1,
-    },
-    {
-        id: 2,
-        name: '3D game',
-        description: 'This is 3D game',
-        image: 't2.jpg',
-        price: 400,
-        quantity: 1,
-    },
-    {
-        id: 3,
-        name: 'Arcade game',
-        description: 'This is arcade game',
-        image: 't3.jpg',
-        price: 300,
-        quantity: 1,
-    },
-    {
-        id: 4,
-        name: 'Flash game',
-        description: 'This is flash game',
-        image: 't4.jpg',
-        price: 100,
-        quantity: 1,
-    },
-];
+MongoClient.connect('mongodb://localhost:27017/gamebox', (err, database) => {
+    if (err) {
+        console.log(err);
+    } else {
+        db = database;
+    }
+});
 
 router.get('/', (req, res) => {
-    req.data.games = games;
-    renderHTML(req, res);
+    db.collection('product', (err, collection) => {
+        if (err) {
+            console.log(err);
+        } else {
+            collection.find({}).toArray((err, products) => {
+                req.data.products = products;
+                renderHTML(req, res);
+            });
+        }
+    });
 });
 
 router.get('/about', (req, res) => {
@@ -50,8 +34,18 @@ router.get('/contact', (req, res) => {
     renderHTML(req, res);
 });
 
-router.get('/detail', (req, res) => {
-    renderHTML(req, res);
+router.get('/detail/:id', (req, res) => {
+    db.collection('product', (err, collection) => {
+        if (err) {
+            console.log(err);
+        } else {
+            collection.findOne({_id: ObjectId(req.param.id)}, (err, product) => {
+                console.log();
+                req.data.products = products;
+                res.render('site/detail', { data: req.data });
+            });
+        }
+    });
 });
 
 router.get('/gallery', (req, res) => {

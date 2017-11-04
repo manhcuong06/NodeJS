@@ -6,14 +6,16 @@
         </div>
         <div class="top-game-grids">
             <ul id="flexiselDemo1">
-                <% data.games.forEach(game => { %>
+                <% data.products.forEach(product => { %>
                 <li>
                     <div class="game-grid">
-                        <h4><%= game.name %></h4>
-                        <p><%= game.description %></p>
-                        <img src="/images/<%= game.image %>" class="img-responsive" alt=""/>
+                        <h4><%= product.name %></h4>
+                        <p><%= product.description %></p>
+                        <a href="/site/detail/<%= product._id %>">
+                            <img src="/images/<%= product.image %>" class="img-responsive" alt=""/>
+                        </a>
                     </div>
-                    <button class="btn btn-primary btn-block" onclick="updateCart(<%= game.id %>)">Buy (<%= game.price %>$)</button>
+                    <button class="btn btn-primary btn-block" onclick="updateCart(<%= product._id %>)">Buy (<%= product.price %>$)</button>
                 </li>
                 <% }); %>
             </ul>
