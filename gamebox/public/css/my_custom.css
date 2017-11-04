@@ -5,3 +5,10 @@
 .center {
     text-align: center;
 }
+.table-games th, .table-games td {
+    vertical-align: middle !important;
+    text-align: center;
+}
+.table-games img {
+    width: 50px;
+}

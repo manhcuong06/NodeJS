@@ -10,13 +10,13 @@ router.get('/', (req, res, next) => {
 });
 
 router.post('/logout', (req, res) => {
-    req.session.reset();
+    req.session.current_user = null;
     res.redirect('/site');
 });
 
 module.exports = router;
 
 function renderHTML(req, res) {
-    var view = req.url.replace('/', 'admin/');
+    var view = req.path.replace('/', 'admin/');
     res.render(view, { data: req.data });
 }

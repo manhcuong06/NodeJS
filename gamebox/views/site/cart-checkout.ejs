@@ -1,0 +1,45 @@
+<%- contentFor('main_content') %>
+<% include ../_widgets/site/banner %>
+
+<div class="contact">
+    <div class="container">
+        <div class="contact-head">
+            <h2>Cart Checkout</h2>
+            <form method="post">
+                <div class="clearfix"></div>
+                <table class="table table-bordered table-striped table-hover table-games">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Name</th>
+                            <th>Image</th>
+                            <th>Description</th>
+                            <th>Quantity</th>
+                            <th>Price ($)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (cart) {
+                            cart.forEach((game, i) => { %>
+                        <tr>
+                            <td><%= i+1 %></td>
+                            <td><%= game.name %></td>
+                            <td><img src="/images/<%= game.image %>"></td>
+                            <td><%= game.description %></td>
+                            <td><%= game.quantity %></td>
+                            <td><%= game.price %></td>
+                        </tr>
+                        <% }); } %>
+                        <tr>
+                            <td colspan="4" class="center">Total</td>
+                            <td colspan="2">
+                                <div class="col-sm-8"><%= data.cart_price %> $</div>
+                                <div class="col-sm-4"><input type="submit" value="Payment"></div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var google_module = require('../libraries/google-module');
 
 const games = [
     {
@@ -36,40 +37,45 @@ const games = [
     },
 ];
 
-router.get('/', (req, res, next) => {
+router.get('/', (req, res) => {
     req.data.games = games;
     renderHTML(req, res);
 });
 
-router.get('/about', (req, res, next) => {
+router.get('/about', (req, res) => {
     renderHTML(req, res);
 });
 
-router.get('/contact', (req, res, next) => {
+router.get('/contact', (req, res) => {
     renderHTML(req, res);
 });
 
-router.get('/detail', (req, res, next) => {
+router.get('/detail', (req, res) => {
     renderHTML(req, res);
 });
 
-router.get('/gallery', (req, res, next) => {
+router.get('/gallery', (req, res) => {
     renderHTML(req, res);
 });
 
-router.get('/news', (req, res, next) => {
+router.get('/news', (req, res) => {
     renderHTML(req, res);
 });
 
-router.get('/reviews', (req, res, next) => {
+router.get('/reviews', (req, res) => {
     renderHTML(req, res);
 });
 
-router.get('/upload', (req, res, next) => {
-    renderHTML(req, res);
+router.all('/cart-checkout', (req, res) => {
+    if (req.method == 'GET') {
+        renderHTML(req, res);
+    } else {
+        req.session.cart = null;
+        res.redirect('/site');
+    }
 });
 
-router.post('/update-cart', (req, res, next) => {
+router.post('/update-cart', (req, res) => {
     var cart = req.session.cart;
     var id = req.body.id;
     var model = games.find(item => item.id == id);
@@ -97,7 +103,7 @@ router.post('/update-cart', (req, res, next) => {
     res.send(cart);
 });
 
-router.post('/login', (req, res, next) => {
+router.post('/login', (req, res) => {
     if (req.body.username && req.body.password) {
         req.session.current_user = req.body;
         res.redirect('/site');
@@ -107,14 +113,21 @@ router.post('/login', (req, res, next) => {
 });
 
 router.get('/logout', (req, res) => {
-    // req.session.current_user = null;
-    req.session.reset();
+    req.session.current_user = null;
     res.redirect('/site');
+});
+
+router.get('/google-authentication', (req, res) => {
+    res.redirect(google_module.getAccessUrl());
+});
+
+router.get('/set-access-token', (req, res) => {
+    google_module.setAccessToken(req, res);
 });
 
 module.exports = router;
 
 function renderHTML(req, res) {
-    var view = req.url.replace('/', 'site/');
+    var view = req.path.replace('/', 'site/');
     res.render(view, { data: req.data });
 }

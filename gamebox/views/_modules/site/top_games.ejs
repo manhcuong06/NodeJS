@@ -46,41 +46,5 @@ $(window).load(function() {
         }
     });
 });
-function updateCart(id, quantity = 1) {
-    var data = {
-        id: id,
-        quantity: quantity
-    }
-    $.post('/site/update-cart', data)
-        .success(cart => {
-            var games_in_cart_html = '';
-            var cart_price = 0;
-            cart.forEach((game, i) => {
-                games_in_cart_html +=
-                    `<tr>
-                        <td>${i+1}</td>
-                        <td>${game.name}</td>
-                        <td>${game.description}</td>
-                        <td>${game.price}</td>
-                        <td class="actions">
-                            <button onclick="updateCart(${game.id}, -1)"><span class="glyphicon glyphicon-minus"></span></button>
-                            <input id="quantity_${game.id}" class="quantity-input" value="${game.quantity}" disabled>
-                            <button onclick="updateCart(${game.id}, 1)"><span class="glyphicon glyphicon-plus"></span></button>
-                        </td>
-                    </tr>`
-                ;
-                cart_price += game.price;
-            });
-            games_in_cart_html +=
-                `<tr>
-                    <td colspan="3" class="center">Total</td>
-                    <td colspan="2">${cart_price}</td>
-                </tr>`
-            ;
-            cart_quantity.innerHTML = Number(cart_quantity.innerHTML) + quantity;
-            games_in_cart.innerHTML = games_in_cart_html;
-        });
-    ;
-}
 </script>
 <script src="/js/jquery.flexisel.js"></script>

@@ -1,19 +1,20 @@
 <div class="modal fade in" id="cart-modal" role="dialog">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">×</button>
                 <h4><span class="glyphicon glyphicon-shopping-cart"></span> Cart</h4>
             </div>
             <div class="modal-body">
-                <table class="table table-bordered table-striped table-hover">
+                <table class="table table-bordered table-striped table-hover table-games">
                     <thead>
                         <tr>
                             <th>No</th>
                             <th>Name</th>
+                            <th>Image</th>
                             <th>Description</th>
-                            <th>Price</th>
-                            <th>Actions</th>
+                            <th>Quantity</th>
+                            <th>Price ($)</th>
                         </tr>
                     </thead>
                     <tbody id="games_in_cart">
@@ -22,26 +23,70 @@
                         <tr>
                             <td><%= i+1 %></td>
                             <td><%= game.name %></td>
+                            <td><img src="/images/<%= game.image %>"></td>
                             <td><%= game.description %></td>
-                            <td><%= game.price %></td>
                             <td class="actions">
                                 <button onclick="updateCart(<%= game.id %>, -1)"><span class="glyphicon glyphicon-minus"></span></button>
                                 <input id="quantity_<%= game.id %>" class="quantity-input" value="<%= game.quantity %>" disabled>
-                                <button onclick="updateCart(<%= game.id %>, 1)"><span class="glyphicon glyphicon-plus"></span></button>
+                                <button onclick="updateCart(<%= game.id %>)"><span class="glyphicon glyphicon-plus"></span></button>
                             </td>
+                            <td><%= game.price %></td>
                         </tr>
                         <% }); } %>
                         <tr>
-                            <td colspan="3" class="center">Total</td>
-                            <td colspan="2"><%= data.cart_price %></td>
+                            <td colspan="4" class="center">Total</td>
+                            <td colspan="2"><%= data.cart_price %> $</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-danger pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Close</button>
-                <a href="#" class="btn btn-success">Checkout <span class="glyphicon glyphicon-ok"></span></a>
+                <a href="/site/cart-checkout" class="btn btn-success">Checkout <span class="glyphicon glyphicon-ok"></span></a>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+function updateCart(id, quantity = 1) {
+    var data = {
+        id: id,
+        quantity: quantity
+    }
+    $.post('/site/update-cart', data)
+        .success(cart => {
+            // Update Cart icon
+            cart_quantity.innerHTML = Number(cart_quantity.innerHTML) + quantity;
+
+            // Update Cart table
+            var games_in_cart_html = '';
+            var cart_price = 0;
+            cart.forEach((game, i) => {
+                games_in_cart_html +=
+                    `<tr>
+                        <td>${i+1}</td>
+                        <td>${game.name}</td>
+                        <td><img src="/images/${game.image}"></td>
+                        <td>${game.description}</td>
+                        <td class="actions">
+                            <button onclick="updateCart(${game.id}, -1)"><span class="glyphicon glyphicon-minus"></span></button>
+                            <input id="quantity_${game.id}" class="quantity-input" value="${game.quantity}" disabled>
+                            <button onclick="updateCart(${game.id}, 1)"><span class="glyphicon glyphicon-plus"></span></button>
+                        </td>
+                        <td>${game.price}</td>
+                    </tr>`
+                ;
+                cart_price += game.price;
+            });
+            games_in_cart_html +=
+                `<tr>
+                    <td colspan="4" class="center">Total</td>
+                    <td colspan="2">${cart_price} $</td>
+                </tr>`
+            ;
+            games_in_cart.innerHTML = games_in_cart_html;
+        });
+    ;
+}
+</script>

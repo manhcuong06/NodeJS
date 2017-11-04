@@ -1,3 +1,5 @@
+<link href="/css/bootstrap-social.css" rel="stylesheet" >
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 <div class="modal fade in" id="login-modal" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -20,8 +22,17 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-danger pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
-                <p>Not yet member? <a href="#">Signup</a></p>
+                <div class="col-sm-4">
+                    <a href="/site/google-authentication" class="btn btn-social-icon btn-google"><span class="fa fa-google"></span></a>
+                </div>
+                <p>Not yet member? <a href="#" id="signup_link" data-dismiss="modal">Signup</a></p>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+signup_link.onclick = () => {
+    $('#signup-modal').modal();
+}
+</script>
