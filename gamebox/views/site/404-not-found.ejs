@@ -1,0 +1,15 @@
+<%- contentFor('main_content') %>
+<% include ../_widgets/site/banner %>
+
+<link href="/css/404-not-found.css" rel='stylesheet'/>
+<section>
+    <div class="notfoundpanel">
+        <h1>404!</h1>
+        <h3>The page you are looking for has not been found!</h3>
+        <p>The page you are looking for might have been removed, had its name changed, or unavailable.<br>Maybe you could try a search:</p>
+        <form>
+            <input type="text" class="form-control" placeholder="Search for page">
+            <a href="/" class="btn btn-primary">Search</a>
+        </form>
+    </div>
+</section>

@@ -36,46 +36,37 @@ const games = [
     },
 ];
 
-router.use((req, res, next) => {
-    var cart = req.session.cart;
-    var cart_quantity = 0;
-    var cart_price = 0;
-    if (cart) {
-        cart.forEach(game => {
-            cart_quantity += game.quantity;
-            cart_price += game.price;
-        });
-    }
-    req.data = {
-        cart_quantity: cart_quantity,
-        cart_price: cart_price,
-    };
-    next();
-});
-
 router.get('/', (req, res, next) => {
     req.data.games = games;
-    next();
+    renderHTML(req, res);
 });
 
 router.get('/about', (req, res, next) => {
-    next();
+    renderHTML(req, res);
+});
+
+router.get('/contact', (req, res, next) => {
+    renderHTML(req, res);
 });
 
 router.get('/detail', (req, res, next) => {
-    next();
+    renderHTML(req, res);
 });
 
 router.get('/gallery', (req, res, next) => {
-    next();
+    renderHTML(req, res);
 });
 
 router.get('/news', (req, res, next) => {
-    next();
+    renderHTML(req, res);
 });
 
 router.get('/reviews', (req, res, next) => {
-    next();
+    renderHTML(req, res);
+});
+
+router.get('/upload', (req, res, next) => {
+    renderHTML(req, res);
 });
 
 router.post('/update-cart', (req, res, next) => {
@@ -121,9 +112,9 @@ router.get('/logout', (req, res) => {
     res.redirect('/site');
 });
 
-router.use((req, res, next) => {
+module.exports = router;
+
+function renderHTML(req, res) {
     var view = req.url.replace('/', 'site/');
     res.render(view, { data: req.data });
-});
-
-module.exports = router;
+}

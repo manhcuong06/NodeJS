@@ -34,7 +34,21 @@ app.use(session({
     activeDuration: 5 * 60 * 1000,
 }));
 app.use((req, res, next) => {
-    res.locals.cart = req.session.cart;
+    var cart = req.session.cart;
+    var cart_quantity = 0;
+    var cart_price = 0;
+    if (cart) {
+        cart.forEach(game => {
+            cart_quantity += game.quantity;
+            cart_price += game.price;
+        });
+    }
+    req.data = {
+        cart_quantity: cart_quantity,
+        cart_price: cart_price,
+    };
+
+    res.locals.cart = cart;
     res.locals.current_user = req.session.current_user;
     next();
 })
@@ -54,22 +68,30 @@ app.use('/', index);
 app.use('/site', site);
 app.use('/admin', admin);
 
+// catch 404
+app.use((req, res) => {
+    res.render('site/404-not-found', {
+        layout: '_templates/gamebox',
+        data: req.data,
+    });
+});
+
 // catch 404 and forward to error handler
 /*app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
 });*/
 
 // error handler
 /*app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+    // render the error page
+    res.status(err.status || 500);
+    res.render('error');
 });*/
 
 module.exports = app;
