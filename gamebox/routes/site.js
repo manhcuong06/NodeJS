@@ -9,7 +9,7 @@ var Gallery = require('../models/gallery');
 var Product = require('../models/product');
 
 router.get('/', (req, res, next) => {
-    Product.getArrayData('product', {}, top_games => {
+    Product.getArrayData('product', {category: 1}, top_games => {
         res.render('site/', {
             data: req.data,
             top_games: top_games,
