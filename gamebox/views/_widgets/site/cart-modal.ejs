@@ -26,9 +26,9 @@
                             <td><img src="/images/<%= game.image %>"></td>
                             <td><%= game.description %></td>
                             <td class="actions">
-                                <button onclick="updateCart(<%= game.id %>, -1)"><span class="glyphicon glyphicon-minus"></span></button>
+                                <button onclick="updateCart('<%= game.id %>', -1)"><span class="glyphicon glyphicon-minus"></span></button>
                                 <input id="quantity_<%= game.id %>" class="quantity-input" value="<%= game.quantity %>" disabled>
-                                <button onclick="updateCart(<%= game.id %>)"><span class="glyphicon glyphicon-plus"></span></button>
+                                <button onclick="updateCart('<%= game.id %>')"><span class="glyphicon glyphicon-plus"></span></button>
                             </td>
                             <td><%= game.price %></td>
                         </tr>

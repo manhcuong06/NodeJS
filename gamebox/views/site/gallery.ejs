@@ -6,17 +6,20 @@
     <div class="container">
         <h2>Gallery</h2>
         <div class="gallery-bottom">
-            <% for (var i=0; i<3; i++) { %>
-            <div class="gallery-1">
-                <% for (var j=1; j<5; j++) { %>
-                <div class="col-md-3 gallery-grid">
-                    <a class="example-image-link" href="/images/gl<%= i*4 + j%>.jpg" data-lightbox="example-set" data-title="Click the right half of the image to move forward.">
-                        <img class="example-image" src="/images/gl<%= i*4 + j%>.jpg" alt=""/>
-                    </a>
+            <% for (var i=0; i<gallery.length/4; i++) { %>
+                <div class="gallery-1">
+                    <% for (var j=0; j<4; j++) {
+                        var index = i*4 + j;
+                        if (index < gallery.length) { %>
+                            <div class="col-md-3 gallery-grid">
+                                <a class="example-image-link" href="/images/<%= gallery[index].image %>" data-lightbox="example-set" data-title="Click the right half of the image to move forward.">
+                                    <img class="example-image" src="/images/<%= gallery[index].image %>" alt=""/>
+                                </a>
+                            </div>
+                    <% }
+                    } %>
+                    <div class="clearfix"></div>
                 </div>
-                <% } %>
-                <div class="clearfix"></div>
-            </div>
             <% } %>
         </div>
     </div>
