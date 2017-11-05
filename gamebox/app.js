@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 
 var expressLayouts = require('express-ejs-layouts');
 var session = require('client-sessions');
+var grant = require('./libraries/grant_module');
 
 var index = require('./routes/index');
 var site = require('./routes/site');
@@ -33,14 +34,17 @@ app.use(session({
     duration: 30 * 60 * 1000,
     activeDuration: 5 * 60 * 1000,
 }));
+app.use(grant);
+
+// Set res.locals
 app.use((req, res, next) => {
     var cart = req.session.cart;
     var cart_quantity = 0;
     var cart_price = 0;
     if (cart) {
-        cart.forEach(game => {
-            cart_quantity += game.quantity;
-            cart_price += game.price;
+        cart.forEach(product => {
+            cart_quantity += product.quantity;
+            cart_price += product.price;
         });
     }
     req.data = {

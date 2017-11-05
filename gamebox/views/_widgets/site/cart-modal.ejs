@@ -6,7 +6,7 @@
                 <h4><span class="glyphicon glyphicon-shopping-cart"></span> Cart</h4>
             </div>
             <div class="modal-body">
-                <table class="table table-bordered table-striped table-hover table-games">
+                <table class="table table-bordered table-striped table-hover table-products cart-modal">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -17,20 +17,20 @@
                             <th>Price ($)</th>
                         </tr>
                     </thead>
-                    <tbody id="games_in_cart">
+                    <tbody id="products_in_cart">
                         <% if (cart) {
-                            cart.forEach((game, i) => { %>
+                            cart.forEach((product, i) => { %>
                         <tr>
                             <td><%= i+1 %></td>
-                            <td><%= game.name %></td>
-                            <td><img src="/images/<%= game.image %>"></td>
-                            <td><%= game.description %></td>
+                            <td><%= product.name %></td>
+                            <td><img src="/images/<%= product.image %>"></td>
+                            <td><%= product.description %></td>
                             <td class="actions">
-                                <button onclick="updateCart('<%= game.id %>', -1)"><span class="glyphicon glyphicon-minus"></span></button>
-                                <input id="quantity_<%= game.id %>" class="quantity-input" value="<%= game.quantity %>" disabled>
-                                <button onclick="updateCart('<%= game.id %>')"><span class="glyphicon glyphicon-plus"></span></button>
+                                <button onclick="updateCart('<%= product._id %>', -1)"><span class="glyphicon glyphicon-minus"></span></button>
+                                <input class="quantity-input" value="<%= product.quantity %>" disabled>
+                                <button onclick="updateCart('<%= product._id %>')"><span class="glyphicon glyphicon-plus"></span></button>
                             </td>
-                            <td><%= game.price %></td>
+                            <td><%= product.price %></td>
                         </tr>
                         <% }); } %>
                         <tr>
@@ -60,32 +60,32 @@ function updateCart(id, quantity = 1) {
             cart_quantity.innerHTML = Number(cart_quantity.innerHTML) + quantity;
 
             // Update Cart table
-            var games_in_cart_html = '';
+            var products_in_cart_html = '';
             var cart_price = 0;
-            cart.forEach((game, i) => {
-                games_in_cart_html +=
+            cart.forEach((product, i) => {
+                products_in_cart_html +=
                     `<tr>
                         <td>${i+1}</td>
-                        <td>${game.name}</td>
-                        <td><img src="/images/${game.image}"></td>
-                        <td>${game.description}</td>
+                        <td>${product.name}</td>
+                        <td><img src="/images/${product.image}"></td>
+                        <td>${product.description}</td>
                         <td class="actions">
-                            <button onclick="updateCart(${game.id}, -1)"><span class="glyphicon glyphicon-minus"></span></button>
-                            <input id="quantity_${game.id}" class="quantity-input" value="${game.quantity}" disabled>
-                            <button onclick="updateCart(${game.id}, 1)"><span class="glyphicon glyphicon-plus"></span></button>
+                            <button onclick="updateCart('${product._id}', -1)"><span class="glyphicon glyphicon-minus"></span></button>
+                            <input class="quantity-input" value="${product.quantity}" disabled>
+                            <button onclick="updateCart('${product._id}')"><span class="glyphicon glyphicon-plus"></span></button>
                         </td>
-                        <td>${game.price}</td>
+                        <td>${product.price}</td>
                     </tr>`
                 ;
-                cart_price += game.price;
+                cart_price += product.price;
             });
-            games_in_cart_html +=
+            products_in_cart_html +=
                 `<tr>
                     <td colspan="4" class="center">Total</td>
                     <td colspan="2">${cart_price} $</td>
                 </tr>`
             ;
-            games_in_cart.innerHTML = games_in_cart_html;
+            products_in_cart.innerHTML = products_in_cart_html;
         });
     ;
 }

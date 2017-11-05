@@ -5,10 +5,13 @@
 .center {
     text-align: center;
 }
-.table-games th, .table-games td {
+.table-products th, .table-products td {
     vertical-align: middle !important;
     text-align: center;
 }
-.table-games img {
+.table-products img {
+    width: 150px;
+}
+.table-products.cart-modal img {
     width: 50px;
 }

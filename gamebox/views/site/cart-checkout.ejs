@@ -7,7 +7,7 @@
             <h2>Cart Checkout</h2>
             <form method="post">
                 <div class="clearfix"></div>
-                <table class="table table-bordered table-striped table-hover table-games">
+                <table class="table table-bordered table-striped table-hover table-products">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -20,22 +20,20 @@
                     </thead>
                     <tbody>
                         <% if (cart) {
-                            cart.forEach((game, i) => { %>
+                            cart.forEach((product, i) => { %>
                         <tr>
                             <td><%= i+1 %></td>
-                            <td><%= game.name %></td>
-                            <td><img src="/images/<%= game.image %>"></td>
-                            <td><%= game.description %></td>
-                            <td><%= game.quantity %></td>
-                            <td><%= game.price %></td>
+                            <td><%= product.name %></td>
+                            <td><img src="/images/<%= product.image %>"></td>
+                            <td><%= product.description %></td>
+                            <td><%= product.quantity %></td>
+                            <td><%= product.price %></td>
                         </tr>
                         <% }); } %>
                         <tr>
                             <td colspan="4" class="center">Total</td>
-                            <td colspan="2">
-                                <div class="col-sm-8"><%= data.cart_price %> $</div>
-                                <div class="col-sm-4"><input type="submit" value="Payment"></div>
-                            </td>
+                            <td><input type="submit" value="Payment"></td>
+                            <td><%= data.cart_price %> $</td>
                         </tr>
                     </tbody>
                 </table>

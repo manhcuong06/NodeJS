@@ -13,7 +13,7 @@
     "ejs": "^2.5.7",
     "express": "~4.15.5",
     "express-ejs-layouts": "^2.3.1",
-    "googleapis": "^22.2.0",
+    "grant-express": "^3.8.0",
     "mongodb": "^2.2.33",
     "morgan": "~1.9.0",
     "serve-favicon": "~2.4.5"

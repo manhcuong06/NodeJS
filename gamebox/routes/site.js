@@ -1,9 +1,6 @@
 var express = require('express');
 var router = express.Router();
 
-// Google Authenticator
-var google_module = require('../libraries/google_module');
-
 // Models
 var Gallery = require('../models/gallery');
 var Product = require('../models/product');
@@ -57,7 +54,10 @@ router.get('/reviews', (req, res) => {
 
 router.all('/cart-checkout', (req, res) => {
     if (req.method == 'GET') {
-        renderHTML(req, res);
+        res.render('site/cart-checkout', {
+            data: req.data,
+            cart_disabled: true,
+        });
     } else {
         req.session.cart = null;
         res.redirect('/site');
@@ -67,30 +67,29 @@ router.all('/cart-checkout', (req, res) => {
 router.post('/update-cart', (req, res) => {
     var cart = req.session.cart;
     var id = req.body.id;
-    var model = games.find(item => item.id == id);
-
-    // if (!cart || cart.length == 0) {
-    //     cart = [model];
-    // } else {
-    //     var is_found = false;
-    //     var quantity = Number(req.body.quantity);
-    //     cart.forEach((game, i) => {
-    //         if (game.id == id) {
-    //             game.quantity += quantity;
-    //             game.price += model.price * quantity;
-    //             is_found = true;
-    //             if (game.quantity <= 0) {
-    //                 cart.splice(i, 1);
-    //             }
-    //         }
-    //     });
-    //     if (!is_found) {
-    //         cart.push(model);
-    //     }
-    // }
-    // req.session.cart = cart;
-    // res.send(cart);
-    res.send(true);
+    Product.getDataById('product', id, (err, model) => {
+        if (!cart || cart.length == 0) {
+            cart = [model];
+        } else {
+            var is_found = false;
+            var quantity = Number(req.body.quantity);
+            cart.forEach((product, i) => {
+                if (product._id == id) {
+                    product.quantity += quantity;
+                    product.price += model.price * quantity;
+                    is_found = true;
+                    if (product.quantity <= 0) {
+                        cart.splice(i, 1);
+                    }
+                }
+            });
+            if (!is_found) {
+                cart.push(model);
+            }
+        }
+        req.session.cart = cart;
+        res.send(cart);
+    });
 });
 
 router.post('/login', (req, res) => {
@@ -107,12 +106,14 @@ router.get('/logout', (req, res) => {
     res.redirect('/site');
 });
 
-router.get('/google-authentication', (req, res) => {
-    res.redirect(google_module.getAccessUrl());
-});
-
-router.get('/set-access-token', (req, res) => {
-    google_module.setAccessToken(req, res);
+router.get('/callback', (req, res) => {
+    var token = req.query.access_token;
+    if (token) {
+        req.session.current_user = {
+            username: 'Guest'
+        }
+    }
+    res.redirect('/site');
 });
 
 module.exports = router;
