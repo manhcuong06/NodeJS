@@ -5,7 +5,7 @@ var router = express.Router();
 var Gallery = require('../models/gallery');
 var Product = require('../models/product');
 
-router.get('/', (req, res, next) => {
+router.get('/', (req, res) => {
     Product.getArrayData('product', {category: 1}, top_games => {
         res.render('site/', {
             data: req.data,

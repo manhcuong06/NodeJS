@@ -12,6 +12,7 @@ var grant = require('./libraries/grant_module');
 var index = require('./routes/index');
 var site = require('./routes/site');
 var admin = require('./routes/admin');
+var user = require('./routes/user');
 
 var app = express();
 
@@ -62,6 +63,10 @@ app.use('/admin', (req, res, next) => {
     app.set('layout', '_templates/admin');
     next();
 });
+app.use('/user', (req, res, next) => {
+    app.set('layout', '_templates/admin');
+    next();
+});
 app.use('/site', (req, res, next) => {
     app.set('layout', '_templates/gamebox');
     next();
@@ -71,6 +76,7 @@ app.use('/site', (req, res, next) => {
 app.use('/', index);
 app.use('/site', site);
 app.use('/admin', admin);
+app.use('/user', user);
 
 // catch 404
 app.use((req, res) => {
