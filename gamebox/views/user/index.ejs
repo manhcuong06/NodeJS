@@ -1,3 +1,37 @@
 <%- contentFor('main_content') %>
 
-<h1>Page main content here</h1>
+<a href="/user/add" class="btn btn-success"><span class="fa fa-plus"></span> ADD</a>
+<table class="table table-striped responsive-utilities jambo_table bulk_action table-admin">
+    <thead>
+        <tr>
+            <th>No</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Birthday</th>
+            <th>Level</th>
+            <th>Image</th>
+            <th>Last login</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% users.forEach((user, i) => { %>
+        <tr>
+            <td><%= i + 1 %></td>
+            <td><a href="/user/view/<%= user._id %>"><%= user.name %></a></td>
+            <td><a href="mailto:<%= user.email %>"><%= user.email %></a></td>
+            <td><%= user.birthday %></td>
+            <td><%= level_labels[user.level] %></td>
+            <td><img src="/images/<%= user.image %>"></td>
+            <td><%= user.last_login %></td>
+            <form action="/user/delete" method="POST" onsubmit="return confirm('Are you sure you want to delete <%= user.name %>?')">
+                <td>
+                    <a href="/user/update/<%= user._id %>" class="btn btn-primary"><span class="fa fa-pencil"></span></a>
+                    <input type="hidden" name="id" value="<%= user._id %>">
+                    <button type="submit" class="btn btn-danger"><span class="fa fa-trash"></span></button>
+                </td>
+            </form>
+        </tr>
+        <% }); %>
+    </tbody>
+</table>

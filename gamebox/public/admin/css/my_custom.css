@@ -1,0 +1,10 @@
+.center {
+    text-align: center;
+}
+.table-admin th, .table-admin td {
+    vertical-align: middle !important;
+    text-align: center;
+}
+.table-admin img {
+    width: 50px;
+}

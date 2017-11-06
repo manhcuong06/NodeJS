@@ -75,6 +75,13 @@ app.use('/site', (req, res, next) => {
 // Routes
 app.use('/', index);
 app.use('/site', site);
+app.use((req, res, next) => {
+    if (req.session.current_user) {
+        next();
+    } else {
+        res.redirect('/');
+    }
+});
 app.use('/admin', admin);
 app.use('/user', user);
 

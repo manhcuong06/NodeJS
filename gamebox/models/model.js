@@ -6,7 +6,7 @@ const ID_PATTERN = /^[0-9a-fA-F]{24}$/;
 module.exports = class Model {
     constructor() { }
 
-    static getArrayData(table_name, conditions, callback) {
+    static getArrayData(table_name, conditions = {}, callback) {
         var collection = db.getCollection(table_name);
         collection.find(conditions).toArray((err, array_data) => {
             callback(array_data);
@@ -27,6 +27,13 @@ module.exports = class Model {
         else {
             callback('Id is not valid.');
         }
+    }
+
+    static deleteData(table_name, id, callback) {
+        var collection = db.getCollection(table_name);
+        collection.remove({_id: ObjectID(id)}, () => {
+            callback();
+        });
     }
 
     static isValid(id) {
