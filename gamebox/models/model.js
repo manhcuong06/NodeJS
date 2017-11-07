@@ -35,7 +35,7 @@ module.exports = class Model {
             if (err) {
                 callback(err);
             } else {
-                callback(null, result);
+                callback(null, result.insertedIds[0]);
             }
         });
     }
