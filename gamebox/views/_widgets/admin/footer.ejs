@@ -4,3 +4,20 @@
     </div>
     <div class="clearfix"></div>
 </footer>
+
+<script src="/admin/js/validator/validator.js"></script>
+<script>
+$('form')
+    .on('blur', 'input[required], select[required]', validator.checkField)
+    .on('change', 'select[required]', validator.checkField)
+    .on('keypress', 'input[required][pattern]', validator.keypress)
+;
+
+$('form').submit((e) => {
+    var submit = true;
+    if (!validator.checkAll($(e.target))) {
+        submit = false;
+    }
+    return submit;
+});
+</script>

@@ -12,4 +12,9 @@ router.post('/logout', (req, res) => {
     res.redirect('/');
 });
 
+// catch 404 page not found
+router.use((req, res) => {
+    res.render('admin/404-not-found', { layout: false });
+});
+
 module.exports = router;

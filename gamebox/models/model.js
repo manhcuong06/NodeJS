@@ -29,6 +29,33 @@ module.exports = class Model {
         }
     }
 
+    static insertData(table_name, data, callback) {
+        var collection = db.getCollection(table_name);
+        collection.insert(data, (err, result) => {
+            if (err) {
+                callback(err);
+            } else {
+                callback(null, result);
+            }
+        });
+    }
+
+    static updateData(table_name, id, data, callback) {
+        if (Model.isValid(id)) {
+            var collection = db.getCollection(table_name);
+            collection.update({_id: ObjectID(id)}, {$set: data}, (err, result) => {
+                if (err) {
+                    callback(err);
+                } else {
+                    callback(null, result);
+                }
+            });
+        }
+        else {
+            callback('Id is not valid.');
+        }
+    }
+
     static deleteData(table_name, id, callback) {
         var collection = db.getCollection(table_name);
         collection.remove({_id: ObjectID(id)}, () => {

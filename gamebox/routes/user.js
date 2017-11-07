@@ -1,6 +1,7 @@
 var express = require('express');
+var moment = require('moment');
 var bcrypt = require('../libraries/bcrypt_module');
-var contant = require('../libraries/constant_module');
+var constant = require('../libraries/constant_module');
 var router = express.Router();
 
 // Models
@@ -10,52 +11,65 @@ router.get('/', (req, res) => {
     User.getArrayData('user', null, users => {
         res.render('user/', {
             page_title: 'List of User',
+            level_labels: constant.getLevelLabels(),
             users: users,
-            level_labels: contant.getLevelLabels(),
         });
     });
 });
 
 router.get('/view/:id', (req, res, next) => {
     User.getDataById('user', req.params.id, (err, user) => {
-        if (err) {
+        if (!user) {
             next(); // 404 Page Not Found
-        } else {
-            res.render('user/view', {
-                page_title: user.name,
-                user: user
-            });
+            return;
         }
-    });
-});
-
-router.get('/view/:id', (req, res, next) => {
-    User.getDataById('user', req.params.id, (err, user) => {
-        if (err) {
-            next(); // 404 Page Not Found
-        } else {
-            res.render('user/view', {
-                page_title: user.name,
-                user: user
-            });
-        }
+        res.render('user/view', {
+            page_title: user.name,
+            user: user,
+        });
     });
 });
 
 router.all('/add', (req, res, next) => {
-    res.render('user/add', {
-        page_title: 'Add New User',
-    });
+    if (req.method == 'POST') {
+        var data = req.body;
+        User.insertData('user', data, (err, result) => {
+            if (err) {
+            } else {
+                // Post image
+            }
+            res.redirect('/user');
+        });
+    } else {
+        res.render('user/form', {
+            page_title: 'Add New User',
+            level_options: constant.getLevelOptions(),
+            user: {},
+        });
+    }
 });
 
 router.all('/update/:id', (req, res, next) => {
-    User.getDataById('user', req.params.id, (err, user) => {
-        if (err) {
+    var id = req.params.id;
+    User.getDataById('user', id, (err, user) => {
+        if (!user) {
             next(); // 404 Page Not Found
+            return;
+        }
+        if (req.method == 'POST') {
+            var data = req.body;
+            User.updateData('user', id, data, (err, result) => {
+                if (err) {
+                } else {
+                    // Post image
+                }
+                res.redirect('/user');
+            });
         } else {
-            res.render('user/update', {
+            res.render('user/form', {
                 page_title: 'Update User: ' + user.name,
-                user: user
+                level_options: constant.getLevelOptions(),
+                user: user,
             });
         }
     });
@@ -67,11 +81,20 @@ router.post('/delete', (req, res, next) => {
         if (err) {
             next(); // 404 Page Not Found
         } else {
-            User.deleteData('user', id, () => {
+            User.deleteData('user', id, (err, result) => {
+                if (err) {
+                } else {
+                    // Delete image
+                }
                 res.redirect('/user');
             })
         }
     });
+});
+
+// catch 404 page not found
+router.use((req, res) => {
+    res.render('admin/404-not-found', { layout: false });
 });
 
 module.exports = router;

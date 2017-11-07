@@ -8,3 +8,6 @@
 .table-admin img {
     width: 50px;
 }
+span.required {
+    color: #f00;
+}

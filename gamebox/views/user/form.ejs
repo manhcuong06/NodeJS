@@ -1,0 +1,83 @@
+<%- contentFor('main_content') %>
+
+<form method="POST" class="form-horizontal form-label-left" novalidate="">
+    <div class="item form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12">Email <span class="required">*</span></label>
+        <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+            <input type="email" class="form-control has-feedback-left" name="email" value="<%= user.email %>" placeholder="Email" required>
+            <span class="fa fa-envelope form-control-feedback left" aria-hidden="true"></span>
+        </div>
+    </div>
+    <div class="item form-group">
+        <label class="control-label col-md-3">Password
+            <% if (!user._id) { %>
+            <span class="required">*</span>
+            <% } %>
+        </label>
+        <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+            <input type="password" class="form-control has-feedback-left" name="password" placeholder="Password" <%= user._id ? '' : 'required' %>>
+            <span class="fa fa-lock form-control-feedback left" aria-hidden="true"></span>
+        </div>
+    </div>
+    <div class="item form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12">Repeat Password
+            <% if (!user._id) { %>
+            <span class="required">*</span>
+            <% } %>
+        </label>
+        <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+            <input type="password" class="form-control has-feedback-left" placeholder="Repeat Password" data-validate-linked="password" <%= user._id ? '' : 'required' %>>
+            <span class="fa fa-lock form-control-feedback left" aria-hidden="true"></span>
+        </div>
+    </div>
+    <div class="item form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12">Name <span class="required">*</span></label>
+        <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+            <input class="form-control has-feedback-left" name="name" value="<%= user.name %>" placeholder="Name" required>
+            <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+        </div>
+    </div>
+    <div class="item form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12">Level <span class="required">*</span></label>
+        <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+            <select class="form-control has-feedback-left" name="level" required>
+                <% level_options.forEach(opt => { %>
+                    <option value="<%= opt.value %>" <%= (user.level == opt.value) ? 'selected' : '' %>><%= opt.label %></option>
+                <% }) %>
+            </select>
+        </div>
+    </div>
+    <div class="item form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12">Phone</label>
+        <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+            <input class="form-control has-feedback-left" name="phone" value="<%= user.phone %>" placeholder="Phone">
+            <span class="fa fa-mobile form-control-feedback left" aria-hidden="true"></span>
+        </div>
+    </div>
+    <div class="item form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12">Birthday</label>
+        <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+            <input type="date" class="form-control has-feedback-left" name="birthday" value="<%= user.birthday %>" placeholder="Phone">
+            <span class="fa fa-calendar form-control-feedback left" aria-hidden="true"></span>
+        </div>
+    </div>
+    <div class="item form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12">Image</label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <input type="file" class="form-control has-feedback-left">
+            <span class="fa fa-file-image-o form-control-feedback left" aria-hidden="true"></span>
+        </div>
+    </div>
+    <div class="ln_solid"></div>
+    <div class="form-group">
+        <div class="col-md-6 col-md-offset-3">
+            <a href="/user" class="btn btn-default">
+                <span class="fa fa-chevron-left"></span> Back
+            </a>
+            <button class="btn btn-<%= user._id ? 'primary' : 'success' %>">
+                <span class="fa fa-<%= user._id ? 'pencil' : 'plus' %>"></span>
+                <%= user._id ? 'Update' : 'Add' %>
+            </button>
+        </div>
+    </div>
+</form>
