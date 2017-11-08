@@ -1,5 +1,4 @@
 var express = require('express');
-var moment = require('moment');
 var bcrypt = require('../libraries/bcrypt_module');
 var constant = require('../libraries/constant_module');
 var router = express.Router();
