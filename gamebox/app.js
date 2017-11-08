@@ -58,6 +58,8 @@ app.use((req, res, next) => {
 });
 app.use('/admin', (req, res, next) => {
     res.locals.current_admin = req.session.current_admin;
+    res.locals.message = req.session.message;
+    req.session.message = null;
     next();
 });
 

@@ -1,16 +1,27 @@
 var express = require('express');
+var constant = require('../libraries/constant_module');
 // var product = require('./product');
 var user = require('./user');
 
 var router = express.Router();
 
+// Models
+var User = require('../models/user');
+
 router.all('/login', (req, res) => {
     if (req.session.current_admin) {
         res.redirect('/admin');
     } else if (req.method == 'POST') {
-        /***** Implement later *****/
-        req.session.current_admin = { name: 'Admin' }
-        res.redirect('/admin');
+        var data_post = req.body;
+        User.findOne(data_post).then(user => {
+            if (!user) {
+                req.session.message = constant.getErrorMessage('Wrong email or password.');
+                res.redirect('/admin/login');
+            } else {
+                req.session.current_admin = { name: user.name };
+                res.redirect('/admin');
+            }
+        });
     } else {
         res.render('admin/login', { layout: false });
     }

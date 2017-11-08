@@ -7,12 +7,9 @@ var router = express.Router();
 var User = require('../models/user');
 
 router.get('/', (req, res) => {
-    var message = req.session.message;
-    req.session.message = null;
     User.find().then(users => {
         res.render('admin/user/', {
             page_title: 'List of User',
-            message: message,
             level_labels: constant.getLevelLabels(),
             users: users,
         });
@@ -28,6 +25,7 @@ router.get('/view/:id', (req, res, next) => {
         } else {
             res.render('admin/user/view', {
                 page_title: user.name,
+                level_labels: constant.getLevelLabels(),
                 user: user,
             });
         }
@@ -36,10 +34,10 @@ router.get('/view/:id', (req, res, next) => {
 
 router.all('/add', (req, res, next) => {
     if (req.method == 'POST') {
-        var data = req.body;
-        User.insert(data).then(result => {
+        var data_post = req.body;
+        User.insert(data_post).then(result => {
             if (!result) {
-                req.session.message = constant.getErrorMessage('Insert user failed.');
+                req.session.message = constant.getErrorMessage('This email has already been taken.');
                 res.redirect('/admin/user');
             } else {
                 // Post image
@@ -62,13 +60,13 @@ router.all('/update/:id', (req, res, next) => {
             req.session.message = constant.getErrorMessage();
             res.redirect('/admin/user');
         } else if (req.method == 'POST') {
-            var data = req.body;
-            User.update(condition, data).then(result => {
+            var data_post = req.body;
+            User.update(condition, data_post).then(result => {
                 if (!result) {
-                    req.session.message = constant.getErrorMessage('Update user failed.');
+                    req.session.message = constant.getErrorMessage('This email has already been taken.');
                 } else {
                     // Post image
-                    req.session.message = constant.getSuccessMessage(data.name + ' was updated successfully.');
+                    req.session.message = constant.getSuccessMessage(data_post.name + ' was updated successfully.');
                 }
                 res.redirect('/admin/user');
             });

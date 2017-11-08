@@ -1,19 +1,14 @@
 var bcrypt = require('bcrypt');
 
+const SALT_ROUNDS = 10;
+
 module.exports = {
-    cryptPassword: (password, callback) => {
-        bcrypt.genSalt(10, (err, salt) => {
-            if (err) {
-                return callback(err);
-            }
-            bcrypt.hash(password, salt, (err, hash) => {
-                return callback(err, hash);
-            });
-        });
+    encrypt: async (plain_text) => {
+        var hash = await bcrypt.hash(plain_text, SALT_ROUNDS);
+        return hash;
     },
-    comparePassword: (plainPass, hashword, callback) => {
-        bcrypt.compare(plainPass, hashword, (err, isPasswordMatch) => {
-            return err ? callback(err) : callback(null, isPasswordMatch);
-        });
+    compare: async (plain_text, hash_text) => {
+        var result = await bcrypt.compare(plain_text, hash_text);
+        return result;
     }
 }

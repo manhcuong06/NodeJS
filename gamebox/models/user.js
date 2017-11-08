@@ -1,4 +1,5 @@
 var Model = require('./_model');
+var bcrypt = require('../libraries/bcrypt_module');
 
 const COLLECTION_NAME = 'user';
 
@@ -10,14 +11,32 @@ module.exports = class User extends Model {
     }
 
     static async findOne(conditions) {
-        return await Model.findOne(COLLECTION_NAME, conditions);
+        var password = null;
+        if (conditions.password) {
+            password = conditions.password;
+            delete conditions.password;
+        }
+        var user = await Model.findOne(COLLECTION_NAME, conditions);
+        var compare_result = true;
+        if (password) {
+            compare_result = await bcrypt.compare(password, user.password);
+        }
+        return compare_result ? user : null;
     }
 
     static async insert(user) {
+        user.created_at = new Date().getTime();
+        user.password = await bcrypt.encrypt(user.password);
         return await Model.insert(COLLECTION_NAME, user);
     }
 
     static async update(conditions, user) {
+        user.updated_at = new Date().getTime();
+        if (user.password) {
+            user.password = await bcrypt.encrypt(user.password);
+        } else {
+            delete user.password;
+        }
         return await Model.update(COLLECTION_NAME, conditions, user);
     }
 

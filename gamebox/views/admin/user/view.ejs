@@ -1,1 +1,47 @@
 <%- contentFor('main_content') %>
+
+<form action="/admin/user/delete" method="POST" onsubmit="return confirm('Are you sure you want to delete <%= user.name %>?')">
+    <a href="/admin/user" class="btn btn-default"><span class="fa fa-chevron-left"></span> BACK</a>
+    <a href="/admin/user/update/<%= user._id %>" class="btn btn-primary"><span class="fa fa-pencil"></span> UPDATE</a>
+    <input type="hidden" name="id" value="<%= user._id %>">
+    <button type="submit" class="btn btn-danger"><span class="fa fa-trash"></span> DELETE</button>
+</form>
+
+<table class="table table-striped responsive-utilities jambo_table bulk_action">
+    <thead>
+        <tr>
+            <th>Property</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Email: </td>
+            <td><a href="mailto:<%= user.email %>"><%= user.email %></a></td>
+        </tr>
+        <tr>
+            <td>Name: </td>
+            <td><%= user.name %></td>
+        </tr>
+        <tr>
+            <td>Level: </td>
+            <td><%= level_labels[user.level] %></td>
+        </tr>
+        <tr>
+            <td>Phone: </td>
+            <td><%= user.phone %></td>
+        </tr>
+        <tr>
+            <td>Birthday: </td>
+            <td><%= user.birthday %></td>
+        </tr>
+        <tr>
+            <td>Last login: </td>
+            <td><%= user.lastlogin %></td>
+        </tr>
+        <tr>
+            <td>Image: </td>
+            <td><img src="/images/<%= user.image %>"></td>
+        </tr>
+    </tbody>
+</table>
