@@ -1,12 +1,10 @@
 var ObjectId = require('mongodb').ObjectID;
 var DbConnection = require('../libraries/mongodb_module');
 
-const ID_PATTERN = /^[0-9a-fA-F]{24}$/;
-
 module.exports = class Model {
     constructor() { }
 
-    static makeId(id) {
+    static getObjectId(id) {
         if (Model.isValid(id)) {
             return ObjectId(id);
         }
@@ -14,10 +12,11 @@ module.exports = class Model {
     }
 
     static isValid(id) {
+        const ID_PATTERN = /^[0-9a-fA-F]{24}$/;
         return ID_PATTERN.test(id);
     }
 
-    static async getArrayData(collection_name, conditions = {}) {
+    static async find(collection_name, conditions = {}) {
         try {
             var db = await DbConnection.Get();
             var result = await db.collection(collection_name).find(conditions).toArray();
@@ -27,7 +26,7 @@ module.exports = class Model {
         }
     }
 
-    static async getSingleData(collection_name, conditions) {
+    static async findOne(collection_name, conditions) {
         try {
             var db = await DbConnection.Get();
             var result = await db.collection(collection_name).findOne(conditions);
@@ -37,28 +36,27 @@ module.exports = class Model {
         }
     }
 
-    static async insertData(collection_name, data) {
+    static async insert(collection_name, data) {
         try {
             var db = await DbConnection.Get();
             var result = await db.collection(collection_name).insert(data);
-            var inserted_id = result.insertedIds[0];
-            return inserted_id;
-        } catch (e) {
-            console.log(e);
-        }
-    }
-
-    static async updateData(collection_name, conditions, data) {
-        try {
-            var db = await DbConnection.Get();
-            var result = await db.collection(collection_name).update(conditions, data);
             return result;
         } catch (e) {
             console.log(e);
         }
     }
 
-    static async deleteData(collection_name, conditions) {
+    static async update(collection_name, conditions, data) {
+        try {
+            var db = await DbConnection.Get();
+            var result = await db.collection(collection_name).update(conditions, {$set: data});
+            return result;
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    static async delete(collection_name, conditions) {
         try {
             var db = await DbConnection.Get();
             var result = await db.collection(collection_name).remove(conditions);

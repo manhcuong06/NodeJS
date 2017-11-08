@@ -10,7 +10,7 @@ var User = require('../models/user');
 router.get('/', (req, res) => {
     var message = req.session.message;
     req.session.message = null;
-    User.getArrayData('user').then(users => {
+    User.find().then(users => {
         res.render('admin/user/', {
             page_title: 'List of User',
             message: message,
@@ -21,8 +21,8 @@ router.get('/', (req, res) => {
 });
 
 router.get('/view/:id', (req, res, next) => {
-    var condition = { _id: User.makeId(req.params.id) };
-    User.getSingleData('user', condition).then(user => {
+    var condition = { _id: User.getObjectId(req.params.id) };
+    User.findOne(condition).then(user => {
         if (!user) {
             req.session.message = constant.getErrorMessage();
             res.redirect('/admin/user');
@@ -38,13 +38,13 @@ router.get('/view/:id', (req, res, next) => {
 router.all('/add', (req, res, next) => {
     if (req.method == 'POST') {
         var data = req.body;
-        User.insertData('user', data).then(inserted_id => {
-            if (!inserted_id) {
+        User.insert(data).then(result => {
+            if (!result) {
                 req.session.message = constant.getErrorMessage('Insert user failed.');
                 res.redirect('/admin/user');
             } else {
                 // Post image
-                res.redirect('/admin/user/view/' + inserted_id);
+                res.redirect('/admin/user/view/' + result.insertedIds[0]);
             }
         });
     } else {
@@ -57,14 +57,14 @@ router.all('/add', (req, res, next) => {
 });
 
 router.all('/update/:id', (req, res, next) => {
-    var condition = { _id: User.makeId(req.params.id) };
-    User.getSingleData('user', condition).then(user => {
+    var condition = { _id: User.getObjectId(req.params.id) };
+    User.findOne(condition).then(user => {
         if (!user) {
             req.session.message = constant.getErrorMessage();
             res.redirect('/admin/user');
         } else if (req.method == 'POST') {
             var data = req.body;
-            User.updateData('user', condition, data).then(result => {
+            User.update(condition, data).then(result => {
                 if (!result) {
                     req.session.message = constant.getErrorMessage('Update user failed.');
                 } else {
@@ -84,8 +84,8 @@ router.all('/update/:id', (req, res, next) => {
 });
 
 router.post('/delete', (req, res, next) => {
-    var condition = { _id: User.makeId(req.body.id) };
-    User.deleteData('user', condition).then(result => {
+    var condition = { _id: User.getObjectId(req.body.id) };
+    User.delete(condition).then(result => {
         if (!result) {
             req.session.message = constant.getErrorMessage('Delete user failed.');
         } else {

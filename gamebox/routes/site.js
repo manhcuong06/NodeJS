@@ -6,7 +6,7 @@ var Gallery = require('../models/gallery');
 var Product = require('../models/product');
 
 router.get('/', (req, res) => {
-    Product.getArrayData('product', {category: 1}, top_games => {
+    Product.find({category: 1}).then(top_games => {
         res.render('site/', {
             data: req.data,
             top_games: top_games,
@@ -23,8 +23,9 @@ router.get('/contact', (req, res) => {
 });
 
 router.get('/detail/:id', (req, res, next) => {
-    Product.getDataById('product', req.params.id, (err, product) => {
-        if (err) {
+    var condition = { _id: Product.getObjectId(req.params.id) };
+    Product.findOne(condition).then(product => {
+        if (!product) {
             next(); // 404 Page Not Found
         } else {
             res.render('site/detail', {
@@ -36,7 +37,7 @@ router.get('/detail/:id', (req, res, next) => {
 });
 
 router.get('/gallery', (req, res) => {
-    Product.getArrayData('gallery', {}, gallery => {
+    Gallery.find().then(gallery => {
         res.render('site/gallery', {
             data: req.data,
             gallery: gallery,
@@ -67,7 +68,8 @@ router.all('/cart-checkout', (req, res) => {
 router.post('/update-cart', (req, res) => {
     var cart = req.session.cart;
     var id = req.body.id;
-    Product.getDataById('product', id, (err, model) => {
+    var condition = { _id: Product.getObjectId(id) };
+    Product.findOne(condition, (err, model) => {
         if (!cart || cart.length == 0) {
             cart = [model];
         } else {
