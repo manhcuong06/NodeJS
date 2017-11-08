@@ -1,24 +1,35 @@
-var mongodb = require('mongodb');
-var MongoClient = mongodb.MongoClient();
+var MongoClient = require('mongodb').MongoClient;
 
-var db;
+var DbConnection = () => {
+    var db = null;
+    var instance = 0;
 
-MongoClient.connect('mongodb://localhost:27017/gamebox', (err, database) => {
-    if (err) {
-        console.log('Database connection fail.', err);
-    } else {
-        db = database;
+    DbConnect = async () => {
+        try {
+            let url = 'mongodb://localhost:27017/gamebox';
+            let _db = await MongoClient.connect(url);
+            return _db
+        } catch (e) {
+            return e;
+        }
     }
-});
 
-module.exports = {
-    getCollection: (table_name) => {
-        return db.collection(table_name, (err, collection) => {
-            if (err) {
-                console.log('Get collection error.', err, table_name);
-                return null;
+    Get = async () => {
+        try {
+            instance++;
+            if (db != null) {
+                return db;
+            } else {
+                console.log('Create new connection.');
+                db = await DbConnect();
+                return db;
             }
-            return collection;
-        });
+        } catch (e) {
+            return e;
+        }
     }
-};
+    return {
+        Get: Get
+    }
+}
+module.exports = DbConnection();

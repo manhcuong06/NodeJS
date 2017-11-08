@@ -8,9 +8,9 @@ var router = express.Router();
 var User = require('../models/user');
 
 router.get('/', (req, res) => {
-    User.getArrayData('user', null, users => {
-        var message = req.session.message;
-        req.session.message = null;
+    var message = req.session.message;
+    req.session.message = null;
+    User.getArrayData('user').then(users => {
         res.render('admin/user/', {
             page_title: 'List of User',
             message: message,
@@ -21,12 +21,10 @@ router.get('/', (req, res) => {
 });
 
 router.get('/view/:id', (req, res, next) => {
-    User.getDataById('user', req.params.id, (err, user) => {
+    var condition = { _id: User.makeId(req.params.id) };
+    User.getSingleData('user', condition).then(user => {
         if (!user) {
-            req.session.message = {
-                class: 'danger',
-                content: 'The user you are looking for does not exist.',
-            };
+            req.session.message = constant.getErrorMessage();
             res.redirect('/admin/user');
         } else {
             res.render('admin/user/view', {
@@ -40,11 +38,13 @@ router.get('/view/:id', (req, res, next) => {
 router.all('/add', (req, res, next) => {
     if (req.method == 'POST') {
         var data = req.body;
-        User.insertData('user', data, (err, new_id) => {
-            if (err) {
+        User.insertData('user', data).then(inserted_id => {
+            if (!inserted_id) {
+                req.session.message = constant.getErrorMessage('Insert user failed.');
+                res.redirect('/admin/user');
             } else {
                 // Post image
-                res.redirect('/admin/user/view/' + new_id);
+                res.redirect('/admin/user/view/' + inserted_id);
             }
         });
     } else {
@@ -57,22 +57,19 @@ router.all('/add', (req, res, next) => {
 });
 
 router.all('/update/:id', (req, res, next) => {
-    var id = req.params.id;
-    User.getDataById('user', id, (err, user) => {
+    var condition = { _id: User.makeId(req.params.id) };
+    User.getSingleData('user', condition).then(user => {
         if (!user) {
-            next(); // 404 Page Not Found
-            return;
-        }
-        if (req.method == 'POST') {
+            req.session.message = constant.getErrorMessage();
+            res.redirect('/admin/user');
+        } else if (req.method == 'POST') {
             var data = req.body;
-            User.updateData('user', id, data, (err, result) => {
-                if (err) {
+            User.updateData('user', condition, data).then(result => {
+                if (!result) {
+                    req.session.message = constant.getErrorMessage('Update user failed.');
                 } else {
                     // Post image
-                    req.session.message = {
-                        class: 'success',
-                        content: data.name + ' was updated successfully.',
-                    };
+                    req.session.message = constant.getSuccessMessage(data.name + ' was updated successfully.');
                 }
                 res.redirect('/admin/user');
             });
@@ -87,27 +84,14 @@ router.all('/update/:id', (req, res, next) => {
 });
 
 router.post('/delete', (req, res, next) => {
-    var id = req.body.id;
-    User.getDataById('user', id, (err, user) => {
-        if (err) {
-            next(); // 404 Page Not Found
-            return;
+    var condition = { _id: User.makeId(req.body.id) };
+    User.deleteData('user', condition).then(result => {
+        if (!result) {
+            req.session.message = constant.getErrorMessage('Delete user failed.');
+        } else {
+            req.session.message = constant.getSuccessMessage('Delete user successfully.');
         }
-        User.deleteData('user', id, (err, result) => {
-            if (err) {
-                req.session.message = {
-                    class: 'danger',
-                    content: 'An error occurs when deleting user.',
-                };
-            } else {
-                // Delete image
-                req.session.message = {
-                    class: 'success',
-                    content: user.name + ' was deleted successfully.',
-                };
-            }
-            res.redirect('/admin/user');
-        });
+        res.redirect('/admin/user');
     });
 });
 

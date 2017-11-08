@@ -21,5 +21,19 @@ module.exports = {
     },
     isCustomer: (level) => {
         return level == CUSTOMER;
-    }
+    },
+    getSuccessMessage: (message = '') => {
+        var message = {
+            class: 'success',
+            content: message,
+        };
+        return message;
+    },
+    getErrorMessage: (message = 'The user you are looking for does not exist.') => {
+        var message = {
+            class: 'danger',
+            content: message,
+        };
+        return message;
+    },
 }
