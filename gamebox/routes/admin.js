@@ -1,6 +1,6 @@
 var express = require('express');
 var constant = require('../libraries/constant_module');
-// var product = require('./product');
+var product = require('./product');
 var user = require('./user');
 
 var router = express.Router();
@@ -47,7 +47,7 @@ router.post('/logout', (req, res) => {
 });
 
 // Routes
-// router.use('/product', product);
+router.use('/product', product);
 router.use('/user', user);
 
 // catch 404 page not found
