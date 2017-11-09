@@ -1,0 +1,43 @@
+<%- contentFor('main_content') %>
+
+<form action="/admin/product/delete" method="POST" onsubmit="return confirm('Are you sure you want to delete <%= product.name %>?')">
+    <a href="/admin/product" class="btn btn-default"><span class="fa fa-chevron-left"></span> BACK</a>
+    <a href="/admin/product/update/<%= product._id %>" class="btn btn-primary"><span class="fa fa-pencil"></span> UPDATE</a>
+    <input type="hidden" name="id" value="<%= product._id %>">
+    <button type="submit" class="btn btn-danger"><span class="fa fa-trash"></span> DELETE</button>
+</form>
+
+<table class="table table-striped responsive-utilities jambo_table bulk_action">
+    <thead>
+        <tr>
+            <th>Property</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Name: </td>
+            <td><%= product.name %></td>
+        </tr>
+        <tr>
+            <td>Price: </td>
+            <td><%= product.price %></td>
+        </tr>
+        <tr>
+            <td>Type: </td>
+            <td><%= product.type %></td>
+        </tr>
+        <tr>
+            <td>Product Code: </td>
+            <td><%= product.product_code %></td>
+        </tr>
+        <tr>
+            <td>Pictrue: </td>
+            <td><img src="/admin/images/<%= product.picture %>"></td>
+        </tr>
+        <tr>
+            <td>Status: </td>
+            <td><%= status_labels[product.status] %></td>
+        </tr>
+    </tbody>
+</table>
