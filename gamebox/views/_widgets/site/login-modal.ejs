@@ -6,14 +6,18 @@
                 <h4><span class="glyphicon glyphicon-lock"></span> Login</h4>
             </div>
             <div class="modal-body">
-                <form role="form" action="/site/login" method="post">
+                <div id="login_error" class="alert alert-danger" style="display: none">
+                    <span class="glyphicon glyphicon-remove"></span>
+                    Wrong emal or password.
+                </div>
+                <form id="login_form" action="/site/login" method="post">
                     <div class="form-group">
-                        <label for="username"><span class="glyphicon glyphicon-user"></span> Username</label>
-                        <input type="text" class="form-control" name="username" placeholder="Username">
+                        <label for="email"><span class="glyphicon glyphicon-user"></span> Email</label>
+                        <input type="email" class="form-control" id="login_email" name="email" placeholder="Email" required>
                     </div>
                     <div class="form-group">
                         <label for="password"><span class="glyphicon glyphicon-eye-open"></span> Password</label>
-                        <input type="password" class="form-control" name="password" placeholder="Password">
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
                     </div>
                     <button type="submit" class="btn btn-success btn-block"><span class="glyphicon glyphicon-off"></span> Login</button>
                 </form>
@@ -33,6 +37,23 @@
 </div>
 
 <script>
+login_form.onsubmit = (e) => {
+    e.preventDefault();
+    $('#login_error').css({display: 'none'});
+    var data_post = {
+        email: login_email.value,
+        password: password.value,
+    };
+    $.post('/site/login-validate', data_post)
+        .success(result => {
+            if (result) {
+                e.target.submit();
+            } else {
+                $('#login_error').css({display: 'block'});
+            }
+        })
+    ;
+};
 signup_link.onclick = () => {
     $('#signup-modal').modal();
 }

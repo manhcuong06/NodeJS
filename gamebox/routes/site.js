@@ -1,9 +1,11 @@
 var express = require('express');
+var bcrypt = require('../libraries/bcrypt_module');
 var router = express.Router();
 
 // Models
 var Gallery = require('../models/gallery');
 var Product = require('../models/product');
+var User = require('../models/user');
 
 router.get('/', (req, res) => {
     Product.find({category: 1}).then(top_games => {
@@ -65,11 +67,49 @@ router.all('/cart-checkout', (req, res) => {
     }
 });
 
+router.post('/login', (req, res) => {
+    User.findOne(req.body).then(user => {
+        if (user) {
+            req.session.current_user = user;
+        }
+        res.redirect('/');
+    });
+});
+
+router.post('/signup', (req, res) => {
+    var data_post = req.body;
+    data_post.level = 4;
+    data_post.created_at = new Date().getTime();
+    User.insert(data_post).then(result => {
+        req.session.current_user = result.ops[0];
+        res.redirect('/');
+    });
+});
+
+router.get('/logout', (req, res) => {
+    req.session.current_user = null;
+    res.redirect('/site');
+});
+
+router.get('/callback', (req, res) => {
+    var token = req.query.access_token;
+    if (token) {
+        req.session.current_user = {
+            username: 'Guest'
+        }
+    }
+    res.redirect('/site');
+});
+
+
+// Ajax routes
+// Add and update product in cart
 router.post('/update-cart', (req, res) => {
     var cart = req.session.cart;
     var id = req.body.id;
     var condition = { _id: Product.getObjectId(id) };
-    Product.findOne(condition, (err, model) => {
+
+    Product.findOne(condition).then(model => {
         if (!cart || cart.length == 0) {
             cart = [model];
         } else {
@@ -94,29 +134,28 @@ router.post('/update-cart', (req, res) => {
     });
 });
 
-router.post('/login', (req, res) => {
-    if (req.body.username && req.body.password) {
-        req.session.current_user = req.body;
-        res.redirect('/site');
-    } else {
-        res.send('Wrong username or password');
-    }
-});
-
-router.get('/logout', (req, res) => {
-    req.session.current_user = null;
-    res.redirect('/site');
-});
-
-router.get('/callback', (req, res) => {
-    var token = req.query.access_token;
-    if (token) {
-        req.session.current_user = {
-            username: 'Guest'
+// Login validation - Check email and password
+router.post('/login-validate', (req, res) => {
+    User.findOne(req.body).then(user => {
+        if (user) {
+            res.send(true);
+        } else {
+            res.send(false);
         }
-    }
-    res.redirect('/site');
+    });
 });
+
+// Signup validation - Check email existed
+router.post('/signup-validate', (req, res) => {
+    User.findOne(req.body).then(user => {
+        if (!user) {
+            res.send(true);
+        } else {
+            res.send(false);
+        }
+    });
+});
+// END Ajax routes
 
 module.exports = router;
 

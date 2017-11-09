@@ -6,22 +6,30 @@
                 <h4><span class="glyphicon glyphicon-lock"></span> Signup</h4>
             </div>
             <div class="modal-body">
-                <form role="form" action="/site/login" method="post">
+                <div id="signup_error" class="alert alert-danger" style="display: none">
+                    <span class="glyphicon glyphicon-remove"></span>
+                    This emal has already been taken.
+                </div>
+                <form id="signup_form" action="/site/signup" method="post">
                     <div class="form-group">
                         <label for="email"><span class="glyphicon glyphicon-envelope"></span> Email</label>
-                        <input type="email" class="form-control" name="email" placeholder="Email">
+                        <input type="email" class="form-control" id="signup_email" name="email" placeholder="Email" required>
                     </div>
                     <div class="form-group">
                         <label for="password"><span class="glyphicon glyphicon-eye-open"></span> Password</label>
-                        <input type="password" class="form-control" name="password" placeholder="Password">
+                        <input type="password" class="form-control" name="password" placeholder="Password" required>
                     </div>
                     <div class="form-group">
                         <label for="name"><span class="glyphicon glyphicon-user"></span> Name</label>
-                        <input type="text" class="form-control" name="name" placeholder="Name">
+                        <input type="text" class="form-control" name="name" placeholder="Name" required>
                     </div>
                     <div class="form-group">
                         <label for="phone"><span class="glyphicon glyphicon-phone"></span> Phone</label>
                         <input type="text" class="form-control" name="phone" placeholder="Phone">
+                    </div>
+                    <div class="form-group">
+                        <label for="birthday"><span class="glyphicon glyphicon-calendar"></span> Birthday</label>
+                        <input type="date" class="form-control" name="birthday">
                     </div>
                     <button class="btn btn-success btn-block"><span class="glyphicon glyphicon-off"></span> Signup</button>
                 </form>
@@ -35,6 +43,22 @@
 </div>
 
 <script>
+signup_form.onsubmit = (e) => {
+    e.preventDefault();
+    $('#signup_error').css({display: 'none'});
+    var data_post = {
+        email: signup_email.value,
+    };
+    $.post('/site/signup-validate', data_post)
+        .success(result => {
+            if (result) {
+                e.target.submit();
+            } else {
+                $('#signup_error').css({display: 'block'});
+            }
+        })
+    ;
+};
 login_link.onclick = () => {
     $('#login-modal').modal();
 }
