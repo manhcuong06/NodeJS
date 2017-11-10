@@ -33,11 +33,20 @@ server.on('listening', onListening);
 var io = require('socket.io').listen(server);
 app.set('socketio', io);
 
+var current_coordinate = {
+    x: 120,
+    y: 150,
+};
 io.sockets.on('connection', (socket) => {
-  socket.on('test_socket_event', (data) => {
-    console.log(data);
-  });
-  socket.on('disconnect', () => {});
+    socket.on('start', () => {
+        socket.emit('move', current_coordinate);
+    });
+    socket.on('dragging', (coordinate) => {
+        current_coordinate = coordinate;
+        socket.emit('move', current_coordinate);
+        socket.broadcast.emit('move', current_coordinate);
+    });
+    socket.on('disconnect', () => {});
 });
 
 /**
