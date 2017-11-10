@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Real time demo</title>
+    <script src="/js/socket_io.js"></script>
+    <script>
+    window.onload = () => {
+        var socket = io.connect('http://localhost:3000');
+        var num_of_click = 0;
+
+        test_btn.onclick = (e) => {
+            socket.emit('test_socket_event', {
+                name: 'Ten nguoi dung',
+                email: 'ten_nguoi_dung@gmail.com',
+                num_of_click: num_of_click++,
+            });
+        };
+    };
+    </script>
+</head>
+<body>
+    <h1>Real time demo</h1>
+    <button id="test_btn">Test Real Time</button>
+</body>
+</html>
