@@ -1,0 +1,41 @@
+<style>
+#draggable {
+    background-color: #f00;
+    position: absolute;
+    top: -1000px;
+    left: -1000px;
+    width: 200px;
+    height: 200px;
+}
+</style>
+
+<h3>Open 2 browser. Drag and move the red square.</h3>
+<div id="draggable"></div>
+
+<script src="/js/socket_io.js"></script>
+<script>
+var socket = io.connect('http://localhost:3000');
+
+socket.emit('start');
+socket.on('move', (coordinate) => {
+    draggable.style.left = coordinate.x - 100;
+    draggable.style.top = coordinate.y - 100;
+});
+
+var dragging = false;
+draggable.onmousedown = (e) => {
+    dragging = true;
+};
+draggable.onmouseup = (e) => {
+    dragging = false;
+};
+draggable.onmousemove = (e) => {
+    if (dragging) {
+        var coordinate = {
+            x: e.clientX,
+            y: e.clientY,
+        }
+        socket.emit('dragging', coordinate);
+    }
+};
+</script>
