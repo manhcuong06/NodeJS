@@ -38,6 +38,13 @@ router.get('/view/:id', (req, res, next) => {
 router.all('/add', (req, res, next) => {
     if (req.method == 'POST') {
         var data_post = req.body;
+        if (data_post.image) {
+            var buffer = file.decodeBase64(data_post.image);
+            if (buffer) {
+                data_post.image = 'user_' + buffer.name;
+                file.upload(IMAGE_PATH + data_post.image, buffer.data);
+            }
+        }
         User.insert(data_post).then(result => {
             if (!result) {
                 req.session.message = constant.getErrorMessage('This email has already been taken.');
@@ -64,9 +71,13 @@ router.all('/update/:id', (req, res, next) => {
         } else if (req.method == 'POST') {
             var data_post = req.body;
             data_post.updated_at = new Date().getTime();
-            if (user.image && user.image != data_post.image) {
-                // Nếu đã tồn tại image cũ và post image mới => xóa image cũ
-                file.remove(IMAGE_PATH + user.image);
+            if (user.image != data_post.image) {
+                var buffer = file.decodeBase64(data_post.image);
+                if (buffer) {
+                    data_post.image = 'user_' + buffer.name;
+                    file.upload(IMAGE_PATH + data_post.image, buffer.data);
+                    file.remove(IMAGE_PATH + user.image);
+                }
             }
             User.update(condition, data_post).then(result => {
                 if (!result) {
@@ -101,17 +112,6 @@ router.post('/delete', (req, res, next) => {
         }
         res.redirect('/admin/user');
     });
-});
-
-// Post image ajax
-router.post('/upload-image', (req, res) => {
-    var buffer = file.decodeBase64(req.body.image);
-    var image = '';
-    if (buffer) {
-        image = 'user_' + buffer.name;
-        file.upload(IMAGE_PATH + image, buffer.data);
-    }
-    res.send(image);
 });
 
 // catch 404 page not found
