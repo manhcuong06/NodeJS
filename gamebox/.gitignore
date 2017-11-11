@@ -1,4 +1,9 @@
 # node_modules
 /node_modules
 
+# Image
+/public/images/product/*.png
+/public/images/user/*.png
+
+# package-lock.json
 /package-lock.json
