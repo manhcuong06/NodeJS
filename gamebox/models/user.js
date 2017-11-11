@@ -31,7 +31,6 @@ module.exports = class User extends Model {
     }
 
     static async update(conditions, user) {
-        user.updated_at = new Date().getTime();
         if (user.password) {
             user.password = await bcrypt.encrypt(user.password);
         } else {

@@ -1,6 +1,6 @@
 <%- contentFor('main_content') %>
 
-<form method="POST" class="form-horizontal form-label-left" novalidate="">
+<form id="user_form" method="POST" class="form-horizontal form-label-left" novalidate="">
     <div class="item form-group">
         <label class="control-label col-md-3 col-sm-3 col-xs-12">Email <span class="required">*</span></label>
         <div class="col-md-6 col-sm-6 col-xs-12 form-group">
@@ -62,7 +62,8 @@
     <div class="item form-group">
         <label class="control-label col-md-3 col-sm-3 col-xs-12">Image</label>
         <div class="col-md-6 col-sm-6 col-xs-12">
-            <input type="file" class="form-control has-feedback-left">
+            <input type="file" id="image_input" class="form-control has-feedback-left">
+            <input type="hidden" id="image_name" name="image" value="<%= user.image %>">
             <span class="fa fa-file-image-o form-control-feedback left" aria-hidden="true"></span>
         </div>
     </div>
@@ -79,3 +80,32 @@
         </div>
     </div>
 </form>
+
+<script>
+var reader = new FileReader();
+var image_data = '';
+reader.onload = (e) => {
+    image_data = e.target.result;
+}
+image_input.onchange = (e) => {
+    var files = e.target.files;
+    if (files.length > 0) {
+        reader.readAsDataURL(files[0]);
+    } else {
+        image_data = '';
+    }
+}
+user_form.onsubmit = (e) => {
+    if (!image_data) {
+        return true;
+    }
+    e.preventDefault();
+    var data_post = {'image': image_data};
+    $.post('/admin/user/upload-image', data_post)
+        .success(image => {
+            image_name.value = image;
+            user_form.submit();
+        })
+    ;
+}
+</script>

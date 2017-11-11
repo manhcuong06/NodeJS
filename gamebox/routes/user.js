@@ -1,7 +1,10 @@
 var express = require('express');
 var bcrypt = require('../libraries/bcrypt_module');
 var constant = require('../libraries/constant_module');
+var file = require('../libraries/file_module');
 var router = express.Router();
+
+const IMAGE_PATH = './public/images/user/';
 
 // Models
 var User = require('../models/user');
@@ -40,7 +43,6 @@ router.all('/add', (req, res, next) => {
                 req.session.message = constant.getErrorMessage('This email has already been taken.');
                 res.redirect('/admin/user');
             } else {
-                // Post image
                 res.redirect('/admin/user/view/' + result.insertedIds[0]);
             }
         });
@@ -61,11 +63,15 @@ router.all('/update/:id', (req, res, next) => {
             res.redirect('/admin/user');
         } else if (req.method == 'POST') {
             var data_post = req.body;
+            data_post.updated_at = new Date().getTime();
+            if (user.image && user.image != data_post.image) {
+                // Nếu đã tồn tại image cũ và post image mới => xóa image cũ
+                file.remove(IMAGE_PATH + user.image);
+            }
             User.update(condition, data_post).then(result => {
                 if (!result) {
                     req.session.message = constant.getErrorMessage('This email has already been taken.');
                 } else {
-                    // Post image
                     req.session.message = constant.getSuccessMessage(data_post.name + ' was updated successfully.');
                 }
                 res.redirect('/admin/user');
@@ -82,6 +88,11 @@ router.all('/update/:id', (req, res, next) => {
 
 router.post('/delete', (req, res, next) => {
     var condition = { _id: User.getObjectId(req.body.id) };
+    User.findOne(condition).then(user => {
+        if (user) {
+            file.remove(IMAGE_PATH + user.image);
+        }
+    });
     User.delete(condition).then(result => {
         if (!result) {
             req.session.message = constant.getErrorMessage('Delete user failed.');
@@ -90,6 +101,17 @@ router.post('/delete', (req, res, next) => {
         }
         res.redirect('/admin/user');
     });
+});
+
+// Post image ajax
+router.post('/upload-image', (req, res) => {
+    var buffer = file.decodeBase64(req.body.image);
+    var image = '';
+    if (buffer) {
+        image = 'user_' + buffer.name;
+        file.upload(IMAGE_PATH + image, buffer.data);
+    }
+    res.send(image);
 });
 
 // catch 404 page not found

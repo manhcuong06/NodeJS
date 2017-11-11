@@ -37,11 +37,11 @@
         </tr>
         <tr>
             <td>Last login: </td>
-            <td><%= user.lastlogin %></td>
+            <td><%= user.last_login ? new Date(Number(user.last_login)).toLocaleString() : '' %></td>
         </tr>
         <tr>
             <td>Image: </td>
-            <td><img src="/images/<%= user.image %>"></td>
+            <td><img src="/images/user/<%= user.image %>" width="150"></td>
         </tr>
     </tbody>
 </table>

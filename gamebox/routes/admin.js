@@ -18,8 +18,10 @@ router.all('/login', (req, res) => {
                 req.session.message = constant.getErrorMessage('Wrong email or password.');
                 res.redirect('/admin/login');
             } else {
-                req.session.current_admin = { name: user.name };
-                res.redirect('/admin');
+                User.update(user, { last_login: new Date().getTime() }).then(result => {
+                    req.session.current_admin = { name: user.name };
+                    res.redirect('/admin');
+                });
             }
         });
     } else {
