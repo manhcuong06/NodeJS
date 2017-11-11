@@ -51,7 +51,7 @@
                     <li><a href="/site/contact">Contact</a></li>
                     <li>
                         <% if (current_user) { %>
-                            <a href="/site/logout">Logout(<%= current_user.name %>)</a>
+                            <a href="/site/logout">Logout <%= current_user.name ? '(' + current_user.name + ')' : '' %></a>
                         <% } else { %>
                             <a href="#" data-toggle="modal" data-target="#login-modal">Login</a>
                         <% } %>

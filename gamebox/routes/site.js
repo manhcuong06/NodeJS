@@ -70,9 +70,13 @@ router.all('/cart-checkout', (req, res) => {
 router.post('/login', (req, res) => {
     User.findOne(req.body).then(user => {
         if (user) {
-            req.session.current_user = user;
+            User.update(user, { last_login: new Date().getTime() }).then(result => {
+                req.session.current_user = { name: user.name };
+                res.redirect('/');
+            });
+        } else {
+            res.redirect('/');
         }
-        res.redirect('/');
     });
 });
 

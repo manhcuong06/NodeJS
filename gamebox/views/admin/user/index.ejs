@@ -29,8 +29,8 @@
             <td><a href="mailto:<%= user.email %>"><%= user.email %></a></td>
             <td><%= user.birthday %></td>
             <td><%= level_labels[user.level] %></td>
-            <td><img src="/images/<%= user.image %>"></td>
-            <td><%= user.last_login %></td>
+            <td><img src="/images/user/<%= user.image %>"></td>
+            <td><%= user.last_login ? new Date(Number(user.last_login)).toLocaleString() : '' %></script></td>
             <form action="/admin/user/delete" method="POST" onsubmit="return confirm('Are you sure you want to delete <%= user.name %>?')">
                 <td>
                     <a href="/admin/user/update/<%= user._id %>" class="btn btn-primary"><span class="fa fa-pencil"></span></a>
