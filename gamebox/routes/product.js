@@ -5,7 +5,7 @@ var _status = require('../libraries/constant_status');
 var router = express.Router();
 
 // Models
-var Product = require('../models/product_s');
+var Product = require('../models/product');
 
 router.get('/', (req, res) => {
     Product.find().then(products => {
@@ -54,6 +54,7 @@ router.all('/update/:id', (req, res, next) => {
     Product.findOne(condition).then(product => {
         if (req.method == 'POST') {
             var data_post = req.body;
+            console.log(data_post);
             Product.update(condition, data_post).then(result => {
                 if (!result) {
                     req.session.message = _status.getErrorMessage('The product is already in the data.');
@@ -64,6 +65,7 @@ router.all('/update/:id', (req, res, next) => {
                 res.redirect('/admin/product');
             });
         } else {
+            console.log(_status.getStatusOptions());
             res.render('admin/product/form', {
                 page_title: 'Update Product: ' + product.name,
                 product: product,

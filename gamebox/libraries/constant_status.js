@@ -4,7 +4,7 @@ const SOLD_OUT = 2;
 const STATUS_VALUES = [0, 1, 2];
 const STATUS_LABELS = [null, 'In Stock', 'Sold Out'];
 const STATUS_OPTIONS = [
-    { value: null, label: 'Select Status' },
+    // { value: null, label: 'Select Status' },
     { value: IN_STOCK, label: 'In Stock' },
     { value: SOLD_OUT, label: 'Sold Out' },
 ];

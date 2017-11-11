@@ -1,9 +1,9 @@
 var Model = require('./_model');
 
-const COLLECTION_NAME = 'product';
+const COLLECTION_NAME = 'product_s';
 
 module.exports = class Product extends Model {
-    constructor() { }
+    constructor() {}
 
     static async find(conditions = {}) {
         return await Model.find(COLLECTION_NAME, conditions);

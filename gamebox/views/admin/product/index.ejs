@@ -1,5 +1,12 @@
 <%- contentFor('main_content') %>
 <a href="/admin/product/add" class="btn btn-success"><span class="fa fa-plus"></span> ADD</a>
+<% if (message) { %>
+<div class="alert alert-<%= message.class %> alert-dismissible fade in" role="alert">
+    <button class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+    <span class="fa fa-<%= (message.class == 'success') ? 'check' : 'remove' %>"></span>
+    <strong><%= message.content %></strong>
+</div>
+<% } %>
 <table class="table table-striped responsive-utilities jambo_table bulk_action table-admin">
     <thead>
         <tr>
@@ -10,6 +17,7 @@
             <th>Product Code</th>
             <th>Pictrue</th>
             <th>Status</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -24,10 +32,9 @@
             <td><%= status_labels[product.status] %></td>
             <form action="/admin/product/delete" method="POST" onsubmit="return confirm('Are you sure you want to delete <%= product.name %>?')">
                 <td>
-                    <a href="/admin/product/view/<%= product._id %>" class="btn btn-primary"><span class="glyphicon glyphicon-info-sign"></span></a>
-                    <a href="/admin/product/update/<%= product._id %>" class="btn btn-primary"><span class="fa fa-edit"></span></a>
+                    <a href="/admin/product/update/<%= product._id %>" class="btn btn-primary"><span class="fa fa-pencil"></span></a>
                     <input type="hidden" name="id" value="<%= product._id %>">
-                    <button type="submit" class="btn btn-danger"><span class="fa fa-times"></span></button>
+                    <button type="submit" class="btn btn-danger"><span class="fa fa-trash"></span></button>
                 </td>
             </form>
         </tr>

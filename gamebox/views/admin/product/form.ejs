@@ -1,59 +1,102 @@
 <%- contentFor('main_content') %>
 
-<form  method="POST" novalidate="">
+<form method="POST" class="form-horizontal form-label-left" novalidate="">
 
-<table class="table table-striped responsive-utilities jambo_table bulk_action">
-    <thead>
-        <tr>
-            <th>Property</th>
-            <th>Value</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td><label for="name">Name:</label></td>
-            <td><input type="text" id="name" name="name" value="<%= product.name %>"/></td>
-        </tr>
-        <tr>
-            <td><label for="number">Price:</label></td>
-            <td><input type="number" id="price" name="price" value="<%= product.price %>"/></td>
-        </tr>
-        <tr>
-            <td><label for="product_code">Type:</label></td>
-            <td><input type="text" id="name" name="name" value="<%= product.type %>"/></td>
-        </tr>
-        <tr>
-            <td><label for="product_code">Product Code:</label></td>
-            <td><input type="number" id="product_code" name="product_code" value="<%= product.product_code %>"/></td>
-        </tr>
-        <tr>
-            <td>Pictrue: </td>
-            <td><img src="/admin/images/<%= product.picture %>"></td>
-        </tr>
-        <tr>
-            <td>Status: </td>
-            <td>
-                <select name="status">
-                    <% status_options.forEach(opt => { %>
-                        <option value="<%= opt.value %>" <%= (product.status == opt.value) ? 'selected' : '' %>><%= opt.label %></option>
-                    <% }) %>
-                </select>
-            </td>
-        </tr>
-        <tr>
-        <div class="ln_solid"></div>
-        <div class="form-group">
-            <div class="col-md-6 col-md-offset-3">
-                <a href="/admin/product" class="btn btn-default">
-                    <span class="fa fa-chevron-left"></span> Back
-                </a>
-                <button class="btn btn-<%= product._id ? 'primary' : 'success' %>">
-                    <span class="fa fa-<%= product._id ? 'pencil' : 'plus' %>"></span>
-                    <%= product._id ? 'Update' : 'Add' %>
-                </button>
-            </div>
+    <div class="item form-group">
+
+        <label class="control-label col-md-3 col-sm-3 col-xs-12">Name <span class="required"></span></label>
+
+        <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+            <input type="text" class="form-control has-feedback-left" name="name" value="<%= product.name %>" placeholder="Name" required>
+            <span class="fa fa-plus-square form-control-feedback left" aria-hidden="true"></span>
         </div>
-        </tr>
-    </tbody>
-</table>
+
+    </div>
+
+    <div class="item form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12">Product Code <span class="required"></label>
+        <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+            <input class="form-control has-feedback-left" name="product_code" value="<%= product.product_code %>" placeholder="Product Code" required>
+            <span class="fa fa-plus-square form-control-feedback left" aria-hidden="true"></span>
+        </div>
+    </div>
+
+    <div class="item form-group">
+        <label class="control-label col-md-3">Price
+            <% if (product.price > 0) { %>
+            <span class="required"></span>
+            <% } %>
+        </label>
+        <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+            <input type="number" class="form-control has-feedback-left" name="price" placeholder="Price" <%= product.price ? '' : 'required' %>>
+            <span class="fa fa-plus-square form-control-feedback left" aria-hidden="true"></span>
+        </div>
+    </div>
+
+    <div class="item form-group">
+
+        <label class="control-label col-md-3 col-sm-3 col-xs-12">Type <span class="required"></span></label>
+
+        <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+            <input class="form-control has-feedback-left" name="type" value="<%= product.type %>" placeholder="Type" required>
+            <span class="fa fa-plus-square form-control-feedback left" aria-hidden="true"></span>
+        </div>
+
+    </div>
+
+    <div class="item form-group">
+
+        <label class="control-label col-md-3 col-sm-3 col-xs-12">Image</label>
+
+        <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+            <input type="file" class="form-control has-feedback-left">
+            <span class="fa fa-file-image-o form-control-feedback left" aria-hidden="true"></span>
+        </div>
+
+    </div>
+
+    <div class="item form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12">Status <span class="required"></span></label>
+        <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+            <label class="radio-inline">
+                <input type="radio" name="status" value="1" <%= product.status == 1 ? 'checked' : '' %>>
+                In Stock
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="status" value="2" <%= product.status == 2 ? 'checked' : '' %>>
+                Sold Out
+            </label>
+        </div>
+    </div>
+
+    <div class="item form-group">
+
+        <label class="control-label col-md-3 col-sm-3 col-xs-12">Date </label>
+
+        <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+            <input type="date" class="form-control has-feedback-left" name="date_product" value="<%= product.date_product %>" placeholder="Date">
+            <span class="fa fa-calendar form-control-feedback left" aria-hidden="true"></span>
+        </div>
+
+    </div>
+
+    <div class="ln_solid"></div>
+
+    <div class="form-group">
+
+        <div class="col-md-6 col-md-offset-3">
+
+            <a href="/admin/product" class="btn btn-default">
+                <span class="fa fa-chevron-left"></span> Back
+            </a>
+
+            <button class="btn btn-<%= product._id ? 'primary' : 'success' %>">
+                <span class="fa fa-<%= product._id ? 'pencil' : 'plus' %>"></span>
+                <%= product._id ? 'Update' : 'Add' %>
+            </button>
+
+        </div>
+
+    </div>
+
 </form>
