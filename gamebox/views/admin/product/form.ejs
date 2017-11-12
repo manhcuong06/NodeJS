@@ -3,100 +3,77 @@
 <form method="POST" class="form-horizontal form-label-left" novalidate="">
 
     <div class="item form-group">
-
-        <label class="control-label col-md-3 col-sm-3 col-xs-12">Name <span class="required"></span></label>
-
+        <input type="hidden" name="category" value="<%= product.category = 1%>" disable="disable">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12">Name <span class="required">*</span></label>
         <div class="col-md-6 col-sm-6 col-xs-12 form-group">
             <input type="text" class="form-control has-feedback-left" name="name" value="<%= product.name %>" placeholder="Name" required>
-            <span class="fa fa-plus-square form-control-feedback left" aria-hidden="true"></span>
+            <span class="fa fa-gamepad form-control-feedback left" aria-hidden="true"></span>
         </div>
-
     </div>
 
     <div class="item form-group">
-        <label class="control-label col-md-3 col-sm-3 col-xs-12">Product Code <span class="required"></label>
+        <label class="control-label col-md-3 col-sm-3 col-xs-12">Description <span class="required">*</span></label>
         <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-            <input class="form-control has-feedback-left" name="product_code" value="<%= product.product_code %>" placeholder="Product Code" required>
-            <span class="fa fa-plus-square form-control-feedback left" aria-hidden="true"></span>
+            <input type="text" class="form-control has-feedback-left" name="description" value="<%= product.description %>" placeholder="Description" required>
+            <span class="fa fa-book form-control-feedback left" aria-hidden="true"></span>
         </div>
     </div>
 
     <div class="item form-group">
-        <label class="control-label col-md-3">Price
+        <label class="control-label col-md-3 col-sm-3 col-xs-12">Image</label>
+        <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+            <input type="file" id="image_input" class="form-control has-feedback-left">
+            <input type="hidden" id="image_name" name="image" value="<%= product.image %>">
+            <span class="fa fa-file-image-o form-control-feedback left" aria-hidden="true"></span>
+        </div>
+    </div>
+
+    <div class="item form-group">
+        <label class="control-label col-md-3">Price<span class="required">*</span>
             <% if (product.price > 0) { %>
-            <span class="required"></span>
             <% } %>
         </label>
         <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-            <input type="number" class="form-control has-feedback-left" name="price" placeholder="Price" <%= product.price ? '' : 'required' %>>
-            <span class="fa fa-plus-square form-control-feedback left" aria-hidden="true"></span>
+            <input type="number" class="form-control has-feedback-left" name="price" placeholder="Price" value="<%= product.price %>"<%= product.price ? '' : 'required' %>>
+            <span class="fa fa-dollar form-control-feedback left" aria-hidden="true"></span>
         </div>
     </div>
 
     <div class="item form-group">
-
-        <label class="control-label col-md-3 col-sm-3 col-xs-12">Type <span class="required"></span></label>
-
+        <label class="control-label col-md-3 col-sm-3 col-xs-12">Quantity <span class="required">*</span></label>
         <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-            <input class="form-control has-feedback-left" name="type" value="<%= product.type %>" placeholder="Type" required>
-            <span class="fa fa-plus-square form-control-feedback left" aria-hidden="true"></span>
+            <input type="number" class="form-control has-feedback-left" name="quantity" value="<%= product.quantity %>" placeholder="Quantity" required>
+            <span class="fa fa-plus form-control-feedback left" aria-hidden="true"></span>
         </div>
-
-    </div>
-
-    <div class="item form-group">
-
-        <label class="control-label col-md-3 col-sm-3 col-xs-12">Image</label>
-
-        <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-            <input type="file" class="form-control has-feedback-left">
-            <span class="fa fa-file-image-o form-control-feedback left" aria-hidden="true"></span>
-        </div>
-
-    </div>
-
-    <div class="item form-group">
-        <label class="control-label col-md-3 col-sm-3 col-xs-12">Status <span class="required"></span></label>
-        <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-            <label class="radio-inline">
-                <input type="radio" name="status" value="1" <%= product.status == 1 ? 'checked' : '' %>>
-                In Stock
-            </label>
-            <label class="radio-inline">
-                <input type="radio" name="status" value="2" <%= product.status == 2 ? 'checked' : '' %>>
-                Sold Out
-            </label>
-        </div>
-    </div>
-
-    <div class="item form-group">
-
-        <label class="control-label col-md-3 col-sm-3 col-xs-12">Date </label>
-
-        <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-            <input type="date" class="form-control has-feedback-left" name="date_product" value="<%= product.date_product %>" placeholder="Date">
-            <span class="fa fa-calendar form-control-feedback left" aria-hidden="true"></span>
-        </div>
-
     </div>
 
     <div class="ln_solid"></div>
-
     <div class="form-group">
-
         <div class="col-md-6 col-md-offset-3">
-
             <a href="/admin/product" class="btn btn-default">
                 <span class="fa fa-chevron-left"></span> Back
             </a>
-
             <button class="btn btn-<%= product._id ? 'primary' : 'success' %>">
                 <span class="fa fa-<%= product._id ? 'pencil' : 'plus' %>"></span>
                 <%= product._id ? 'Update' : 'Add' %>
             </button>
-
         </div>
-
     </div>
 
 </form>
+
+<script>
+var original_image_name = image_name.value;
+var reader = new FileReader();
+reader.onload = (e) => {
+    image_name.value = e.target.result
+}
+image_input.onchange = (e) => {
+    var files = e.target.files;
+    if (files.length > 0) {
+        reader.readAsDataURL(files[0]);
+    } else {
+        image_name.value = original_image_name;
+    }
+}
+</script>
