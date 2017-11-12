@@ -63,8 +63,7 @@ router.all('/cart-checkout', (req, res) => {
             cart_disabled: true,
         });
     } else {
-        var socket = socketio_module.getSocket();
-        socket.broadcast.emit('update_bill');
+        socketio_module.broadcastEmit('update_bill');
         req.session.cart = null;
         res.redirect('/site');
     }

@@ -18,7 +18,10 @@ module.exports = {
             socket.on('disconnect', () => {});
         });
     },
-    getSocket: () => {
-        return _socket;
+    emit: (event, data = null) => {
+        _socket.emit(event, data);
+    },
+    broadcastEmit: (event, data = null) => {
+        _socket.broadcast.emit(event, data);
     },
 }
