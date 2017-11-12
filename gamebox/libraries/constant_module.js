@@ -29,7 +29,7 @@ module.exports = {
         };
         return message;
     },
-    getErrorMessage: (message = 'The user you are looking for does not exist.') => {
+    getErrorMessage: (message = 'The data you are looking for does not exist.') => {
         var message = {
             class: 'danger',
             content: message,

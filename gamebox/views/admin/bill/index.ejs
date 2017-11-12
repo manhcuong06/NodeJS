@@ -1,0 +1,41 @@
+<%- contentFor('main_content') %>
+
+<% if (message) { %>
+<div class="alert alert-<%= message.class %> alert-dismissible fade in" role="alert">
+    <button class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+    <span class="fa fa-<%= (message.class == 'success') ? 'check' : 'remove' %>"></span>
+    <strong><%= message.content %></strong>
+</div>
+<% } %>
+<table class="table table-striped responsive-utilities jambo_table bulk_action table-admin">
+    <thead>
+        <tr>
+            <th>No</th>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th>Email</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Created At</th>
+            <th>Paid At</th>
+            <th>Detail</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% bills.forEach((bill, i) => { %>
+        <tr>
+            <td><%= i + 1 %></td>
+            <td><%= bill.name %></td>
+            <td><%= bill.phone %></td>
+            <td><%= bill.address %></td>
+            <td><a href="mailto:<%= bill.email %>"><%= bill.email %></a></td>
+            <td><%= bill.quantity %></td>
+            <td><%= bill.price %></td>
+            <td><%= new Date(Number(bill.created_at)).toLocaleString() %></script></td>
+            <td><%= bill.paid_at ? new Date(Number(bill.paid_at)).toLocaleString() : '' %></script></td>
+            <td><a href="/admin/bill/view/<%= bill._id %>" class="btn btn-info"><span class="fa fa-eye"></span></a></td>
+        </tr>
+        <% }); %>
+    </tbody>
+</table>

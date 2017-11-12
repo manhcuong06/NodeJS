@@ -1,11 +1,13 @@
 var express = require('express');
 var constant = require('../libraries/constant_module');
+var bill = require('./bill');
 var product = require('./product');
 var user = require('./user');
 
 var router = express.Router();
 
 // Models
+var Bill = require('../models/bill');
 var User = require('../models/user');
 
 router.all('/login', (req, res) => {
@@ -31,7 +33,11 @@ router.all('/login', (req, res) => {
 
 router.use((req, res, next) => {
     if (req.session.current_admin) {
-        next();
+        var conditions = { paid_at: {$exists: false} };
+        Bill.count(conditions).then(result => {
+            res.locals.not_yet_paid = result;
+            next();
+        });
     } else {
         res.redirect('/admin/login');
     }
@@ -49,6 +55,7 @@ router.post('/logout', (req, res) => {
 });
 
 // Routes
+router.use('/bill', bill);
 router.use('/product', product);
 router.use('/user', user);
 
