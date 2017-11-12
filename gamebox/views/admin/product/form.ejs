@@ -29,12 +29,9 @@
     </div>
 
     <div class="item form-group">
-        <label class="control-label col-md-3">Price<span class="required">*</span>
-            <% if (product.price > 0) { %>
-            <% } %>
-        </label>
+        <label class="control-label col-md-3">Price <span class="required">*</span></label>
         <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-            <input type="number" class="form-control has-feedback-left" name="price" placeholder="Price" value="<%= product.price %>"<%= product.price ? '' : 'required' %>>
+            <input type="number" class="form-control has-feedback-left" name="price" placeholder="Price" value="<%= product.price %>">
             <span class="fa fa-dollar form-control-feedback left" aria-hidden="true"></span>
         </div>
     </div>

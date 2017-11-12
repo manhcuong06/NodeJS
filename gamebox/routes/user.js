@@ -43,6 +43,8 @@ router.all('/add', (req, res, next) => {
             if (buffer) {
                 data_post.image = 'user_' + buffer.name;
                 file.upload(IMAGE_PATH + data_post.image, buffer.data);
+            } else {
+                delete data_post.image;
             }
         }
         User.insert(data_post).then(result => {
@@ -77,6 +79,8 @@ router.all('/update/:id', (req, res, next) => {
                     data_post.image = 'user_' + buffer.name;
                     file.upload(IMAGE_PATH + data_post.image, buffer.data);
                     file.remove(IMAGE_PATH + user.image);
+                } else {
+                    delete data_post.image;
                 }
             }
             User.update(condition, data_post).then(result => {

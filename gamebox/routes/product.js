@@ -36,6 +36,8 @@ router.all('/add', (req, res, next) => {
             if (buffer) {
                 data_post.image = 'product_' + buffer.name;
                 file.upload(IMAGE_PATH + data_post.image, buffer.data);
+            } else {
+                delete data_post.image;
             }
         }
         Product.insert(data_post).then(result => {
@@ -66,6 +68,8 @@ router.all('/update/:id', (req, res, next) => {
                     data_post.image = 'product_' + buffer.name;
                     file.upload(IMAGE_PATH + data_post.image, buffer.data);
                     file.remove(IMAGE_PATH + product.image);
+                } else {
+                    delete data_post.image;
                 }
             }
             Product.update(condition, data_post).then(result => {

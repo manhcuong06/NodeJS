@@ -1,5 +1,6 @@
 var express = require('express');
 var bcrypt = require('../libraries/bcrypt_module');
+var socketio_module = require('../libraries/socketio_module');
 var router = express.Router();
 
 // Models
@@ -62,6 +63,7 @@ router.all('/cart-checkout', (req, res) => {
             cart_disabled: true,
         });
     } else {
+        socketio_module.broadcastEmit('update_bill');
         req.session.cart = null;
         res.redirect('/site');
     }
