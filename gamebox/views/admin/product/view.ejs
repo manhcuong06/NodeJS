@@ -20,24 +20,20 @@
             <td><%= product.name %></td>
         </tr>
         <tr>
+            <td>Description: </td>
+            <td><%= product.description %></td>
+        </tr>
+        <tr>
             <td>Price: </td>
-            <td><%= product.price %></td>
-        </tr>
-        <tr>
-            <td>Type: </td>
-            <td><%= product.type %></td>
-        </tr>
-        <tr>
-            <td>Product Code: </td>
-            <td><%= product.product_code %></td>
+            <td><%= product.price %> $</td>
         </tr>
         <tr>
             <td>Pictrue: </td>
-            <td><img src="/admin/images/<%= product.picture %>"></td>
+            <td><img src="/images/product/<%= product.image %>" width="150"></td>
         </tr>
         <tr>
-            <td>Status: </td>
-            <td><%= status_labels[product.status] %></td>
+            <td>Quantity: </td>
+            <td><%= product.quantity %></td>
         </tr>
     </tbody>
 </table>

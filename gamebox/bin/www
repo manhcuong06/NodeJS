@@ -46,6 +46,10 @@ io.sockets.on('connection', (socket) => {
         socket.emit('move', current_coordinate);
         socket.broadcast.emit('move', current_coordinate);
     });
+
+    socket.on('payment', () => {
+        socket.broadcast.emit('update_bill');
+    });
     socket.on('disconnect', () => {});
 });
 

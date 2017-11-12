@@ -24,18 +24,7 @@
     <script src="/js/jquery.min.js"></script>
     <script src="/js/bootstrap.js"></script>
     <script src="/js/socket_io.js"></script>
-    <script>
-    $(() => {
-        var socket = io.connect('http://localhost:3000');
-        var num_of_click = 0;
 
-        $('.btn-test-socket').on('click', () => {
-            socket.emit('test_socket_event', {
-                name: 'Ten nguoi dung',
-                email: 'ten_nguoi_dung@gmail.com',
-                num_of_click: num_of_click++,
-            });
-        });
-    });
-    </script>
+    <!-- Handle realtime events -->
+    <script src="/js/my_realtime.js"></script>
 </head>

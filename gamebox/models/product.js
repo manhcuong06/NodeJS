@@ -1,6 +1,6 @@
 var Model = require('./_model');
 
-const COLLECTION_NAME = 'product_s';
+const COLLECTION_NAME = 'product';
 
 module.exports = class Product extends Model {
     constructor() {}

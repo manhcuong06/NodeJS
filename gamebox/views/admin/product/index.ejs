@@ -13,10 +13,8 @@
             <th>No</th>
             <th>Name</th>
             <th>Price</th>
-            <th>Type</th>
-            <th>Product Code</th>
             <th>Pictrue</th>
-            <th>Status</th>
+            <th>Description</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -25,11 +23,9 @@
         <tr>
             <td><%= i + 1 %></td>
             <td><a href="/admin/product/view/<%= product._id %>"><%= product.name %></a></td>
-            <td><%= product.price %></td>
-            <td><%= product.type %></td>
-            <td><%= product.product_code %></td>
-            <td><img src="/admin/images/<%= product.picture %>"></td>
-            <td><%= status_labels[product.status] %></td>
+            <td><%= product.price %> $</td>
+            <td><img src="/images/product/<%= product.image %>"></td>
+            <td><%= product.description %></td>
             <form action="/admin/product/delete" method="POST" onsubmit="return confirm('Are you sure you want to delete <%= product.name %>?')">
                 <td>
                     <a href="/admin/product/update/<%= product._id %>" class="btn btn-primary"><span class="fa fa-pencil"></span></a>
