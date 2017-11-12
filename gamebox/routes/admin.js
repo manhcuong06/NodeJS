@@ -14,8 +14,9 @@ router.all('/login', (req, res) => {
     if (req.session.current_admin) {
         res.redirect('/admin');
     } else if (req.method == 'POST') {
-        var data_post = req.body;
-        User.findOne(data_post).then(user => {
+        var conditions = req.body;
+        conditions.level = { $lt: '4' };
+        User.findOne(conditions).then(user => {
             if (!user) {
                 req.session.message = constant.getErrorMessage('Wrong email or password.');
                 res.redirect('/admin/login');
