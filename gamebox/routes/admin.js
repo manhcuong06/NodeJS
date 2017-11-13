@@ -22,7 +22,11 @@ router.all('/login', (req, res) => {
                 res.redirect('/admin/login');
             } else {
                 User.update(user, { last_login: new Date().getTime() }).then(result => {
-                    req.session.current_admin = { name: user.name };
+                    req.session.current_admin = {
+                        _id: user._id,
+                        level: user.level,
+                        name: user.name
+                    };
                     res.redirect('/admin');
                 });
             }

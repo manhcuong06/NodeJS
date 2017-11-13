@@ -16,8 +16,14 @@ module.exports = {
     getLevelLabels: () => {
         return LEVEL_LABELS;
     },
-    getLevelOptions: () => {
-        return LEVEL_OPTIONS;
+    getLevelOptions: (current_level = 3) => {
+        var options = LEVEL_OPTIONS;
+        for (var i = 1; i < options.length; i++) {
+            if (current_level > options[i].value) {
+                options.splice(i, 1);
+            }
+        }
+        return options;
     },
     isCustomer: (level) => {
         return level == CUSTOMER;

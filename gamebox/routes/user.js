@@ -36,7 +36,10 @@ router.get('/view/:id', (req, res, next) => {
 });
 
 router.all('/add', (req, res, next) => {
-    if (req.method == 'POST') {
+    if (req.session.current_admin.level > 2) {
+        req.session.message = constant.getErrorMessage('Permission denied.');
+        res.redirect('/admin/user');
+    } else if (req.method == 'POST') {
         var data_post = req.body;
         if (data_post.image) {
             var buffer = file.decodeBase64(data_post.image);
@@ -58,7 +61,7 @@ router.all('/add', (req, res, next) => {
     } else {
         res.render('admin/user/form', {
             page_title: 'Add New User',
-            level_options: constant.getLevelOptions(),
+            level_options: constant.getLevelOptions(req.session.current_admin.level),
             user: {},
         });
     }
@@ -69,6 +72,9 @@ router.all('/update/:id', (req, res, next) => {
     User.findOne(condition).then(user => {
         if (!user) {
             req.session.message = constant.getErrorMessage();
+            res.redirect('/admin/user');
+        } else if (req.session.current_admin.level > user.level) {
+            req.session.message = constant.getErrorMessage('Permission denied.');
             res.redirect('/admin/user');
         } else if (req.method == 'POST') {
             var data_post = req.body;
@@ -94,7 +100,7 @@ router.all('/update/:id', (req, res, next) => {
         } else {
             res.render('admin/user/form', {
                 page_title: 'Update User: ' + user.name,
-                level_options: constant.getLevelOptions(),
+                level_options: constant.getLevelOptions(req.session.current_admin.level),
                 user: user,
             });
         }
