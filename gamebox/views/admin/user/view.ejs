@@ -2,9 +2,11 @@
 
 <form action="/admin/user/delete" method="POST" onsubmit="return confirm('Are you sure you want to delete <%= user.name %>?')">
     <a href="/admin/user" class="btn btn-default"><span class="fa fa-chevron-left"></span> BACK</a>
+    <% if (current_admin.level <= user.level) { %>
     <a href="/admin/user/update/<%= user._id %>" class="btn btn-primary"><span class="fa fa-pencil"></span> UPDATE</a>
     <input type="hidden" name="id" value="<%= user._id %>">
     <button type="submit" class="btn btn-danger"><span class="fa fa-trash"></span> DELETE</button>
+    <% } %>
 </form>
 
 <table class="table table-striped responsive-utilities jambo_table bulk_action">

@@ -16,10 +16,10 @@ module.exports = class Model {
         return ID_PATTERN.test(id);
     }
 
-    static async find(collection_name, conditions = {}) {
+    static async find(collection_name, conditions = {}, sort = {}, skip = 0, limit = 0) {
         try {
             var db = await DbConnection.Get();
-            var result = await db.collection(collection_name).find(conditions).toArray();
+            var result = await db.collection(collection_name).find(conditions).sort(sort).skip(skip).limit(limit).toArray();
             return result;
         } catch (e) {
             console.log(e);
@@ -60,6 +60,16 @@ module.exports = class Model {
         try {
             var db = await DbConnection.Get();
             var result = await db.collection(collection_name).remove(conditions);
+            return result;
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    static async count(collection_name, conditions = {}, options = {}) {
+        try {
+            var db = await DbConnection.Get();
+            var result = await db.collection(collection_name).count(conditions, options);
             return result;
         } catch (e) {
             console.log(e);
