@@ -8,4 +8,8 @@ module.exports = class BillDetail extends Model {
     static async find(conditions = {}) {
         return await Model.find(COLLECTION_NAME, conditions);
     }
+
+    static async insert(details) {
+        return await Model.insert(COLLECTION_NAME, details);
+    }
 };

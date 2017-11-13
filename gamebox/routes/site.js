@@ -56,22 +56,24 @@ router.get('/reviews', (req, res) => {
 });
 
 router.all('/cart-checkout', (req, res) => {
-    if (req.method == 'GET') {
+    if (!req.session.cart) {
+        res.redirect('/site');
+    } else if (req.method == 'GET') {
         res.render('site/cart-checkout', {
             cart_disabled: true,
         });
     } else {
         // Insert Bill
         var bill = req.body;
-        bill.quantity = req.data.cart_quantity;
-        bill.price = req.data.cart_price;
+        bill.quantity = res.locals.cart_quantity;
+        bill.price = res.locals.cart_price;
         bill.created_at = new Date().getTime();
-        Bill.insert(bill).then(result => {
+        Bill.insert(bill).then(new_bill => {
             // Insert BillDetail
             var details = [];
             req.session.cart.forEach(product => {
                 var detail = {
-                    bill_id: result.insertedIds[0],
+                    bill_id: new_bill.insertedIds[0],
                     product_id: BillDetail.getObjectId(product._id),
                     price: product.price / product.quantity,
                     quantity: product.quantity,
@@ -79,8 +81,8 @@ router.all('/cart-checkout', (req, res) => {
                 };
                 details.push(detail);
             });
-            BillDetail.insert(details).then(result => {
-                socketio_module.broadcastEmit('update_bill');
+            BillDetail.insert(details).then(() => {
+                socketio_module.broadcastEmit('update_bill', new_bill.ops[0]);
                 req.session.cart = null;
                 res.redirect('/site');
             });
