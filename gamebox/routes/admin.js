@@ -38,7 +38,7 @@ router.all('/login', (req, res) => {
 
 router.use((req, res, next) => {
     if (req.session.current_admin) {
-        var conditions = { paid_at: {$exists: false} };
+        var conditions = { paid_at: null };
         Bill.count(conditions).then(result => {
             res.locals.not_yet_paid = result;
             next();

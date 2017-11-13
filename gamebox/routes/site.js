@@ -5,7 +5,6 @@ var router = express.Router();
 
 // Models
 var Bill = require('../models/bill');
-var BillDetail = require('../models/bill_detail');
 var Gallery = require('../models/gallery');
 var Product = require('../models/product');
 var User = require('../models/user');
@@ -63,29 +62,22 @@ router.all('/cart-checkout', (req, res) => {
             cart_disabled: true,
         });
     } else {
-        // Insert Bill
         var bill = req.body;
         bill.quantity = res.locals.cart_quantity;
         bill.price = res.locals.cart_price;
         bill.created_at = new Date().getTime();
-        Bill.insert(bill).then(new_bill => {
-            // Insert BillDetail
-            var details = [];
-            req.session.cart.forEach(product => {
-                var detail = {
-                    bill_id: new_bill.insertedIds[0],
-                    product_id: BillDetail.getObjectId(product._id),
-                    price: product.price / product.quantity,
-                    quantity: product.quantity,
-                    total: product.price,
-                };
-                details.push(detail);
-            });
-            BillDetail.insert(details).then(() => {
-                socketio_module.broadcastEmit('update_bill', new_bill.ops[0]);
-                req.session.cart = null;
-                res.redirect('/site');
-            });
+        bill.details = [];
+        req.session.cart.forEach(product => {
+            var detail = product;
+            detail._id = Bill.getObjectId(detail._id);
+            detail.unit_price = detail.price / detail.quantity;
+
+            bill.details.push(detail);
+        });
+        Bill.insert(bill).then(result => {
+            socketio_module.broadcastEmit('update_bill', result.ops[0]);
+            req.session.cart = null;
+            res.redirect('/site');
         });
     }
 });
