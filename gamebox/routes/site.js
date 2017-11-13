@@ -13,18 +13,17 @@ var User = require('../models/user');
 router.get('/', (req, res) => {
     Product.find({category: 1}).then(top_games => {
         res.render('site/', {
-            data: req.data,
             top_games: top_games,
         });
     });
 });
 
 router.get('/about', (req, res) => {
-    renderHTML(req, res);
+    res.render('site/about');
 });
 
 router.get('/contact', (req, res) => {
-    renderHTML(req, res);
+    res.render('site/contact');
 });
 
 router.get('/detail/:id', (req, res, next) => {
@@ -34,7 +33,6 @@ router.get('/detail/:id', (req, res, next) => {
             next(); // 404 Page Not Found
         } else {
             res.render('site/detail', {
-                data: req.data,
                 product: product,
             });
         }
@@ -44,24 +42,22 @@ router.get('/detail/:id', (req, res, next) => {
 router.get('/gallery', (req, res) => {
     Gallery.find().then(gallery => {
         res.render('site/gallery', {
-            data: req.data,
             gallery: gallery,
         });
     });
 });
 
 router.get('/news', (req, res) => {
-    renderHTML(req, res);
+    res.render('site/news');
 });
 
 router.get('/reviews', (req, res) => {
-    renderHTML(req, res);
+    res.render('site/reviews');
 });
 
 router.all('/cart-checkout', (req, res) => {
     if (req.method == 'GET') {
         res.render('site/cart-checkout', {
-            data: req.data,
             cart_disabled: true,
         });
     } else {
@@ -187,8 +183,3 @@ router.post('/signup-validate', (req, res) => {
 // END Ajax routes
 
 module.exports = router;
-
-function renderHTML(req, res) {
-    var view = req.path.replace('/', 'site/');
-    res.render(view, { data: req.data });
-}
