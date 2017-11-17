@@ -15,6 +15,9 @@ module.exports = {
                 current_coordinate = coordinate;
                 io.sockets.emit('move', current_coordinate);
             });
+            socket.on('message_sent', (message) => {
+                console.log(message);
+            });
             socket.on('disconnect', () => {});
         });
     },
