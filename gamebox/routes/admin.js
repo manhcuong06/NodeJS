@@ -1,5 +1,6 @@
 var express = require('express');
 var constant = require('../libraries/constant_module');
+var conversation = require('./conversation');
 var bill = require('./bill');
 var product = require('./product');
 var user = require('./user');
@@ -25,7 +26,8 @@ router.all('/login', (req, res) => {
                     req.session.current_admin = {
                         _id: user._id,
                         level: user.level,
-                        name: user.name
+                        name: user.name,
+                        image: user.image,
                     };
                     res.redirect('/admin');
                 });
@@ -61,6 +63,7 @@ router.post('/logout', (req, res) => {
 
 // Routes
 router.use('/bill', bill);
+router.use('/conversation', conversation);
 router.use('/product', product);
 router.use('/user', user);
 

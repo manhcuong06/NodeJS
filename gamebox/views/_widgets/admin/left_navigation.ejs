@@ -8,7 +8,7 @@
         <!-- menu prile quick info -->
         <div class="profile">
             <div class="profile_pic">
-                <img src="/admin/images/img.jpg" alt="..." class="img-circle profile_img">
+                <img src="/images/user/<%= current_admin.image %>" alt="..." class="img-circle profile_img">
             </div>
             <div class="profile_info">
                 <span>Welcome,</span>
@@ -24,6 +24,7 @@
                 <ul class="nav side-menu">
                     <li><a href="/site"><i class="fa fa-home"></i> Game box</a></li>
                     <li><a href="/admin/bill"><i class="fa fa-money"></i> Bills <span id="bill-count" class="badge bg-green"><%= not_yet_paid %></span></a></li>
+                    <li><a href="/admin/conversation"><i class="fa fa-comments"></i> Conversation</a></li>
                     <li>
                         <a><i class="fa fa-gamepad"></i> Games <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu" style="display: none">

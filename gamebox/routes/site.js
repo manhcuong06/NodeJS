@@ -5,9 +5,31 @@ var router = express.Router();
 
 // Models
 var Bill = require('../models/bill');
+var Conversation = require('../models/conversation');
 var Gallery = require('../models/gallery');
+var Message = require('../models/message');
 var Product = require('../models/product');
 var User = require('../models/user');
+
+router.use((req, res, next) => {
+    if (req.session.current_user && req.session.current_user.level > 3) {
+        var condition = {
+            user_id: Conversation.getObjectId(req.session.current_user._id),
+        };
+        Conversation.findOne(condition).then(con => {
+            if (con) {
+                Message.find({conversation_id: Message.getObjectId(con._id)}).then(messages => {
+                    res.locals.messages = messages;
+                    next();
+                });
+            } else {
+                next();
+            }
+        });
+    } else {
+        next();
+    }
+});
 
 router.get('/', (req, res) => {
     Product.find({category: 1}).then(top_games => {
@@ -86,7 +108,11 @@ router.post('/login', (req, res) => {
     User.findOne(req.body).then(user => {
         if (user) {
             User.update(user, { last_login: new Date().getTime() }).then(result => {
-                req.session.current_user = { name: user.name };
+                req.session.current_user = {
+                    _id: user._id,
+                    name: user.name,
+                    level: user.level,
+                };
                 res.redirect('/');
             });
         } else {

@@ -12,17 +12,21 @@ $('.chat-form button').on('click', () => {
 });
 
 function send() {
-    var message = $('.chat-form textarea').val();
-    if (!message) {
+    var content = $('.chat-form textarea').val();
+    if (!content) {
         return;
     }
-    socket.emit('message_sent', message);
+    var data_post = {
+        user_id: current_user_id.value,
+        content: content
+    }
+    socket.emit('customer_sent_message', data_post);
 
     var chatlogs = $('.chatlogs').html();
     chatlogs = chatlogs +
         `<div class="chat self">
             <div class="user-photo"><img src="/images/no-user.png"></div>
-            <p class="chat-message">${message}</p>
+            <p class="chat-message">${content}</p>
         </div>`
     ;
     $('.chatlogs').html(chatlogs);

@@ -1,3 +1,6 @@
+var Conversation = require('../models/conversation');
+var Message = require('../models/message');
+
 var _socket = null;
 
 module.exports = {
@@ -15,8 +18,27 @@ module.exports = {
                 current_coordinate = coordinate;
                 io.sockets.emit('move', current_coordinate);
             });
-            socket.on('message_sent', (message) => {
-                console.log(message);
+            socket.on('customer_sent_message', (data) => {
+                var conversation = {
+                    user_id: Conversation.getObjectId(data.user_id),
+                };
+                var message = {
+                    content: data.content,
+                    created_at: new Date().getTime(),
+                    from_customer: true
+                };
+
+                Conversation.findOne(conversation).then(con => {
+                    if (con) {
+                        message.conversation_id = Message.getObjectId(con._id);
+                        Message.insert(message);
+                    } else {
+                        Conversation.insert(conversation).then(result => {
+                            message.conversation_id = Message.getObjectId(result.insertedIds[0]);
+                            Message.insert(message);
+                        });
+                    }
+                });
             });
             socket.on('disconnect', () => {});
         });

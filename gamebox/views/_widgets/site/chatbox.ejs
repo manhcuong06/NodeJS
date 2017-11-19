@@ -1,21 +1,29 @@
 <link rel="stylesheet" href="/css/my_chatbox.css">
 
-<div class="chatbox minimize">
+<% if (current_user && current_user.level > 3) { %>
+<div class="chatbox minimize-1">
     <div class="head">Chat</div>
+    <input type="hidden" id="current_user_id" value="<%= current_user._id %>">
     <div class="chatlogs">
-        <div class="chat friend">
+        <% if (typeof messages !== 'undefined' && messages) { %>
+        <% messages.forEach(mes => { %>
+        <div class="chat <%= mes.from_customer ? 'self' : 'reply' %>">
+            <div class="user-photo"><img src="/images/no-<%= mes.from_customer ? 'user' : 'admin' %>.png"></div>
+            <p class="chat-message"><%= mes.content %></p>
+        </div>
+        <% }) %>
+        <% } else { %>
+        <div class="chat reply">
             <div class="user-photo"><img src="/images/no-admin.png"></div>
-            <p class="chat-message">Admin mes</p>
+            <p class="chat-message">Xin chào, chúng tôi có thể giúp gì cho bạn.</p>
         </div>
-        <div class="chat self">
-            <div class="user-photo"><img src="/images/no-user.png"></div>
-            <p class="chat-message">User mes</p>
-        </div>
+        <% } %>
     </div>
     <div class="chat-form">
         <textarea></textarea>
         <button class="btn btn-primary">Send</button>
     </div>
 </div>
+<% } %>
 
 <script src="/js/my_chatbox.js"></script>

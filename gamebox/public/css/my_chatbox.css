@@ -65,7 +65,7 @@
     color: #fff;
     font-size: 18px;
 }
-.friend .chat-message {
+.reply .chat-message {
     background: #1adda4;
 }
 .self .chat-message {
