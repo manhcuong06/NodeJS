@@ -16,11 +16,11 @@ function send() {
     if (!content) {
         return;
     }
-    var data_post = {
+    var message = {
         user_id: current_user_id.value,
         content: content
     }
-    socket.emit('customer_sent_message', data_post);
+    socket.emit('customer_reply', message);
 
     var chatlogs = $('.chatlogs').html();
     chatlogs = chatlogs +

@@ -1,5 +1,6 @@
+var socket = null;
 $(() => {
-    var socket = io.connect('http://localhost:3000');
+    socket = io.connect('http://localhost:3000');
     socket.on('update_bill', (bill) => {
         // Update count (left navigation)
         $('#bill-count').html(Number($('#bill-count').html()) + 1);

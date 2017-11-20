@@ -12,6 +12,12 @@
 <link href="/admin/fonts/css/font-awesome.min.css" rel="stylesheet">
 <link rel="stylesheet" href="/admin/css/reset.min.css">
 <link rel="stylesheet" href="/admin/css/conversation.css">
+
+<!-- Scripts -->
+<script src="/admin/js/jquery.min.js"></script>
+<script src="/admin/js/socket_io.js"></script>
+<script src="/js/my_realtime_admin.js"></script>
+
 </head>
 
 <body>
@@ -46,17 +52,24 @@
         </div>
         <div id="contacts">
             <ul>
-                <li class="contact active">
-                    <input type="hidden" value="123">
+                <% conversations.forEach(con => { %>
+                <% var last_mes = con.messages[con.messages.length - 1] %>
+                <li class="contact">
+                    <input type="hidden" value="<%= con._id %>">
                     <div class="wrap">
                         <span class="contact-status online"></span>
-                        <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
+                        <img src="/images/user/<%= con.image %>"/>
                         <div class="meta">
-                            <p class="name">Harvey Specter</p>
-                            <p class="preview">Wrong. You take the gun, or you pull out a bigger one. Or, you call their bluff. Or, you do any one of a hundred and forty six other things.</p>
+                            <p class="name"><%= con.name %></p>
+                            <p class="preview message">
+                                <span><%= last_mes.from_customer ? '' : 'You: '%></span>
+                                <%= last_mes.content %>
+                            </p>
+                            <p class="preview time"><span><%= new Date(last_mes.created_at).toLocaleString() %></span></p>
                         </div>
                     </div>
                 </li>
+                <% }) %>
             </ul>
         </div>
         <div id="bottom-bar">

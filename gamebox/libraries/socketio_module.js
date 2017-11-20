@@ -18,7 +18,7 @@ module.exports = {
                 current_coordinate = coordinate;
                 io.sockets.emit('move', current_coordinate);
             });
-            socket.on('customer_sent_message', (data) => {
+            socket.on('customer_reply', (data) => {
                 var conversation = {
                     user_id: Conversation.getObjectId(data.user_id),
                 };
@@ -39,6 +39,8 @@ module.exports = {
                         });
                     }
                 });
+            });
+            socket.on('admin_reply', (data) => {
             });
             socket.on('disconnect', () => {});
         });

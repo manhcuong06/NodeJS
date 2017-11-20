@@ -5,7 +5,8 @@ var router = express.Router();
 var Conversation = require('../models/conversation');
 
 router.use((req, res, next) => {
-    Conversation.find().then(con => {
+    Conversation.find().then(conversations => {
+        res.locals.conversations = conversations;
         next();
     });
 });
@@ -14,8 +15,11 @@ router.get('/', (req, res) => {
     res.render('admin/conversation/');
 });
 
-router.get('/view/:id', (req, res) => {
-    res.render('admin/conversation/view');
+router.get('/view/:conversation_id', (req, res) => {
+    var condition = {_id: Conversation.getObjectId(req.params.conversation_id)};
+    Conversation.findOne(condition).then(con => {
+        res.json(con);
+    });
 });
 
 module.exports = router;

@@ -1,3 +1,8 @@
+// My Custom
+var current_conversation_id = null;
+var admin_image = $('img#profile-img').attr('src').replace('/images/user/', '');
+// END My Custom
+
 $(".messages").animate({ scrollTop: $(document).height() }, "fast");
 
 $("#profile-img").click(function() {
@@ -31,14 +36,23 @@ $("#status-options ul li").click(function() {
 });
 
 function newMessage() {
-    message = $(".message-input input").val();
-    if($.trim(message) == '') {
+    if (!current_conversation_id) {
+        return;
+    }
+    content = $(".message-input input").val();
+    if($.trim(content) == '') {
         return false;
     }
-    $('<li class="replies"><img src="http://emilcarlsson.se/assets/mikeross.png" alt="" /><p>' + message + '</p></li>').appendTo($('.messages ul'));
+    $('<li class="replies"><img src="/images/user/' + admin_image + '" /><p>' + content + '</p></li>').appendTo($('.messages ul'));
     $('.message-input input').val(null);
-    $('.contact.active .preview').html('<span>You: </span>' + message);
+    $('.contact.active .preview.message').html('<span>You: </span>' + content);
     $(".messages").animate({ scrollTop: $(document).height() }, "fast");
+
+    var message = {
+        conversation_id: current_conversation_id,
+        content: content
+    };
+    socket.emit('admin_reply', message);
 };
 
 $('.submit').click(function() {
@@ -57,6 +71,34 @@ $('#bottom-bar #back').on('click', () => {
     window.location.href = '/admin';
 });
 $('li.contact').on('click', (e) => {
-    var id = $('li.contact input').val();
-    window.location.href = '/admin/conversation/view/' + id;
+    // Remove other active
+    removeActive();
+
+    // Add active to target
+    var target = $(e.currentTarget);
+    target.addClass('active');
+
+    // Get All Messages
+    $.get('/admin/conversation/view/' + target.find('input').val())
+        .success(con => {
+            current_conversation_id = con._id;
+            $('.contact-profile img').attr('src', '/images/user/' + con.user.image);
+            $('.contact-profile p').text(con.user.name);
+
+            var html = '';
+            con.messages.forEach(mes => {
+                html +=
+                    `<li class="${mes.from_customer ? 'sent' : 'replies'}">
+                        <img src="/images/user/${mes.from_customer ? con.user.image : admin_image}" />
+                        <p>${mes.content}</p>
+                    </li>`
+                ;
+            });
+            $('div.messages ul').html(html);
+        })
+    ;
 });
+function removeActive() {
+    $('li.contact.active').removeClass('active');
+}
+// END My Custom
