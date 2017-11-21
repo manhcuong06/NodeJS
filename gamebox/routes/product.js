@@ -1,6 +1,7 @@
 var express = require('express');
 var bcrypt = require('../libraries/bcrypt_module');
 var constant = require('../libraries/constant_module');
+var socketio_module = require('../libraries/socketio_module');
 var file = require('../libraries/file_module');
 var router = express.Router();
 
@@ -45,6 +46,7 @@ router.all('/add', (req, res, next) => {
                 req.session.message = constant.getErrorMessage('The product is already in the data.');
                 res.redirect('/admin/product');
             } else {
+                socketio_module.broadcastEmit('reload_top_games', data_post);
                 res.redirect('/admin/product/view/' + result.insertedIds[0]);
             }
         });
@@ -77,6 +79,7 @@ router.all('/update/:id', (req, res, next) => {
                     req.session.message = constant.getErrorMessage('The product is already in the data.');
                 } else {
                     req.session.message = constant.getSuccessMessage(data_post.name + ' was updated successfully.');
+                    socketio_module.broadcastEmit('update_for_top_games', { condition: condition, data_post: data_post });
                 }
                 res.redirect('/admin/product');
             });

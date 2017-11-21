@@ -3,10 +3,10 @@
 <form method="POST" class="form-horizontal form-label-left" novalidate="">
 
     <div class="item form-group">
-        <input type="hidden" name="category" value="<%= product.category = 1%>" disable="disable">
+        <input type="hidden" name="category" id="category" value="<%= product.category = 1%>" disable="disable">
         <label class="control-label col-md-3 col-sm-3 col-xs-12">Name <span class="required">*</span></label>
         <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-            <input type="text" class="form-control has-feedback-left" name="name" value="<%= product.name %>" placeholder="Name" required>
+            <input type="text" class="form-control has-feedback-left" name="name" id="name" value="<%= product.name %>" placeholder="Name" required>
             <span class="fa fa-gamepad form-control-feedback left" aria-hidden="true"></span>
         </div>
     </div>
@@ -14,7 +14,7 @@
     <div class="item form-group">
         <label class="control-label col-md-3 col-sm-3 col-xs-12">Description <span class="required">*</span></label>
         <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-            <input type="text" class="form-control has-feedback-left" name="description" value="<%= product.description %>" placeholder="Description" required>
+            <input type="text" class="form-control has-feedback-left" name="description" id="description" value="<%= product.description %>" placeholder="Description" required>
             <span class="fa fa-book form-control-feedback left" aria-hidden="true"></span>
         </div>
     </div>
@@ -31,7 +31,7 @@
     <div class="item form-group">
         <label class="control-label col-md-3">Price <span class="required">*</span></label>
         <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-            <input type="number" class="form-control has-feedback-left" name="price" placeholder="Price" value="<%= product.price %>">
+            <input type="number" class="form-control has-feedback-left" name="price" id="price" placeholder="Price" value="<%= product.price %>">
             <span class="fa fa-dollar form-control-feedback left" aria-hidden="true"></span>
         </div>
     </div>
@@ -39,7 +39,7 @@
     <div class="item form-group">
         <label class="control-label col-md-3 col-sm-3 col-xs-12">Quantity <span class="required">*</span></label>
         <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-            <input type="number" class="form-control has-feedback-left" name="quantity" value="<%= product.quantity %>" placeholder="Quantity" required>
+            <input type="number" class="form-control has-feedback-left" name="quantity" id="quantity" value="<%= product.quantity %>" placeholder="Quantity" required>
             <span class="fa fa-plus form-control-feedback left" aria-hidden="true"></span>
         </div>
     </div>
@@ -50,7 +50,7 @@
             <a href="/admin/product" class="btn btn-default">
                 <span class="fa fa-chevron-left"></span> Back
             </a>
-            <button class="btn btn-<%= product._id ? 'primary' : 'success' %>">
+            <button id="bt_product"class="btn btn-<%= product._id ? 'primary' : 'success' %>">
                 <span class="fa fa-<%= product._id ? 'pencil' : 'plus' %>"></span>
                 <%= product._id ? 'Update' : 'Add' %>
             </button>

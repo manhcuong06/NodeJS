@@ -2,7 +2,7 @@ var ObjectId = require('mongodb').ObjectID;
 var DbConnection = require('../libraries/mongodb_module');
 
 module.exports = class Model {
-    constructor() { }
+    constructor() {}
 
     static getObjectId(id) {
         if (Model.isValid(id)) {
@@ -16,10 +16,10 @@ module.exports = class Model {
         return ID_PATTERN.test(id);
     }
 
-    static async find(collection_name, conditions = {}) {
+    static async find(collection_name, conditions = {}, sort = {}, skip = 0, limit = 0) {
         try {
             var db = await DbConnection.Get();
-            var result = await db.collection(collection_name).find(conditions).toArray();
+            var result = await db.collection(collection_name).find(conditions).sort(sort).skip(skip).limit(limit).toArray();
             return result;
         } catch (e) {
             console.log(e);
@@ -49,7 +49,7 @@ module.exports = class Model {
     static async update(collection_name, conditions, data) {
         try {
             var db = await DbConnection.Get();
-            var result = await db.collection(collection_name).update(conditions, {$set: data});
+            var result = await db.collection(collection_name).update(conditions, { $set: data });
             return result;
         } catch (e) {
             console.log(e);
