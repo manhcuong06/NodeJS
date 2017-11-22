@@ -5,8 +5,8 @@ const COLLECTION_NAME = 'product';
 module.exports = class Product extends Model {
     constructor() {}
 
-    static async find(conditions = {}) {
-        return await Model.find(COLLECTION_NAME, conditions);
+    static async find(conditions = {}, sort = {}, skip = 0, limit = 0) {
+        return await Model.find(COLLECTION_NAME, conditions, sort, skip, limit);
     }
 
     static async findOne(conditions) {
