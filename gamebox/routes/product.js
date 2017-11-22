@@ -37,6 +37,8 @@ router.get('/view/:id', (req, res, next) => {
 router.all('/add', (req, res, next) => {
     if (req.method == 'POST') {
         var data_post = req.body;
+        data_post.price = Number(data_post.price);
+        data_post.quantity = Number(data_post.quantity);
         if (data_post.image) {
             var buffer = file.decodeBase64(data_post.image);
             if (buffer) {
@@ -71,6 +73,8 @@ router.all('/update/:id', (req, res, next) => {
             res.redirect('/admin/product');
         } else if (req.method == 'POST') {
             var data_post = req.body;
+            data_post.price = Number(data_post.price);
+            data_post.quantity = Number(data_post.quantity);
             data_post.updated_at = new Date().getTime();
             if (product.image != data_post.image) {
                 var buffer = file.decodeBase64(data_post.image);
@@ -111,7 +115,7 @@ router.post('/delete', (req, res, next) => {
         if (!result) {
             req.session.message = constant.getErrorMessage('Delete product failed.');
         } else {
-            Product.find({ category: "1" }, { _id: -1 }, 0, 6).then(top_games => {
+            Product.find({}, { _id: -1 }, 0, 6).then(top_games => {
                 socketio_module.broadcastEmit('delete_for_top_games', top_games);
             });
             req.session.message = constant.getSuccessMessage('Delete product successfully.');

@@ -23,7 +23,7 @@
                         <tr>
                             <td><%= i+1 %></td>
                             <td><%= product.name %></td>
-                            <td><img src="/images/<%= product.image %>"></td>
+                            <td><img src="/images/product/<%= product.image %>"></td>
                             <td><%= product.description %></td>
                             <td class="actions">
                                 <button onclick="updateCart('<%= product._id %>', -1)"><span class="glyphicon glyphicon-minus"></span></button>
@@ -67,7 +67,7 @@ function updateCart(id, quantity = 1) {
                     `<tr>
                         <td>${i+1}</td>
                         <td>${product.name}</td>
-                        <td><img src="/images/${product.image}"></td>
+                        <td><img src="/images/product/${product.image}"></td>
                         <td>${product.description}</td>
                         <td class="actions">
                             <button onclick="updateCart('${product._id}', -1)"><span class="glyphicon glyphicon-minus"></span></button>

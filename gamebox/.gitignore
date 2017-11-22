@@ -2,8 +2,8 @@
 /node_modules
 
 # Image
-/public/images/product/*.png
-/public/images/user/*.png
+/public/images/product
+/public/images/user
 
 # package-lock.json
 /package-lock.json
