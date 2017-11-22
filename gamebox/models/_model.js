@@ -2,7 +2,7 @@ var ObjectId = require('mongodb').ObjectID;
 var DbConnection = require('../libraries/mongodb_module');
 
 module.exports = class Model {
-    constructor() {}
+    constructor() { }
 
     static getObjectId(id) {
         if (Model.isValid(id)) {
