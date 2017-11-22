@@ -78,8 +78,8 @@ router.all('/update/:id', (req, res, next) => {
                 if (!result) {
                     req.session.message = constant.getErrorMessage('The product is already in the data.');
                 } else {
-                    req.session.message = constant.getSuccessMessage(data_post.name + ' was updated successfully.');
                     socketio_module.broadcastEmit('update_for_top_games', { condition: condition, data_post: data_post });
+                    req.session.message = constant.getSuccessMessage(data_post.name + ' was updated successfully.');
                 }
                 res.redirect('/admin/product');
             });
@@ -103,6 +103,9 @@ router.post('/delete', (req, res, next) => {
         if (!result) {
             req.session.message = constant.getErrorMessage('Delete product failed.');
         } else {
+            Product.find({ category: "1" }, { _id: -1 }, 0, 6).then(top_games => {
+                socketio_module.broadcastEmit('delete_for_top_games', top_games);
+            });
             req.session.message = constant.getSuccessMessage('Delete product successfully.');
         }
         res.redirect('/admin/product');
