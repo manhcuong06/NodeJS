@@ -1,3 +1,6 @@
+var Conversation = require('../models/conversation');
+var Message = require('../models/message');
+
 var _socket = null;
 
 module.exports = {
@@ -14,6 +17,42 @@ module.exports = {
             socket.on('dragging', (coordinate) => {
                 current_coordinate = coordinate;
                 io.sockets.emit('move', current_coordinate);
+            });
+            socket.on('customer_reply', (data) => {
+                var conversation = {
+                    user_id: Conversation.getObjectId(data.user_id),
+                };
+                var message = {
+                    content: data.content,
+                    created_at: new Date().getTime(),
+                    from_customer: true
+                };
+
+                Conversation.findOne(conversation).then(con => {
+                    if (con) {
+                        message.conversation_id = Message.getObjectId(con._id);
+                        Message.insert(message).then(result => {
+                            socket.broadcast.emit('append_mes_to_admin', message);
+                        });
+                    } else {
+                        Conversation.insert(conversation).then(result => {
+                            message.conversation_id = Message.getObjectId(result.insertedIds[0]);
+                            Message.insert(message).then(result => {
+                                socket.broadcast.emit('append_mes_to_admin', message);
+                            });
+                        });
+                    }
+                });
+            });
+            socket.on('admin_reply', (data) => {
+                var message = {
+                    content: data.content,
+                    created_at: new Date().getTime(),
+                    conversation_id: Message.getObjectId(data.conversation_id),
+                };
+                Message.insert(message).then(result => {
+                    socket.broadcast.emit('append_mes_to_site', message);
+                });
             });
             socket.on('disconnect', () => {});
         });

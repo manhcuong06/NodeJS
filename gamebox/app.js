@@ -69,6 +69,10 @@ app.use('/admin', (req, res, next) => {
     app.set('layout', '_templates/admin');
     next();
 });
+app.use('/admin/conversation', (req, res, next) => {
+    app.set('layout', '_templates/conversation');
+    next();
+});
 
 // Routes
 app.use('/', index);
