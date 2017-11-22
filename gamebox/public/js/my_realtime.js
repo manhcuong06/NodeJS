@@ -1,5 +1,4 @@
 $(() => {
-
     var socket = io.connect('http://localhost:3000');
 
     socket.on('reload_top_games', (game) => {
