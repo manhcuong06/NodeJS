@@ -1,0 +1,55 @@
+<%- contentFor('main_content') %>
+
+<a href="/admin/bill" class="btn btn-default"><span class="fa fa-chevron-left"></span> BACK</a>
+<table class="table table-striped responsive-utilities jambo_table bulk_action">
+    <thead>
+        <tr>
+            <th colspan="2">Customer information</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Name: </td>
+            <td><%= bill.name %></td>
+        </tr>
+        <tr>
+            <td>Phone: </td>
+            <td><%= bill.phone %></td>
+        </tr>
+        <tr>
+            <td>Address: </td>
+            <td><%= bill.address %></td>
+        </tr>
+        <tr>
+            <td>Email: </td>
+            <td><a href="mailto:<%= bill.email %>"><%= bill.email %></a></td>
+        </tr>
+        <tr>
+            <td>Note: </td>
+            <td><%= bill.note %></td>
+        </tr>
+        <tr>
+            <td>Quantity: </td>
+            <td><%= bill.quantity %> products</td>
+        </tr>
+        <tr>
+            <td>Total price: </td>
+            <td><%= bill.price %> $</td>
+        </tr>
+        <tr>
+            <td>Created At: </td>
+            <td><%= new Date(Number(bill.created_at)).toLocaleString() %></td>
+        </tr>
+        <tr>
+            <td>Paid At: </td>
+            <td><%= bill.paid_at ? new Date(Number(bill.paid_at)).toLocaleString() : '' %></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <a href="/admin/bill/update-payment/<%= bill._id %>" class="btn btn-<%= bill.paid_at ? 'danger' : 'success' %>">
+                    <%= bill.paid_at ? 'Not yet received' : 'Payment received' %>
+                </a>
+            </td>
+        </tr>
+    </tbody>
+</table>

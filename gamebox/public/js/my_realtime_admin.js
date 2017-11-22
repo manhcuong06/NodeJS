@@ -18,12 +18,13 @@ $(() => {
                 <td>${new Date(Number(bill.created_at)).toLocaleString()}</td>
                 <td></td>
                 <td><a href="/admin/bill/view/${bill._id}" class="btn btn-info"><span class="fa fa-eye"></span></a></td>
-            </tr>`;
+            </tr>`
+        ;
         $('#bill-table').html(new_bill + current_table);
 
         // Update index
         var indexes = $('.bill-index');
-        for (var i = 0; i < indexes.length; i++) {
+        for (var i=0; i<indexes.length; i++) {
             $(indexes[i]).html(Number($(indexes[i]).html()) + 1);
         }
     })

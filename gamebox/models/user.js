@@ -18,7 +18,7 @@ module.exports = class User extends Model {
         }
         var user = await Model.findOne(COLLECTION_NAME, conditions);
         var compare_result = true;
-        if (password) {
+        if (user && password) {
             compare_result = await bcrypt.compare(password, user.password);
         }
         return compare_result ? user : null;

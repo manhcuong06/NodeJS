@@ -4,6 +4,7 @@ var socketio_module = require('../libraries/socketio_module');
 var router = express.Router();
 
 // Models
+var Bill = require('../models/bill');
 var Gallery = require('../models/gallery');
 var Product = require('../models/product');
 var User = require('../models/user');
@@ -11,18 +12,17 @@ var User = require('../models/user');
 router.get('/', (req, res) => {
     Product.find({ category: "1" }, { _id: -1 }, 0, 6).then(top_games => {
         res.render('site/', {
-            data: req.data,
             top_games: top_games,
         });
     });
 });
 
 router.get('/about', (req, res) => {
-    renderHTML(req, res);
+    res.render('site/about');
 });
 
 router.get('/contact', (req, res) => {
-    renderHTML(req, res);
+    res.render('site/contact');
 });
 
 router.get('/detail/:id', (req, res, next) => {
@@ -32,7 +32,6 @@ router.get('/detail/:id', (req, res, next) => {
             next(); // 404 Page Not Found
         } else {
             res.render('site/detail', {
-                data: req.data,
                 product: product,
             });
         }
@@ -42,30 +41,44 @@ router.get('/detail/:id', (req, res, next) => {
 router.get('/gallery', (req, res) => {
     Gallery.find().then(gallery => {
         res.render('site/gallery', {
-            data: req.data,
             gallery: gallery,
         });
     });
 });
 
 router.get('/news', (req, res) => {
-    renderHTML(req, res);
+    res.render('site/news');
 });
 
 router.get('/reviews', (req, res) => {
-    renderHTML(req, res);
+    res.render('site/reviews');
 });
 
 router.all('/cart-checkout', (req, res) => {
-    if (req.method == 'GET') {
+    if (!req.session.cart) {
+        res.redirect('/site');
+    } else if (req.method == 'GET') {
         res.render('site/cart-checkout', {
-            data: req.data,
             cart_disabled: true,
         });
     } else {
-        socketio_module.broadcastEmit('update_bill');
-        req.session.cart = null;
-        res.redirect('/site');
+        var bill = req.body;
+        bill.quantity = res.locals.cart_quantity;
+        bill.price = res.locals.cart_price;
+        bill.created_at = new Date().getTime();
+        bill.details = [];
+        req.session.cart.forEach(product => {
+            var detail = product;
+            detail._id = Bill.getObjectId(detail._id);
+            detail.unit_price = detail.price / detail.quantity;
+
+            bill.details.push(detail);
+        });
+        Bill.insert(bill).then(result => {
+            socketio_module.broadcastEmit('update_bill', result.ops[0]);
+            req.session.cart = null;
+            res.redirect('/site');
+        });
     }
 });
 
@@ -164,8 +177,3 @@ router.post('/signup-validate', (req, res) => {
 // END Ajax routes
 
 module.exports = router;
-
-function renderHTML(req, res) {
-    var view = req.path.replace('/', 'site/');
-    res.render(view, { data: req.data });
-}

@@ -22,10 +22,15 @@ router.get('/', (req, res) => {
 router.get('/view/:id', (req, res, next) => {
     var condition = { _id: Product.getObjectId(req.params.id) };
     Product.findOne(condition).then(product => {
-        res.render('admin/product/view', {
-            page_title: product.name,
-            product: product,
-        });
+        if (!product) {
+            req.session.message = constant.getErrorMessage();
+            res.redirect('/admin/product');
+        } else {
+            res.render('admin/product/view', {
+                page_title: product.name,
+                product: product,
+            });
+        }
     });
 });
 
@@ -61,7 +66,10 @@ router.all('/add', (req, res, next) => {
 router.all('/update/:id', (req, res, next) => {
     var condition = { _id: Product.getObjectId(req.params.id) };
     Product.findOne(condition).then(product => {
-        if (req.method == 'POST') {
+        if (!product) {
+            req.session.message = constant.getErrorMessage();
+            res.redirect('/admin/product');
+        } else if (req.method == 'POST') {
             var data_post = req.body;
             data_post.updated_at = new Date().getTime();
             if (product.image != data_post.image) {
@@ -110,11 +118,6 @@ router.post('/delete', (req, res, next) => {
         }
         res.redirect('/admin/product');
     });
-});
-
-// catch 404 page not found
-router.use((req, res) => {
-    res.render('admin/404-not-found', { layout: false });
 });
 
 module.exports = router;

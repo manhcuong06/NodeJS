@@ -1,6 +1,8 @@
 <%- contentFor('main_content') %>
 
+<% if (current_admin.level <= 2) { %>
 <a href="/admin/user/add" class="btn btn-success"><span class="fa fa-plus"></span> ADD</a>
+<% } %>
 <% if (message) { %>
 <div class="alert alert-<%= message.class %> alert-dismissible fade in" role="alert">
     <button class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
@@ -33,9 +35,14 @@
             <td><%= user.last_login ? new Date(Number(user.last_login)).toLocaleString() : '' %></script></td>
             <form action="/admin/user/delete" method="POST" onsubmit="return confirm('Are you sure you want to delete <%= user.name %>?')">
                 <td>
+                    <% if (current_admin.level <= user.level) { %>
                     <a href="/admin/user/update/<%= user._id %>" class="btn btn-primary"><span class="fa fa-pencil"></span></a>
+                    <% } %>
+
+                    <% if (current_admin.level <= user.level && current_admin._id != user._id) { %>
                     <input type="hidden" name="id" value="<%= user._id %>">
                     <button type="submit" class="btn btn-danger"><span class="fa fa-trash"></span></button>
+                    <% } %>
                 </td>
             </form>
         </tr>

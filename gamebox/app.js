@@ -47,12 +47,9 @@ app.use((req, res, next) => {
             cart_price += product.price;
         });
     }
-    req.data = {
-        cart_quantity: cart_quantity,
-        cart_price: cart_price,
-    };
-
     res.locals.cart = cart;
+    res.locals.cart_quantity = cart_quantity;
+    res.locals.cart_price = cart_price;
     res.locals.current_user = req.session.current_user;
     next();
 });
