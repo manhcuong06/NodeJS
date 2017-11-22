@@ -49,7 +49,7 @@ module.exports = class Model {
     static async update(collection_name, conditions, data) {
         try {
             var db = await DbConnection.Get();
-            var result = await db.collection(collection_name).update(conditions, { $set: data });
+            var result = await db.collection(collection_name).update(conditions, {$set: data});
             return result;
         } catch (e) {
             console.log(e);
