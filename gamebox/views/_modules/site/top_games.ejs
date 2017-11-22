@@ -7,15 +7,15 @@
         <div class="top-game-grids">
             <ul id="flexiselDemo1">
                 <% top_games.forEach(game => { %>
-                <li>
+                <li id = '<%= game._id %>'>
                     <div class="game-grid">
                         <h4><%= game.name %></h4>
                         <p><%= game.description %></p>
                         <a href="/site/detail/<%= game._id %>">
-                            <img src="/images/<%= game.image %>" class="img-responsive" alt=""/>
+                            <img src="/images/product/<%= game.image %>" class="img-responsive" alt=""/>
                         </a>
                     </div>
-                    <button class="btn btn-primary btn-block" onclick="updateCart('<%= game._id %>')">Buy (<%= game.price %> $)</button>
+                    <button class="btn btn-primary btn-block" id="up_button" onclick="updateCart('<%= game._id %>')">Buy (<%= game.price %> $)</button>
                 </li>
                 <% }); %>
             </ul>

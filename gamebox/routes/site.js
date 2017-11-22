@@ -32,7 +32,7 @@ router.use((req, res, next) => {
 });
 
 router.get('/', (req, res) => {
-    Product.find({category: 1}).then(top_games => {
+    Product.find({ category: '1' }, { _id: -1 }, 0, 6).then(top_games => {
         res.render('site/', {
             top_games: top_games,
         });
