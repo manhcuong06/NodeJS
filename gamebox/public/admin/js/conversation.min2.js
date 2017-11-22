@@ -1,9 +1,6 @@
 // My Custom
-var current_conversation_id = null;
 var admin_image = $('img#profile-img').attr('src').replace('/images/user/', '');
 // END My Custom
-
-$(".messages").animate({ scrollTop: $(document).height() }, "fast");
 
 $("#profile-img").click(function() {
     $("#status-options").toggleClass("active");
@@ -46,7 +43,7 @@ function newMessage() {
     $('<li class="replies"><img src="/images/user/' + admin_image + '" /><p>' + content + '</p></li>').appendTo($('.messages ul'));
     $('.message-input input').val(null);
     $('.contact.active .preview.message').html('<span>You: </span>' + content);
-    $(".messages").animate({ scrollTop: $(document).height() }, "fast");
+    $('.messages').animate({ scrollTop: $('.messages').prop('scrollHeight') }, 'fast');
 
     var message = {
         conversation_id: current_conversation_id,
@@ -71,34 +68,31 @@ $('#bottom-bar #back').on('click', () => {
     window.location.href = '/admin';
 });
 $('li.contact').on('click', (e) => {
-    // Remove other active
-    removeActive();
-
-    // Add active to target
     var target = $(e.currentTarget);
-    target.addClass('active');
-
-    // Get All Messages
+    adjustActive(target);
     $.get('/admin/conversation/view/' + target.find('input').val())
         .success(con => {
             current_conversation_id = con._id;
+            current_user_image = con.user.image;
             $('.contact-profile img').attr('src', '/images/user/' + con.user.image);
             $('.contact-profile p').text(con.user.name);
 
-            var html = '';
+            $('div.messages ul').html(null);
             con.messages.forEach(mes => {
-                html +=
+                var mes_html =
                     `<li class="${mes.from_customer ? 'sent' : 'replies'}">
-                        <img src="/images/user/${mes.from_customer ? con.user.image : admin_image}" />
+                        <img src="/images/user/${mes.from_customer ? current_user_image : admin_image}" />
                         <p>${mes.content}</p>
                     </li>`
                 ;
+                $(mes_html).appendTo($('.messages ul'));
             });
-            $('div.messages ul').html(html);
+            $('.messages').scrollTop($('.messages').prop('scrollHeight'));
         })
     ;
 });
-function removeActive() {
+function adjustActive(target) {
     $('li.contact.active').removeClass('active');
+    target.addClass('active');
 }
 // END My Custom

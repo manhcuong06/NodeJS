@@ -15,8 +15,8 @@ router.get('/', (req, res) => {
     res.render('admin/conversation/');
 });
 
-router.get('/view/:conversation_id', (req, res) => {
-    var condition = {_id: Conversation.getObjectId(req.params.conversation_id)};
+router.get('/view/:id', (req, res) => {
+    var condition = {_id: Conversation.getObjectId(req.params.id)};
     Conversation.findOne(condition).then(con => {
         res.json(con);
     });

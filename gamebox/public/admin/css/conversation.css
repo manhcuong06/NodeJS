@@ -666,3 +666,6 @@ body {
 #frame .content .message-input .wrap button:focus {
     outline: none;
 }
+b.new-message {
+    font-weight: bold;
+}

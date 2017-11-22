@@ -31,16 +31,28 @@ module.exports = {
                 Conversation.findOne(conversation).then(con => {
                     if (con) {
                         message.conversation_id = Message.getObjectId(con._id);
-                        Message.insert(message);
+                        Message.insert(message).then(result => {
+                            socket.broadcast.emit('append_mes_to_admin', message);
+                        });
                     } else {
                         Conversation.insert(conversation).then(result => {
                             message.conversation_id = Message.getObjectId(result.insertedIds[0]);
-                            Message.insert(message);
+                            Message.insert(message).then(result => {
+                                socket.broadcast.emit('append_mes_to_admin', message);
+                            });
                         });
                     }
                 });
             });
             socket.on('admin_reply', (data) => {
+                var message = {
+                    content: data.content,
+                    created_at: new Date().getTime(),
+                    conversation_id: Message.getObjectId(data.conversation_id),
+                };
+                Message.insert(message).then(result => {
+                    socket.broadcast.emit('append_mes_to_site', message);
+                });
             });
             socket.on('disconnect', () => {});
         });

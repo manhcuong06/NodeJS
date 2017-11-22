@@ -17,19 +17,19 @@ function send() {
         return;
     }
     var message = {
+        content: content,
+        conversation_id: conversation_id.value,
         user_id: current_user_id.value,
-        content: content
-    }
+    };
     socket.emit('customer_reply', message);
 
-    var chatlogs = $('.chatlogs').html();
-    chatlogs = chatlogs +
+    var mes_html =
         `<div class="chat self">
             <div class="user-photo"><img src="/images/no-user.png"></div>
             <p class="chat-message">${content}</p>
         </div>`
     ;
-    $('.chatlogs').html(chatlogs);
-    $('.chatlogs').scrollTop($('.chatlogs').prop('scrollHeight'));
-    $('.chat-form textarea').val('');
+    $(mes_html).appendTo($('.chatlogs'));
+    $('.chatlogs').animate({ scrollTop: $('.chatlogs').prop('scrollHeight') }, 'fast');
+    $('.chat-form textarea').val(null);
 }

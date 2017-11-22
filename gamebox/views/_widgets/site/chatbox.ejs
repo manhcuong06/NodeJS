@@ -1,11 +1,12 @@
 <link rel="stylesheet" href="/css/my_chatbox.css">
 
 <% if (current_user && current_user.level > 3) { %>
-<div class="chatbox minimize-1">
+<div class="chatbox minimize">
     <div class="head">Chat</div>
     <input type="hidden" id="current_user_id" value="<%= current_user._id %>">
     <div class="chatlogs">
         <% if (typeof messages !== 'undefined' && messages) { %>
+        <input type="hidden" id="conversation_id" value="<%= messages[0].conversation_id %>">
         <% messages.forEach(mes => { %>
         <div class="chat <%= mes.from_customer ? 'self' : 'reply' %>">
             <div class="user-photo"><img src="/images/no-<%= mes.from_customer ? 'user' : 'admin' %>.png"></div>
