@@ -65,4 +65,14 @@ module.exports = class Model {
             console.log(e);
         }
     }
+
+    static async count(collection_name, conditions = {}, options = {}) {
+        try {
+            var db = await DbConnection.Get();
+            var result = await db.collection(collection_name).count(conditions, options);
+            return result;
+        } catch (e) {
+            console.log(e);
+        }
+    }
 }

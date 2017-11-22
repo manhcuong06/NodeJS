@@ -1,20 +1,30 @@
 $(() => {
     var socket = io.connect('http://localhost:3000');
+    socket.on('update_bill', (bill) => {
+        // Update count (left navigation)
+        $('#bill-count').html(Number($('#bill-count').html()) + 1);
 
-    socket.on('update_bill', () => {
-        var current_bill = Number($('#num_of_bill').html());
-        $('#num_of_bill').html(current_bill + 1);
-    });
+        // Update table
+        var current_table = $('#bill-table').html();
+        var new_bill =
+            `<tr>
+                <td class="bill-index"></td>
+                <td>${bill.name}</td>
+                <td>${bill.phone}</td>
+                <td>${bill.address}</td>
+                <td><a href="mailto:${bill.email}">${bill.email}</a></td>
+                <td>${bill.quantity}</td>
+                <td>${bill.price}</td>
+                <td>${new Date(Number(bill.created_at)).toLocaleString()}</td>
+                <td></td>
+                <td><a href="/admin/bill/view/${bill._id}" class="btn btn-info"><span class="fa fa-eye"></span></a></td>
+            </tr>`;
+        $('#bill-table').html(new_bill + current_table);
 
-    // $("#bt_product").click(() => {
-    //     data_post = {
-    //         category: category.value,
-    //         name: name.value,
-    //         image_input: image_input.value,
-    //         image_name: image_name.value,
-    //         price: price.value,
-    //         quantity: quantity.value
-    //     }
-    //     socket.emit("Product-send-data", data_post);
-    // });
+        // Update index
+        var indexes = $('.bill-index');
+        for (var i = 0; i < indexes.length; i++) {
+            $(indexes[i]).html(Number($(indexes[i]).html()) + 1);
+        }
+    })
 });
